@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PipCore</title>
+  <link href="calendar.css" rel="stylesheet" type="text/css" />
+  <script src="calendar.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+</head>
+
+<body>
+  <header>
+    <div class="header-container">
+      <img src="logo.PNG" alt="PipCore logo" class="logo">
+      <nav>
+        <ul class="nav-list">
+          <li>
+            <a href="dashboard.html">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="journal.html">
+              <i class="fas fa-book"></i> Journal
+            </a>
+          </li>
+          <li>
+            <a href="calendar.html">
+              <i class="fas fa-calendar-alt"></i> Calendar
+            </a>
+          </li>
+          <li>
+            <a href="about.html">
+              <i class="fas fa-info-circle"></i> About
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="calendar-container">
+      <div class="calendar-header">
+        <button id="prevYear" class="nav-btn">Prev Year</button>
+        <span id="yearLabel"></span>
+        <button id="nextYear" class="nav-btn">Next Year</button>
+      </div>
+      
+      <div class="calendar-nav">
+        <button id="prevMonth" class="nav-btn">Prev Month</button>
+        <div class="calendar-header">
+          <span id="monthLabel"></span>
+        </div>
+        <button id="nextMonth" class="nav-btn">Next Month</button>
+      </div>
+
+      <div id="stats" class="stats">
+        <!-- Stats will be dynamically generated here -->
+      </div>
+      
+    </div>
+  </main>
+  
+</body>
+</html>

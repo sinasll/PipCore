@@ -1,0 +1,193 @@
+/* General Reset and Setup */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Press Start 2P', sans-serif;
+  background-color: #000;
+  color: #f8f8f8;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+}
+
+  /* Header Styles */
+header {
+  background-color: #000;
+  padding: 20px 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  width: 5em;
+  height: auto;
+  border: 1px solid rgb(133, 133, 133);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between; /* Space out logo and nav */
+  align-items: center; /* Center vertically */
+  padding: 0 60px;
+  max-width: 100%;
+  text-align: center;
+}
+
+/* Navigation Styles */
+nav ul.nav-list {
+  list-style-type: none;
+  display: flex; /* Flex container for items */
+  justify-content: center; /* Align items in the center */
+  margin: 0;
+  padding: 0;
+}
+
+nav ul.nav-list li {
+  margin: 0 15px; /* Space between nav items */
+}
+
+nav ul.nav-list li a {
+  color: #E6B33C; /* Gold color for text */
+  font-size: 16px; /* Font size for links */
+  font-weight: bold; /* Bold font weight */
+  text-decoration: none; /* Remove underline from links */
+  display: flex; /* Align icon and text inline */
+  align-items: center;
+  gap: 8px; /* Space between icon and text */
+  padding: 12px; /* Padding for each link */
+  transition: color 0.3s ease; /* Smooth color transition on hover */
+}
+
+/* Icon styling inside nav */
+nav ul.nav-list li a i {
+  font-size: 18px; /* Adjust icon size */
+}
+
+/*h1 style */
+.stats {
+  color: #E6B33C;
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Calendar Container */
+main {
+  padding-top: 60%; /* Space for fixed header */
+  padding-bottom: 20%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.nav-btn {
+  font-family: 'Press Start 2P', sans-serif;
+  background-color: #E6B33C;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 10px;
+  margin: 1px;
+  margin-bottom: 10px;
+}
+
+.calendar-header {
+  font-size: 10px;
+  font-weight: bold;
+  color: #E6B33C;
+  margin: 0 10px;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.stat-card {
+  border: 1px solid #E6B33C;
+  border-radius: 10px;
+  padding: 30px;
+  margin: 10px;
+  text-align: center;
+  width: 100%; /* Make cards full width */
+  max-width: 350px; /* Limit max width for larger screens */
+}
+
+.stat-card h3 {
+  font-size: 16px;
+  color: #E6B33C;
+  margin-bottom: 15px;
+}
+
+footer {
+  background-color: #000;
+  padding: 12px 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+  z-index: 1000;
+}
+
+footer p {
+  color: #E6B33C;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+/* Responsive Adjustments for Mobile */
+@media (max-width: 768px) {
+  .stat-card {
+    width: 100%; /* Ensure cards take full width on smaller screens */
+    margin: 10px 0;
+  }
+
+  nav ul.nav-list {
+    flex-direction: column;
+  }
+
+  nav ul.nav-list li a {
+    font-size: 14px;
+    padding: 10px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 12px; /* Further decrease font size for very small screens */
+  }
+
+  .stat-card h3 {
+    font-size: 14px;
+  }
+
+  .stat-card p {
+    font-size: 16px;
+  }
+}
