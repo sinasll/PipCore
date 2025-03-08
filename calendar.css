@@ -56,7 +56,7 @@ nav ul.nav-list li {
 }
 
 nav ul.nav-list li a {
-  color: #FFD700; /* Gold color for text */
+  color: #E6B33C; /* Gold color for text */
   font-size: 16px; /* Font size for links */
   font-weight: bold; /* Bold font weight */
   text-decoration: none; /* Remove underline from links */
@@ -74,7 +74,7 @@ nav ul.nav-list li a i {
 
 /*h1 style */
 .stats {
-  color: #FFD700;
+  color: #E6B33C;
   font-size: 20px;
   text-align: center;
   margin-bottom: 10px;
@@ -82,7 +82,7 @@ nav ul.nav-list li a i {
 
 /* Calendar Container */
 main {
-  padding-top: 40%; /* Space for fixed header */
+  padding-top: 50%; /* Space for fixed header */
   padding-bottom: 20%;
   padding-left: 15px;
   padding-right: 15px;
@@ -104,7 +104,7 @@ main {
 
 .nav-btn {
   font-family: 'Press Start 2P', sans-serif;
-  background-color: #FFD700;
+  background-color: #E6B33C;
   color: #000;
   border: none;
   padding: 10px 20px;
@@ -117,7 +117,7 @@ main {
 .calendar-header {
   font-size: 10px;
   font-weight: bold;
-  color: #FFD700;
+  color: #E6B33C;
   margin: 0 10px;
 }
 
@@ -130,7 +130,7 @@ main {
 }
 
 .stat-card {
-  border: 1px solid #FFD700;
+  border: 1px solid #E6B33C;
   border-radius: 10px;
   padding: 30px;
   margin: 10px;
@@ -141,7 +141,7 @@ main {
 
 .stat-card h3 {
   font-size: 16px;
-  color: #FFD700;
+  color: #E6B33C;
   margin-bottom: 15px;
 }
 
@@ -156,7 +156,7 @@ footer {
 }
 
 footer p {
-  color: #FFD700;
+  color: #E6B33C;
   font-size: 10px;
   font-weight: bold;
 }

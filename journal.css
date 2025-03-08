@@ -56,7 +56,7 @@ nav ul.nav-list li {
 }
 
 nav ul.nav-list li a {
-  color: #FFD700; /* Gold color for text */
+  color: #E6B33C; /* Gold color for text */
   font-size: 16px; /* Font size for links */
   font-weight: bold; /* Bold font weight */
   text-decoration: none; /* Remove underline from links */
@@ -75,14 +75,14 @@ nav ul.nav-list li a i {
 
 /* Main Content Styling */
 main {
-  padding-top: 40%; /* Space for fixed header */
+  padding-top: 50%; /* Space for fixed header */
   padding-bottom: 20%;
   padding-left: 15px;
   padding-right: 15px;
 }
 
 .journalh1 {
-  color: #FFD700 ;
+  color: #E6B33C ;
   font-size: 20px;
   text-align: center;
   margin-bottom: 10px;
@@ -99,7 +99,7 @@ form {
 
 form label {
   font-size: 16px;
-  color: #FFD700;
+  color: #E6B33C;
 }
 
 form input, form select {
@@ -107,16 +107,16 @@ form input, form select {
   padding: 8px;
   font-size: 16px;
   border-radius: 0px;
-  border: 1px solid #FFD700;
+  border: 1px solid #E6B33C;
   background-color: #000;
-  color: #FFD700;
+  color: #E6B33C;
 }
 
 form button {
   font-family: 'Press Start 2P', sans-serif;
   margin-top: 10px;
   padding: 12px 24px;
-  background-color: #FFD700;
+  background-color: #E6B33C;
   color: #000;
   font-weight: bold;
   border: none;
@@ -127,7 +127,7 @@ form button {
 
 /* History Section Styling */
 .history {
-  color: #FFD700;
+  color: #E6B33C;
   font-size: 20px;
   text-align: center;
   margin-bottom: 10px;
@@ -140,11 +140,11 @@ form button {
 /* Trade Card Styling */
 .trade-card {
   background-color: #000;
-  border: 1px solid #FFD700;
+  border: 1px solid #E6B33C;
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 20px;
-  color: #FFD700;
+  color: #E6B33C;
   font-family: 'Press Start 2P', sans-serif;
 }
 
@@ -162,7 +162,7 @@ form button {
 .delete-btn, .print-btn  {
   font-family: 'Press Start 2P', sans-serif;
   padding: 8px 16px;
-  background-color: #FFD700;
+  background-color: #E6B33C;
   color: #000;
   font-weight: bold;
   border: none;
@@ -189,8 +189,8 @@ form button {
 
 .modal-content {
   background-color: #000;
-  color: #FFD700;
-  border: 2px solid #FFD700;
+  color: #E6B33C;
+  border: 2px solid #E6B33C;
   padding: 20px;
   text-align: center;
   font-family: 'Press Start 2P', sans-serif;
@@ -201,7 +201,7 @@ form button {
 
 .modal-btn {
   font-family: 'Press Start 2P', sans-serif;
-  background-color: #FFD700;
+  background-color: #E6B33C;
   color: #000;
   border: none;
   padding: 10px 20px;
@@ -228,7 +228,7 @@ footer {
 }
 
 footer p {
-  color: #FFD700; /* Golden Yellow */
+  color: #E6B33C; /* Golden Yellow */
   font-size: 10px;
   font-weight: bold;
 }

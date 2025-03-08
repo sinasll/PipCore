@@ -136,8 +136,8 @@ function deleteTrade(index) {
   // Create modal content
   let modalContent = document.createElement("div");
   modalContent.style.backgroundColor = "#000";
-  modalContent.style.color = "#FFD700";
-  modalContent.style.border = "2px solid #FFD700";
+  modalContent.style.color = "#E6B33C";
+  modalContent.style.border = "2px solid #E6B33C";
   modalContent.style.padding = "20px";
   modalContent.style.textAlign = "center";
   modalContent.style.fontFamily = "'Press Start 2P', sans-serif";
@@ -152,7 +152,7 @@ function deleteTrade(index) {
   // Create Yes button
   let confirmBtn = document.createElement("button");
   confirmBtn.textContent = "YES";
-  confirmBtn.style.backgroundColor = "#FFD700";
+  confirmBtn.style.backgroundColor = "#E6B33C";
   confirmBtn.style.color = "#000";
   confirmBtn.style.border = "none";
   confirmBtn.style.padding = "10px 20px";
@@ -181,7 +181,7 @@ function deleteTrade(index) {
   // Create No button
   let cancelBtn = document.createElement("button");
   cancelBtn.textContent = "NO";
-  cancelBtn.style.backgroundColor = "#FFD700";
+  cancelBtn.style.backgroundColor = "#E6B33C";
   cancelBtn.style.color = "#000";
   cancelBtn.style.border = "none";
   cancelBtn.style.padding = "10px 20px";
