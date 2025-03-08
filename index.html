@@ -88,40 +88,47 @@
   </div>
 
   <script>
-    let progress = 0;
-    const progressElement = document.querySelector('.progress');
-    const loader = document.querySelector('.loading-container');
-    let interval;
+document.addEventListener('DOMContentLoaded', () => {
+  // Telegram SDK initialization
+  Telegram.WebApp.ready(); 
+  Telegram.WebApp.expand(); 
 
-    const completeLoading = () => {
-      // Fade out loader
-      loader.style.opacity = '0';
-      // Wait for fade animation to complete before redirect
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 500);
-    };
+  let progress = 0;
+  const progressElement = document.querySelector('.progress');
+  const loader = document.querySelector('.loading-container');
+  let interval;
 
-    const updateProgress = () => {
-      progress += Math.random() * 3;
-      if(progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        progressElement.textContent = '100%';
-        completeLoading();
-      } else {
-        progressElement.textContent = Math.min(progress, 100).toFixed(0) + '%';
-      }
-    };
-
-    // Start progress simulation
-    interval = setInterval(updateProgress, 100);
-    
-    // Safety timeout - redirect even if progress doesn't complete
+  const completeLoading = () => {
+    // Fade out loader
+    loader.style.opacity = '0';
+    // Wait for fade animation to complete before redirect
     setTimeout(() => {
+      window.location.href = 'dashboard.html';
+    }, 500);
+  };
+
+  const updateProgress = () => {
+    progress += Math.random() * 3;
+    if(progress >= 100) {
+      progress = 100;
       clearInterval(interval);
+      progressElement.textContent = '100%';
       completeLoading();
-    }, 4000);
+    } else {
+      progressElement.textContent = Math.min(progress, 100).toFixed(0) + '%';
+    }
+  };
+
+  // Start progress simulation
+  interval = setInterval(updateProgress, 100);
+  
+  // Safety timeout - redirect even if progress doesn't complete
+  setTimeout(() => {
+    clearInterval(interval);
+    completeLoading();
+  }, 4000);
+});
+
   </script>
 </body>
 </html>
