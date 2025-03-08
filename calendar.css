@@ -82,7 +82,7 @@ nav ul.nav-list li a i {
 
 /* Calendar Container */
 main {
-  padding-top: 50%; /* Space for fixed header */
+  padding-top: 60%; /* Space for fixed header */
   padding-bottom: 20%;
   padding-left: 15px;
   padding-right: 15px;
