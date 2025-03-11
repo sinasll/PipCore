@@ -84,7 +84,7 @@ nav ul.nav-list li a i {
 /* User Info and Wallet Button Styling */
 
 .soon {
-  font-size: 10px;
+  font-size: 8px;
   font-family: 'Press Start 2P', sans-serif;
   font-weight: bold;
   color: #E6B33C; /* Gold color */
@@ -93,7 +93,7 @@ nav ul.nav-list li a i {
 }
 
 .username {
-  font-size: 18px;
+  font-size: 14px;
   font-family: 'Press Start 2P', sans-serif;
   font-weight: bold;
   color: #E6B33C; /* Gold color */
