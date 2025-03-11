@@ -11,6 +11,15 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
   rel="stylesheet"
 />
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@2.0.3-beta.0/dist/tonconnect-ui.min.js"></script>
+<script>
+    console.log(window.telegramAnalytics);
+    window.telegramAnalytics.init({
+        token: '',
+        appName: '',
+    })
+</script>
 </head>
 
 <body>
@@ -19,6 +28,11 @@
       <img src="logo.PNG" alt="PipCore logo" class="logo">
       <nav>
         <ul class="nav-list">
+          <li>
+            <a href="profile.html">
+              <i class="fas fa-user"></i> Profile
+            </a>
+          </li>          
           <li>
             <a href="dashboard.html">
               <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -43,7 +57,6 @@
       </nav>
     </div>
   </header>
-  
 
   <main>
     <div>

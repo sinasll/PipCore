@@ -81,6 +81,44 @@ nav ul.nav-list li a i {
   margin-bottom: 10px;
 }
 
+/* User Info and Wallet Button Styling */
+
+.soon {
+  font-size: 10px;
+  font-family: 'Press Start 2P', sans-serif;
+  font-weight: bold;
+  color: #E6B33C; /* Gold color */
+  text-align: center;
+  margin-top: 50px;
+}
+
+.username {
+  font-size: 18px;
+  font-family: 'Press Start 2P', sans-serif;
+  font-weight: bold;
+  color: #E6B33C; /* Gold color */
+  text-align: center;
+}
+
+.connect-wallet {
+  font-size: 14px;
+  font-family: 'Press Start 2P', sans-serif;
+  font-weight: bold;
+  color: #E6B33C; /* Gold color */
+  border: 1px solid #E6B33C;
+  padding: 12px 15px;
+  border-radius: 8px;
+  text-align: center;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.connect-wallet {
+  background-color: transparent;
+  cursor: pointer;
+}
+
+
 /* Main Content Styling */
 main {
   padding-top: 60%; /* Space for fixed header */
