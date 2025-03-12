@@ -1,0 +1,275 @@
+/* General Reset and Setup */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Press Start 2P', sans-serif;
+    background-color: #000;
+    color: #f8f8f8;
+    line-height: 1.6;
+    font-size: 14px;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  /* Header Styles */
+  header {
+    background-color: #000;
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .logo {
+    width: 5em;
+    height: auto;
+    border: 1px solid rgb(133, 133, 133);
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between; /* Space out logo and nav */
+    align-items: center; /* Center vertically */
+    padding: 0 60px;
+    max-width: 100%;
+    text-align: center;
+  }
+  
+  /* Navigation Styles */
+  nav ul.nav-list {
+    list-style-type: none;
+    display: flex; /* Flex container for items */
+    justify-content: center; /* Align items in the center */
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav ul.nav-list li {
+    margin: 0 15px; /* Space between nav items */
+  }
+  
+  nav ul.nav-list li a {
+    color: #E6B33C; /* Gold color for text */
+    font-size: 16px; /* Font size for links */
+    font-weight: bold; /* Bold font weight */
+    text-decoration: none; /* Remove underline from links */
+    display: flex; /* Align icon and text inline */
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    padding: 12px; /* Padding for each link */
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+  }
+  
+  /* Icon styling inside nav */
+  nav ul.nav-list li a i {
+    font-size: 18px; /* Adjust icon size */
+  }
+
+  /* User Info and Wallet Button Styling */
+
+.username {
+    font-size: 18px;
+    font-family: 'Press Start 2P', sans-serif;
+    font-weight: bold;
+    color: #E6B33C; /* Gold color */
+    text-align: center;
+  }
+  
+  /* Recruitment Module */
+  .invite-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 15px;
+    padding-top: 0%;
+  }
+  
+  .invite-card {
+    background: #000;
+    border: 2px solid #E6B33C;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 10px 0;
+    box-shadow: 0 0 10px rgba(230, 179, 60, 0.2);
+  }
+  
+  .invite-header {
+    text-align: center;
+    margin-bottom: 1.3rem;
+    padding: 10px;
+    border-bottom: 2px solid #E6B33C;
+  }
+  
+  .invite-header h2 {
+    color: #E6B33C;
+    font-size: 20px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .invite-header p {
+    color: #E6B33C;
+    font-size: 10px;
+  }
+  
+  .share-link-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 1.5rem 0;
+  }
+  
+  .bot-link {
+    color: #E6B33C;
+    font-size: 10px;
+    word-break: break-all;
+    padding: 10px;
+    border: 1px solid #E6B33C;
+    text-align: center;
+  }
+  
+  .copy-button {
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 12px;
+    color: #E6B33C;
+    border: 2px solid #E6B33C;
+    padding: 12px;
+    background: #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 auto;
+  }
+  
+  .copy-button:hover {
+    background: #E6B33C;
+    color: #000;
+  }
+  
+  .share-buttons {
+    margin: 2rem 0;
+  }
+  
+  .share-buttons {
+    margin: 2rem 0;
+    text-align: center;
+  }
+  
+  .cta-button {
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 12px;
+    color: #E6B33C;
+    border: 2px solid #E6B33C;
+    padding: 12px 20px;
+    background: #000;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    background: #E6B33C;
+    color: #000;
+    transform: translateY(-2px);
+  }
+  
+  .telegram-button {
+    background: #000;
+    color: #E6B33C;
+    border-color: #E6B33C;
+  }
+  
+  .telegram-button:hover {
+    background: #E6B33C;
+    color: #000;
+  }
+  
+  .tg-icon {
+    font-size: 14px;
+    color: inherit;
+  }
+
+  /* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .invite-container {
+      padding-top: 30%;
+    }
+  
+    .invite-header h2 {
+      font-size: 18px;
+    }
+  
+    .copy-button,
+    .social-button {
+      font-size: 10px;
+      padding: 10px;
+    }
+  
+    .stat-number {
+      font-size: 14px;
+    }
+  }
+
+  .connect-wallet {
+    font-size: 14px;
+    font-family: 'Press Start 2P', sans-serif;
+    font-weight: bold;
+    color: #E6B33C; /* Gold color */
+    border: 1px solid #E6B33C;
+    padding: 12px 15px;
+    text-align: center;
+    width: 100%;
+    margin-top: 30px;
+  }
+  
+  .connect-wallet {
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  /* Main Content Styling */
+main {
+    padding-top: 80%; /* Space for fixed header */
+    padding-bottom: 20%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Responsive Adjustments for Mobile */
+@media (max-width: 768px) {
+    .stat-card {
+      width: 100%; /* Ensure cards take full width on smaller screens */
+      margin: 10px 0;
+    }
+  
+    nav ul.nav-list {
+      flex-direction: column;
+    }
+  
+    nav ul.nav-list li a {
+      font-size: 14px;
+      padding: 10px 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    body {
+      font-size: 12px; /* Further decrease font size for very small screens */
+    }
+  
+    .stat-card h3 {
+      font-size: 14px;
+    }
+  
+    .stat-card p {
+      font-size: 16px;
+    }
+  }
+  
