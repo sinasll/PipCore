@@ -60,8 +60,14 @@
     <main>
         <div class="user-info">
             <p id="username" class="username">@username</p>
-            <p class="soon">expect more in here . . .</p>
-        </div>
+        </div> 
+         <!-- Share Button -->
+    <div class="share-container">
+      <button id="share-button" class="share-button">
+       share PipCore with friends
+      </button>
+      <p class="invited-frns">Invited friends: <span id="invite-count">0</span></p>
+    </div> 
     </main>
 
     <script>
@@ -71,16 +77,44 @@
         });
     </script>
     
-<script>
-    // Ensure Telegram WebApp is available
+    <script>
+ document.addEventListener("DOMContentLoaded", function () {
     let tg = window.Telegram.WebApp;
-    
-    // Get the Telegram username
+    let inviteCountElem = document.getElementById("invite-count");
+    let shareButton = document.getElementById("share-button");
+
+    // Load invite count from localStorage
+    let invites = localStorage.getItem("invites") || 0;
+    inviteCountElem.textContent = invites;
+
+    // Get Telegram username
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
         let username = tg.initDataUnsafe.user.username || "Unknown";
         document.getElementById("username").textContent = "@" + username;
     } else {
         document.getElementById("username").textContent = "@guest";
     }
-</script>
+
+    // Share button logic
+    shareButton.addEventListener("click", function () {
+        if (tg) {
+            tg.showShareTgMenu({
+                url: "https://t.me/pipcorebot?start=" + (tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "guest"),
+                text: "Join PipCore and track your trading journey!",
+            });
+            trackInvite();
+        } else {
+            alert("Sharing is only available in the Telegram Mini App.");
+        }
+    });
+
+    // Function to track invites
+    function trackInvite() {
+        let invites = localStorage.getItem("invites") || 0;
+        invites = parseInt(invites) + 1;
+        localStorage.setItem("invites", invites);
+        inviteCountElem.textContent = invites;
+    }
+});
+    </script>
   </body>
