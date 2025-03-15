@@ -2,22 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
- <script src="https://telegram.org/js/telegram-web-app.js"></script>
-   <title>PipCore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <title>PipCore</title>
   <link href="profile.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://unpkg.com/@tonconnect/ui@2.0.3-beta.0/dist/tonconnect-ui.min.js"></script>
-<script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+  <script src="https://unpkg.com/@tonconnect/ui@2.0.3-beta.0/dist/tonconnect-ui.min.js"></script>
+  <script>
     console.log(window.telegramAnalytics);
     window.telegramAnalytics.init({
-        token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=',
-        appName: 'PipCore',
-    })
-</script>
+      token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=',
+      appName: 'PipCore',
+    });
+  </script>
 </head>
 
 <body>
@@ -56,68 +54,109 @@
     </div>
   </header>
 
-<main>
- <!-- User Info Section -->
- <div class="user-info">
- <p id="username" class="username">@username</p>
- </div>
- 
- <!-- Invite Friends Section -->
- <div class="invite-container">
- <div class="invite-card">
- <!-- Invite Header -->
- <div class="invite-header">
- <h2>Invite Traders</h2>
- </div>
- 
- <!-- Invite Content -->
- <div class="invite-content">
- <!-- Share Buttons -->
- <div class="share-buttons">
-   <a href="https://t.me/share/url?url=https://t.me/pipcorebot?profile&text=Join%20PipCore%20and%20track%20your%20trading%20journey!%20PipCore%20is%20all%20you%20need." 
-      class="cta-button telegram-button">
-       share PipCore
-   </a>
- </div>
- <!-- Share Link Box -->
- <div class="share-link-box">
- <button class="copy-button" onclick="copyToClipboard()">Copy Link</button>
- </div>
- </div>
- </div>
- </div>
- </main>
-  
-    <script>
-        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://<https://t.me/pipcorebot?profile>/tonconnect-manifest.json',
-            buttonRootId: 'PipCore'
-        });
-    </script>
+  <main>
+    <!-- User Info Section -->
+    <div class="user-info">
+      <p id="username" class="username">@username</p>
+    </div>
     
-<script>
-    // Ensure Telegram WebApp is available
-    let tg = window.Telegram.WebApp;
-    
-    // Get the Telegram username
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        let username = tg.initDataUnsafe.user.username || "Unknown";
-        document.getElementById("username").textContent = "@" + username;
-    } else {
-        document.getElementById("username").textContent = "@guest";
-    }
-</script>
+    <!-- Invite Friends Section -->
+    <div class="invite-container">
+      <div class="invite-card">
+        <!-- Invite Header -->
+        <div class="invite-header">
+          <h2>Invite Traders</h2>
+        </div>
+        
+        <!-- Invite Content -->
+        <div class="invite-content">
+          <!-- Share Buttons -->
+          <div class="share-buttons">
+            <a id="share-link" class="cta-button telegram-button">
+              Share PipCore
+            </a>
+          </div>
+          <!-- Share Link Box -->
+          <div class="share-link-box">
+            <button class="copy-button" onclick="copyToClipboard()">Copy Link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-<script>
-  function copyToClipboard() {
+  <script>
+    // Initialize Telegram WebApp
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    // Airtable Configuration
+    const AIRTABLE_API_KEY = 'pat4j4nJdodDzevV4.be77ea38070428062368f46de1b1036c7d95de7fdb79551bc26ebb58cef6331d'; // Replace with your Airtable API key
+    const AIRTABLE_BASE_ID = 'appQdTlxa9YXFw6Lj'; // Your Airtable Base ID
+    const AIRTABLE_TABLE_NAME = 'Users'; // Replace with your Airtable table name
+
+    // Function to add user to Airtable
+    const addUserToAirtable = async (telegramId, username, walletAddress, referrer) => {
+      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`;
+      const data = {
+        fields: {
+          'Telegram ID': telegramId,
+          'Username': username,
+          'Wallet Address': walletAddress,
+          'Join Date': new Date().toISOString(),
+          'Referrer': referrer,
+        },
+      };
+
+      console.log('Sending data to Airtable:', data); // Debug log
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`Failed to add user to Airtable: ${errorData.error.message}`);
+        }
+
+        const result = await response.json();
+        console.log('User added to Airtable:', result); // Debug log
+      } catch (error) {
+        console.error('Error adding user to Airtable:', error);
+      }
+    };
+
+    // Get Telegram user data
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const user = tg.initDataUnsafe.user;
+      const telegramId = user.id;
+      const username = user.username || 'Unknown';
+      const referrer = new URLSearchParams(window.location.search).get('ref') || 'None';
+
+      // Update username in the UI
+      document.getElementById('username').textContent = `@${username}`;
+
+      // Add user to Airtable
+      addUserToAirtable(telegramId, username, '', referrer); // Wallet address can be updated later
+    } else {
+      document.getElementById('username').textContent = '@guest';
+    }
+
+    // Copy to clipboard function
+    function copyToClipboard() {
       const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot?profile";
       navigator.clipboard.writeText(message).then(() => {
-          alert("Message and link copied to clipboard!");
+        alert('Message and link copied to clipboard!');
       }).catch(err => {
-          console.error('Failed to copy:', err);
+        console.error('Failed to copy:', err);
       });
-  }
+    }
   </script>
-
-  </body>
+</body>
 </html>
