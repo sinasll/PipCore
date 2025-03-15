@@ -2,122 +2,122 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
- <script src="https://telegram.org/js/telegram-web-app.js"></script>
-   <title>PipCore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <title>PipCore</title>
   <link href="profile.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://unpkg.com/@tonconnect/ui@2.0.3-beta.0/dist/tonconnect-ui.min.js"></script>
-<script>
-    console.log(window.telegramAnalytics);
-    window.telegramAnalytics.init({
-        token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=',
-        appName: 'PipCore',
-    })
-</script>
-</head>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://unpkg.com/@tonconnect/ui@2.0.3-beta.0/dist/tonconnect-ui.min.js"></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAnalytics, logEvent, setUserProperties } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
 
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAzXSCn_QL2XeyRZD71By443sl4wOtXf2Y",
+      authDomain: "pipcore-8844f.firebaseapp.com",
+      projectId: "pipcore-8844f",
+      storageBucket: "pipcore-8844f.firebasestorage.app",
+      messagingSenderId: "921115337984",
+      appId: "1:921115337984:web:17161651342ad78017bfe5",
+      measurementId: "G-RKL37B0B7N"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    // Log a page view event
+    logEvent(analytics, 'page_view', {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: window.location.pathname
+    });
+
+    // Ensure Telegram WebApp is available
+    let tg = window.Telegram.WebApp;
+
+    // Get the Telegram username
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        let username = tg.initDataUnsafe.user.username || "Unknown";
+        document.getElementById("username").textContent = "@" + username;
+
+        // Set user property in Firebase Analytics
+        setUserProperties(analytics, {
+          telegram_username: username
+        });
+    } else {
+        document.getElementById("username").textContent = "@guest";
+        setUserProperties(analytics, {
+          telegram_username: "guest"
+        });
+    }
+
+    function copyToClipboard() {
+        const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot?profile";
+        navigator.clipboard.writeText(message).then(() => {
+            alert("Message and link copied to clipboard!");
+
+            // Log the event to Firebase Analytics
+            logEvent(analytics, 'invite_friends', {
+              method: 'copy_link',
+              message: message
+            });
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+        });
+    }
+
+    // Track when the "Share PipCore" button is clicked
+    document.querySelector('.telegram-button').addEventListener('click', () => {
+        logEvent(analytics, 'invite_friends', {
+          method: 'telegram_share'
+        });
+    });
+  </script>
+</head>
 <body>
   <header>
     <div class="header-container">
       <img src="logo.PNG" alt="PipCore logo" class="logo">
       <nav>
         <ul class="nav-list">
-          <li>
-            <a href="profile.html">
-              <i class="fas fa-user"></i> Profile
-            </a>
-          </li>          
-          <li>
-            <a href="dashboard.html">
-              <i class="fas fa-tachometer-alt"></i> Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="journal.html">
-              <i class="fas fa-book"></i> Journal
-            </a>
-          </li>
-          <li>
-            <a href="calendar.html">
-              <i class="fas fa-calendar-alt"></i> Calendar
-            </a>
-          </li>
-          <li>
-            <a href="about.html">
-              <i class="fas fa-info-circle"></i> About
-            </a>
-          </li>
+          <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+          <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          <li><a href="journal.html"><i class="fas fa-book"></i> Journal</a></li>
+          <li><a href="calendar.html"><i class="fas fa-calendar-alt"></i> Calendar</a></li>
+          <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-<main>
- <!-- User Info Section -->
- <div class="user-info">
- <p id="username" class="username">@username</p>
- </div>
- 
- <!-- Invite Friends Section -->
- <div class="invite-container">
- <div class="invite-card">
- <!-- Invite Header -->
- <div class="invite-header">
- <h2>Invite Traders</h2>
- </div>
- 
- <!-- Invite Content -->
- <div class="invite-content">
- <!-- Share Buttons -->
- <div class="share-buttons">
-   <a href="https://t.me/share/url?url=https://t.me/pipcorebot?profile&text=Join%20PipCore%20and%20track%20your%20trading%20journey!%20PipCore%20is%20all%20you%20need." 
-      class="cta-button telegram-button">
-       share PipCore
-   </a>
- </div>
- <!-- Share Link Box -->
- <div class="share-link-box">
- <button class="copy-button" onclick="copyToClipboard()">Copy Link</button>
- </div>
- </div>
- </div>
- </div>
- </main>
-  
-    <script>
-        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://<https://t.me/pipcorebot?profile>/tonconnect-manifest.json',
-            buttonRootId: 'PipCore'
-        });
-    </script>
-    
-<script>
-    // Ensure Telegram WebApp is available
-    let tg = window.Telegram.WebApp;
-    
-    // Get the Telegram username
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        let username = tg.initDataUnsafe.user.username || "Unknown";
-        document.getElementById("username").textContent = "@" + username;
-    } else {
-        document.getElementById("username").textContent = "@guest";
-    }
-</script>
+  <main>
+    <div class="user-info">
+      <p id="username" class="username">@username</p>
+    </div>
 
-<script>
-  function copyToClipboard() {
-      const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot?profile";
-      navigator.clipboard.writeText(message).then(() => {
-          alert("Message and link copied to clipboard!");
-      }).catch(err => {
-          console.error('Failed to copy:', err);
-      });
-  }
-  </script>
-
-  </body>
+    <div class="invite-container">
+      <div class="invite-card">
+        <div class="invite-header">
+          <h2>Invite Traders</h2>
+        </div>
+        <div class="invite-content">
+          <div class="share-buttons">
+            <a href="https://t.me/share/url?url=https://t.me/pipcorebot?profile&text=Join%20PipCore%20and%20track%20your%20trading%20journey!%20PipCore%20is%20all%20you%20need." 
+               class="cta-button telegram-button">
+               Share PipCore
+            </a>
+          </div>
+          <div class="share-link-box">
+            <button class="copy-button" onclick="copyToClipboard()">Copy Link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
 </html>
