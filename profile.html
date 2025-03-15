@@ -2,73 +2,100 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <title>PipCore</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <script src="https://telegram.org/js/telegram-web-app.js"></script>
+   <title>PipCore</title>
   <link href="profile.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@2.0.3-beta.0/dist/tonconnect-ui.min.js"></script>
+<script>
+    console.log(window.telegramAnalytics);
+    window.telegramAnalytics.init({
+        token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=',
+        appName: 'PipCore',
+    })
+</script>
 </head>
 
 <body>
   <header>
     <div class="header-container">
       <img src="logo.PNG" alt="PipCore logo" class="logo">
-      <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <nav class="nav-menu" id="nav-menu">
-        <h1 class="logotxt">PipCore</h1>
+      <nav>
         <ul class="nav-list">
-          <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
-          <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-          <li><a href="journal.html"><i class="fas fa-book"></i> Journal</a></li>
-          <li><a href="calendar.html"><i class="fas fa-calendar-alt"></i> Calendar</a></li>
-          <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+          <li>
+            <a href="profile.html">
+              <i class="fas fa-user"></i> Profile
+            </a>
+          </li>          
+          <li>
+            <a href="dashboard.html">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="journal.html">
+              <i class="fas fa-book"></i> Journal
+            </a>
+          </li>
+          <li>
+            <a href="calendar.html">
+              <i class="fas fa-calendar-alt"></i> Calendar
+            </a>
+          </li>
+          <li>
+            <a href="about.html">
+              <i class="fas fa-info-circle"></i> About
+            </a>
+          </li>
         </ul>
       </nav>
-      <button class="theme-toggle" id="theme-toggle">
-        <i class="fas fa-moon"></i> <!-- Default to dark mode icon -->
-      </button>
     </div>
   </header>
 
-  <main>
-    <!-- User Info Section -->
-    <div class="user-info">
-      <p id="username" class="username">@username</p>
-    </div>
+<main>
+<!-- User Info Section -->
+<div class="user-info">
+<p id="username" class="username">@username</p>
+</div>
 
-    <!-- Invite Friends Section -->
-    <div class="invite-container">
-      <div class="invite-card">
-        <!-- Invite Header -->
-        <div class="invite-header">
-          <h2>Invite Traders</h2>
-        </div>
+<!-- Invite Friends Section -->
+<div class="invite-container">
+<div class="invite-card">
+<!-- Invite Header -->
+<div class="invite-header">
+<h2>Invite Traders</h2>
+</div>
 
-        <!-- Invite Content -->
-        <div class="invite-content">
-          <!-- Share Buttons -->
-          <div class="share-buttons">
-            <a href="https://t.me/share/url?url=https://t.me/pipcorebot?profile&text=Join%20PipCore%20and%20track%20your%20trading%20journey!%20PipCore%20is%20all%20you%20need." 
-               class="cta-button telegram-button">
-                share PipCore
-            </a>
-          </div>
-          <!-- Share Link Box -->
-          <div class="share-link-box">
-            <button class="copy-button" onclick="copyToClipboard()">Copy Link</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <script>
+<!-- Invite Content -->
+<div class="invite-content">
+<!-- Share Buttons -->
+<div class="share-buttons">
+  <a href="https://t.me/pipcorebot" 
+     class="cta-button telegram-button">
+      share PipCore
+  </a>
+</div>
+<!-- Share Link Box -->
+<div class="share-link-box">
+<button class="copy-button" onclick="copyToClipboard()">Copy Link</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+  
+    <script>
+        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://<https://t.me/pipcorebot?profile>/tonconnect-manifest.json',
+            buttonRootId: 'PipCore'
+        });
+    </script>
+    
+<script>
     // Ensure Telegram WebApp is available
     let tg = window.Telegram.WebApp;
     
@@ -79,77 +106,18 @@
     } else {
         document.getElementById("username").textContent = "@guest";
     }
-  </script>
+</script>
 
-  <script>
-    function copyToClipboard() {
-        const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot?profile";
-        navigator.clipboard.writeText(message).then(() => {
-            alert("Message and link copied to clipboard!");
-        }).catch(err => {
-            console.error('Failed to copy:', err);
-        });
-    }
-  </script>
-
-  <script>
-    // Hamburger menu functionality
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('nav-menu');
-
-    hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        hamburger.classList.toggle('active');
-    });
-
-    // Add active class to the clicked navigation item
-    const navLinks = document.querySelectorAll('.nav-list li a');
-
-    navLinks.forEach(link => {
-      link.addEventListener('click', function (e) {
-        // Remove active class from all links
-        navLinks.forEach(link => link.classList.remove('active'));
-        // Add active class to the clicked link
-        this.classList.add('active');
+<script>
+  function copyToClipboard() {
+      const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot?profile";
+      navigator.clipboard.writeText(message).then(() => {
+          alert("Message and link copied to clipboard!");
+      }).catch(err => {
+          console.error('Failed to copy:', err);
       });
-    });
-
-    // Set active class based on current page
-    const currentPage = window.location.pathname.split('/').pop() || 'profile.html'; // Default to profile.html
-    navLinks.forEach(link => {
-      if (link.getAttribute('href') === currentPage) {
-        link.classList.add('active');
-      }
-    });
+  }
   </script>
 
-  <script>
-    // Theme Toggle Functionality
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
-
-// Check for saved theme in localStorage
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-  body.setAttribute('data-theme', savedTheme);
-  updateToggleIcon(savedTheme);
-} else {
-  body.setAttribute('data-theme', 'dark'); // Default to dark mode
-}
-
-themeToggle.addEventListener('click', () => {
-  const currentTheme = body.getAttribute('data-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  body.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
-  updateToggleIcon(newTheme);
-});
-
-function updateToggleIcon(theme) {
-  const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
-  themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
-}
-  </script>
-  
-</body>
+  </body>
 </html>
