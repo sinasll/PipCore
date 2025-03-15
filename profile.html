@@ -93,53 +93,55 @@
   </main>
 
   <script>
-    // Firebase Initialization
-    const firebaseConfig = {
-      apiKey: "AIzaSyAzXSCn_QL2XeyRZD71By443sl4wOtXf2Y",
-      authDomain: "pipcore-8844f.firebaseapp.com",
-      projectId: "pipcore-8844f",
-      storageBucket: "pipcore-8844f.appspot.com",
-      messagingSenderId: "921115337984",
-      appId: "1:921115337984:web:17161651342ad78017bfe5",
-      measurementId: "G-RKL37B0B7N"
-    };
+    // Wait for the DOM to load
+    document.addEventListener("DOMContentLoaded", () => {
+      // Ensure Telegram WebApp is available
+      let tg = window.Telegram.WebApp;
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    const analytics = firebase.analytics();
+      // Get the Telegram username
+      let username = "guest";
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        username = tg.initDataUnsafe.user.username || "Unknown";
+        document.getElementById("username").textContent = "@" + username;
+      } else {
+        document.getElementById("username").textContent = "@guest";
+      }
 
-    // Ensure Telegram WebApp is available
-    let tg = window.Telegram.WebApp;
+      // Firebase Initialization
+      const firebaseConfig = {
+        apiKey: "AIzaSyAzXSCn_QL2XeyRZD71By443sl4wOtXf2Y",
+        authDomain: "pipcore-8844f.firebaseapp.com",
+        projectId: "pipcore-8844f",
+        storageBucket: "pipcore-8844f.appspot.com",
+        messagingSenderId: "921115337984",
+        appId: "1:921115337984:web:17161651342ad78017bfe5",
+        measurementId: "G-RKL37B0B7N"
+      };
 
-    // Get the Telegram username
-    let username = "guest";
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      username = tg.initDataUnsafe.user.username || "Unknown";
-      document.getElementById("username").textContent = "@" + username;
-    } else {
-      document.getElementById("username").textContent = "@guest";
-    }
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const analytics = firebase.analytics();
 
-    // Track username with Firebase Analytics
-    analytics.logEvent('user_visited', {
-      username: username
-    });
-
-    // Store username in Firestore
-    if (username !== "guest") {
-      db.collection("users").doc(username).set({
-        username: username,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      })
-      .then(() => {
-        console.log("Username stored in Firestore successfully!");
-      })
-      .catch((error) => {
-        console.error("Error storing username in Firestore:", error);
+      // Track username with Firebase Analytics
+      analytics.logEvent('user_visited', {
+        username: username
       });
-    }
+
+      // Store username in Firestore
+      if (username !== "guest") {
+        const db = firebase.firestore();
+        db.collection("users").doc(username).set({
+          username: username,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(() => {
+          console.log("Username stored in Firestore successfully!");
+        })
+        .catch((error) => {
+          console.error("Error storing username in Firestore:", error);
+        });
+      }
+    });
 
     // Copy to Clipboard Function
     function copyToClipboard() {
