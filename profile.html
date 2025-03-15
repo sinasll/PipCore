@@ -13,7 +13,7 @@
   <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAnalytics, logEvent, setUserProperties } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+    import { getAnalytics, logEvent, setUserProperties, setDebugModeEnabled } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -29,6 +29,7 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    setDebugModeEnabled(true); // Enable DebugView
 
     // Log a page view event
     logEvent(analytics, 'page_view', {
