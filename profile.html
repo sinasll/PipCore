@@ -111,13 +111,12 @@ e<!DOCTYPE html>
 <script>
   function copyToClipboard() {
       const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot"; // link
-      navigator.clipboard.writeText(message).then(() => {
-          alert("Message and link copied to clipboard!");
-      }).catch(err => {
+      navigator.clipboard.writeText(message).catch(err => {
           console.error('Failed to copy:', err);
       });
   }
 </script>
+
 
   </body>
 </html>
