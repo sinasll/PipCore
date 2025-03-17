@@ -80,12 +80,13 @@
 // Telegram WebApp initialization
 let tg = window.Telegram.WebApp;
 
-// Initialize Analytics (THIS IS THE CRITICAL PART)
-if (typeof window.telegramAnalytics !== 'undefined') {
-  window.telegramAnalytics.init();
-} else {
-  console.error('Telegram Analytics SDK not loaded!');
-}
+      // Initialize Analytics
+      if (typeof window.telegramAnalytics !== 'undefined') {
+        window.telegramAnalytics.init();
+        console.log('Telegram Analytics SDK initialized!');
+      } else {
+        console.error('Telegram Analytics SDK not loaded!');
+      }
 
 // Rest of your existing code
 if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
