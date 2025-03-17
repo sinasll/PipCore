@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html 
+  lang="en" 
+  data-telegram-analytics
+  data-token="eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs="
+  data-app-name="PipCore"
+>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
   <title>PipCore</title>
 
   <!-- Styles & Fonts -->
@@ -12,27 +16,18 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
 
   <!-- Telegram Analytics SDK -->
-   <script>
-      function initAnalytics() {
-        window.telegramAnalytics.init({
-          token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=', // <-- put your token from @DataChief_bot
-          appName: 'PipCore',
-        });
-      }
-  </script>
   <script 
-      async 
-      src="https://tganalytics.xyz/index.js" 
-      onload="initAnalytics()" 
-      type="text/javascript"
+    async 
+    src="https://tganalytics.xyz/sdk.js" 
+    type="text/javascript"
   ></script>
- 
+
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
-
+  <!-- Rest of your body remains exactly the same -->
   <header>
     <div class="header-container">
       <img src="logo.PNG" alt="PipCore logo" class="logo">
@@ -52,7 +47,7 @@
         </ul>
       </nav>
       <button class="theme-toggle" id="theme-toggle">
-        <i class="fas fa-moon"></i> <!-- Default to dark mode icon -->
+        <i class="fas fa-moon"></i>
       </button>
     </div>
   </header>
@@ -80,83 +75,67 @@
     </div>
   </main>
 
+  <!-- Scripts -->
   <script>
-      let tg = window.Telegram.WebApp;
-      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-          let username = tg.initDataUnsafe.user.username || "Unknown";
-          document.getElementById("username").textContent = "@" + username;
-      } else {
-          document.getElementById("username").textContent = "@guest";
-      }
-  </script>
+// Telegram WebApp initialization
+let tg = window.Telegram.WebApp;
 
-  <script>
+// Initialize Analytics (THIS IS THE CRITICAL PART)
+if (typeof window.telegramAnalytics !== 'undefined') {
+  window.telegramAnalytics.init();
+}
+
+// Rest of your existing code
+if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+  let username = tg.initDataUnsafe.user.username || "Unknown";
+  document.getElementById("username").textContent = "@" + username;
+} else {
+  document.getElementById("username").textContent = "@guest";
+}
+
+    // Clipboard function
     function copyToClipboard() {
-        const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot";
-        navigator.clipboard.writeText(message).catch(err => {
-            console.error('Failed to copy:', err);
-        });
+      const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot";
+      navigator.clipboard.writeText(message).catch(err => {
+        console.error('Failed to copy:', err);
+      });
     }
-  </script>
 
-<script>
-  // Hamburger menu functionality
-  const hamburger = document.getElementById('hamburger');
-  const navMenu = document.getElementById('nav-menu');
-
-  hamburger.addEventListener('click', () => {
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    hamburger.addEventListener('click', () => {
       navMenu.classList.toggle('active');
       hamburger.classList.toggle('active');
-  });
-
-  // Add active class to the clicked navigation item
-  const navLinks = document.querySelectorAll('.nav-list li a');
-
-  navLinks.forEach(link => {
-    link.addEventListener('click', function (e) {
-      // Remove active class from all links
-      navLinks.forEach(link => link.classList.remove('active'));
-      // Add active class to the clicked link
-      this.classList.add('active');
     });
-  });
 
-  // Set active class based on current page
-  const currentPage = window.location.pathname.split('/').pop() || 'profile.html'; // Default to profile.html
-  navLinks.forEach(link => {
-    if (link.getAttribute('href') === currentPage) {
-      link.classList.add('active');
-    }
-  });
-</script>
+    // Navigation active state
+    const navLinks = document.querySelectorAll('.nav-list li a');
+    const currentPage = window.location.pathname.split('/').pop() || 'profile.html';
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        this.classList.add('active');
+      });
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
+    });
 
-<script>
-  // Theme Toggle Functionality
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    body.setAttribute('data-theme', savedTheme);
+    themeToggle.innerHTML = `<i class="fas ${savedTheme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>`;
 
-// Check for saved theme in localStorage
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-body.setAttribute('data-theme', savedTheme);
-updateToggleIcon(savedTheme);
-} else {
-body.setAttribute('data-theme', 'dark'); // Default to dark mode
-}
-
-themeToggle.addEventListener('click', () => {
-const currentTheme = body.getAttribute('data-theme');
-const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-body.setAttribute('data-theme', newTheme);
-localStorage.setItem('theme', newTheme);
-updateToggleIcon(newTheme);
-});
-
-function updateToggleIcon(theme) {
-const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
-themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
-}
-</script>
-
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.innerHTML = `<i class="fas ${newTheme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>`;
+    });
+  </script>
 </body>
 </html>
