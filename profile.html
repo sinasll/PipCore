@@ -83,6 +83,8 @@ let tg = window.Telegram.WebApp;
 // Initialize Analytics (THIS IS THE CRITICAL PART)
 if (typeof window.telegramAnalytics !== 'undefined') {
   window.telegramAnalytics.init();
+} else {
+  console.error('Telegram Analytics SDK not loaded!');
 }
 
 // Rest of your existing code
