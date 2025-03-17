@@ -1,3 +1,4 @@
+// Add event listener for form submission
 document.getElementById('tradeForm').addEventListener('submit', function (e) {
   e.preventDefault();
 
@@ -111,67 +112,68 @@ function toggleCardDetails(card, button) {
   }
 }
 
+// Function to delete a trade
 function deleteTrade(index) {
   // Check if modal already exists, remove it
-  let existingModal = document.getElementById("deleteModal");
+  let existingModal = document.getElementById('deleteModal');
   if (existingModal) {
     existingModal.remove();
   }
 
   // Create modal container
-  let modal = document.createElement("div");
-  modal.id = "deleteModal";
-  modal.style.position = "fixed";
-  modal.style.top = "0";
-  modal.style.left = "0";
-  modal.style.width = "100%";
-  modal.style.height = "100%";
-  modal.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
-  modal.style.display = "flex";
-  modal.style.alignItems = "center";
-  modal.style.justifyContent = "center";
-  modal.style.zIndex = "1001";
-  modal.style.fontSize = "10px";
+  let modal = document.createElement('div');
+  modal.id = 'deleteModal';
+  modal.style.position = 'fixed';
+  modal.style.top = '0';
+  modal.style.left = '0';
+  modal.style.width = '100%';
+  modal.style.height = '100%';
+  modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+  modal.style.display = 'flex';
+  modal.style.alignItems = 'center';
+  modal.style.justifyContent = 'center';
+  modal.style.zIndex = '1001';
+  modal.style.fontSize = '10px';
 
   // Create modal content
-  let modalContent = document.createElement("div");
-  modalContent.style.backgroundColor = "#000";
-  modalContent.style.color = "#E6B33C";
-  modalContent.style.border = "2px solid #E6B33C";
-  modalContent.style.padding = "20px";
-  modalContent.style.textAlign = "center";
+  let modalContent = document.createElement('div');
+  modalContent.style.backgroundColor = '#000';
+  modalContent.style.color = '#E6B33C';
+  modalContent.style.border = '2px solid #E6B33C';
+  modalContent.style.padding = '20px';
+  modalContent.style.textAlign = 'center';
   modalContent.style.fontFamily = "'Press Start 2P', sans-serif";
-  modalContent.style.maxWidth = "300px";
-  modalContent.style.borderRadius = "10px";
+  modalContent.style.maxWidth = '300px';
+  modalContent.style.borderRadius = '10px';
 
   // Create confirmation text
-  let text = document.createElement("p");
-  text.textContent = "ARE YOU SURE TO DELETE?";
+  let text = document.createElement('p');
+  text.textContent = 'ARE YOU SURE TO DELETE?';
   modalContent.appendChild(text);
 
   // Create Yes button
-  let confirmBtn = document.createElement("button");
-  confirmBtn.textContent = "YES";
-  confirmBtn.style.backgroundColor = "#E6B33C";
-  confirmBtn.style.color = "#000";
-  confirmBtn.style.border = "none";
-  confirmBtn.style.padding = "10px 20px";
-  confirmBtn.style.cursor = "pointer";
-  confirmBtn.style.fontSize = "10px";
-  confirmBtn.style.margin = "10px";
+  let confirmBtn = document.createElement('button');
+  confirmBtn.textContent = 'YES';
+  confirmBtn.style.backgroundColor = '#E6B33C';
+  confirmBtn.style.color = '#000';
+  confirmBtn.style.border = 'none';
+  confirmBtn.style.padding = '10px 20px';
+  confirmBtn.style.cursor = 'pointer';
+  confirmBtn.style.fontSize = '10px';
+  confirmBtn.style.margin = '10px';
   confirmBtn.style.fontFamily = "'Press Start 2P', sans-serif";
   confirmBtn.onclick = function () {
     // Retrieve existing trades from localStorage
-    const tradeEntries = JSON.parse(localStorage.getItem("tradeEntries")) || [];
+    const tradeEntries = JSON.parse(localStorage.getItem('tradeEntries')) || [];
 
     // Remove the trade at the specified index
     tradeEntries.splice(index, 1);
 
     // Save the updated trade entries back to localStorage
-    localStorage.setItem("tradeEntries", JSON.stringify(tradeEntries));
+    localStorage.setItem('tradeEntries', JSON.stringify(tradeEntries));
 
     // Reload the trades to update the card list
-    document.getElementById("tradesList").innerHTML = "";
+    document.getElementById('tradesList').innerHTML = '';
     loadTrades();
 
     // Remove modal
@@ -179,15 +181,15 @@ function deleteTrade(index) {
   };
 
   // Create No button
-  let cancelBtn = document.createElement("button");
-  cancelBtn.textContent = "NO";
-  cancelBtn.style.backgroundColor = "#E6B33C";
-  cancelBtn.style.color = "#000";
-  cancelBtn.style.border = "none";
-  cancelBtn.style.padding = "10px 20px";
-  cancelBtn.style.cursor = "pointer";
-  cancelBtn.style.fontSize = "10px";
-  cancelBtn.style.margin = "10px";
+  let cancelBtn = document.createElement('button');
+  cancelBtn.textContent = 'NO';
+  cancelBtn.style.backgroundColor = '#E6B33C';
+  cancelBtn.style.color = '#000';
+  cancelBtn.style.border = 'none';
+  cancelBtn.style.padding = '10px 20px';
+  cancelBtn.style.cursor = 'pointer';
+  cancelBtn.style.fontSize = '10px';
+  cancelBtn.style.margin = '10px';
   cancelBtn.style.fontFamily = "'Press Start 2P', sans-serif";
   cancelBtn.onclick = function () {
     modal.remove();
@@ -204,7 +206,7 @@ function deleteTrade(index) {
 
 // Function to print trade details as PDF
 function printTradeAsPDF(trade) {
-  const { jsPDF } = window.jspdf;  // Initialize jsPDF
+  const { jsPDF } = window.jspdf; // Initialize jsPDF
 
   const doc = new jsPDF();
 
@@ -225,5 +227,77 @@ function printTradeAsPDF(trade) {
   doc.save(`trade-${trade.date}-${trade.time}.pdf`);
 }
 
+// Filter trades by date
+function filterTrades(filterType, customDate = null) {
+  const tradeEntries = JSON.parse(localStorage.getItem('tradeEntries')) || [];
+  const filteredTrades = tradeEntries.filter(trade => {
+    const tradeDate = new Date(`${trade.date}T${trade.time}`);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    // Calculate the start of the last 7 days (past week)
+    const lastWeek = new Date(today);
+    lastWeek.setDate(lastWeek.getDate() - 7);
+
+    // Calculate the start of the last 30 days (past month)
+    const lastMonth = new Date(today);
+    lastMonth.setDate(lastMonth.getDate() - 30);
+
+    switch (filterType) {
+      case 'today':
+        return tradeDate.toDateString() === today.toDateString();
+      case 'yesterday':
+        return tradeDate.toDateString() === yesterday.toDateString();
+      case 'lastWeek':
+        return tradeDate >= lastWeek && tradeDate <= today; // Past 7 days
+      case 'lastMonth':
+        return tradeDate >= lastMonth && tradeDate <= today; // Past 30 days
+      case 'custom':
+        return tradeDate.toDateString() === new Date(customDate).toDateString();
+      default:
+        return true; // Show all trades
+    }
+  });
+
+  // Clear the current trade list
+  document.getElementById('tradesList').innerHTML = '';
+
+  // Display filtered trades
+  filteredTrades.forEach((trade, index) => {
+    addTradeToCards(trade, index);
+  });
+}
+
+// Add event listener for filter changes
+document.getElementById('filter').addEventListener('change', function () {
+  const filterValue = this.value;
+  const customDateContainer = document.getElementById('customDateContainer');
+  const customDateInput = document.getElementById('customDate');
+
+  // Show/hide custom date input
+  if (filterValue === 'custom') {
+    customDateContainer.style.display = 'block';
+  } else {
+    customDateContainer.style.display = 'none';
+    filterTrades(filterValue);
+  }
+});
+
+// Add event listener for custom date changes
+document.getElementById('customDate').addEventListener('change', function () {
+  filterTrades('custom', this.value);
+});
+
+// Add event listener for clear filter button
+document.getElementById('clearFilter').addEventListener('click', function () {
+  document.getElementById('filter').value = 'all';
+  document.getElementById('customDateContainer').style.display = 'none';
+  filterTrades('all');
+});
+
 // Load trades when the page is loaded
-document.addEventListener('DOMContentLoaded', loadTrades);
+document.addEventListener('DOMContentLoaded', function () {
+  loadTrades();
+  document.getElementById('filter').dispatchEvent(new Event('change'));
+});

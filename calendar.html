@@ -14,35 +14,24 @@
   <header>
     <div class="header-container">
       <img src="logo.PNG" alt="PipCore logo" class="logo">
-      <nav>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav class="nav-menu" id="nav-menu">
+        <h1 class="logotxt">PipCore</h1>
         <ul class="nav-list">
-          <li>
-            <a href="profile.html">
-              <i class="fas fa-user"></i> Profile
-            </a>
-          </li>          
-          <li>
-            <a href="dashboard.html">
-              <i class="fas fa-tachometer-alt"></i> Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="journal.html">
-              <i class="fas fa-book"></i> Journal
-            </a>
-          </li>
-          <li>
-            <a href="calendar.html">
-              <i class="fas fa-calendar-alt"></i> Calendar
-            </a>
-          </li>
-          <li>
-            <a href="about.html">
-              <i class="fas fa-info-circle"></i> About
-            </a>
-          </li>
+          <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+          <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          <li><a href="journal.html"><i class="fas fa-book"></i> Journal</a></li>
+          <li><a href="calendar.html"><i class="fas fa-calendar-alt"></i> Calendar</a></li>
+          <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
         </ul>
       </nav>
+      <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i> <!-- Default to dark mode icon -->
+      </button>
     </div>
   </header>
   
@@ -68,6 +57,65 @@
       
     </div>
   </main>
+
+  <script>
+    // Hamburger menu functionality
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    });
+
+    // Add active class to the clicked navigation item
+    const navLinks = document.querySelectorAll('.nav-list li a');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', function (e) {
+        // Remove active class from all links
+        navLinks.forEach(link => link.classList.remove('active'));
+        // Add active class to the clicked link
+        this.classList.add('active');
+      });
+    });
+
+    // Set active class based on current page
+    const currentPage = window.location.pathname.split('/').pop() || 'profile.html'; // Default to profile.html
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
+    });
+  </script>
+
+<script>
+  // Theme Toggle Functionality
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Check for saved theme in localStorage
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+body.setAttribute('data-theme', savedTheme);
+updateToggleIcon(savedTheme);
+} else {
+body.setAttribute('data-theme', 'dark'); // Default to dark mode
+}
+
+themeToggle.addEventListener('click', () => {
+const currentTheme = body.getAttribute('data-theme');
+const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+body.setAttribute('data-theme', newTheme);
+localStorage.setItem('theme', newTheme);
+updateToggleIcon(newTheme);
+});
+
+function updateToggleIcon(theme) {
+const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
+themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
+}
+</script>
   
 </body>
 </html>

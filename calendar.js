@@ -62,10 +62,10 @@ const statGroups = [
     // Create group title and apply styles
     const groupTitle = document.createElement('h1');
     groupTitle.textContent = group.title;
-    groupTitle.style.color = '#E6B33C'; // Apply gold color
-    groupTitle.style.fontSize = '20px'; // Set font size
-    groupTitle.style.textAlign = 'center'; // Center align text
-    groupTitle.style.marginBottom = '10px'; // Margin bottom
+    groupTitle.style.color = 'var(--accent-color)';
+    groupTitle.style.fontSize = '20px'; 
+    groupTitle.style.textAlign = 'center'; 
+    groupTitle.style.marginBottom = '10px'; 
     statsContainer.appendChild(groupTitle);
 
     group.stats.forEach(stat => {

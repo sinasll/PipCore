@@ -1,275 +1,383 @@
 /* General Reset and Setup */
+:root {
+  /* Dark Mode Colors */
+  --background-color: #000;
+  --text-color: #E6B33C; /* Gold text in dark mode */
+  --accent-color: #E6B33C; /* Gold accents in dark mode */
+  --border-color: #E6B33C; /* Gold borders in dark mode */
+  --icon-color: #E6B33C; /* Gold icons in dark mode */
+}
+
+[data-theme="light"] {
+  /* Light Mode Colors (Opposite of Dark Mode) */
+  --background-color: #E6B33C; /* Gold background in light mode */
+  --text-color: #000; /* Black text in light mode */
+  --accent-color: #000; /* Black accents in light mode */
+  --border-color: #000; /* Black borders in light mode */
+  --icon-color: #000; /* Black icons in light mode */
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Press Start 2P', sans-serif;
-    background-color: #000;
-    color: #f8f8f8;
-    line-height: 1.6;
-    font-size: 14px;
-  }
-  
-  a {
-    text-decoration: none;
-  }
-  
-  /* Header Styles */
-  header {
-    background-color: #000;
-    padding: 20px 0;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  .logo {
-    width: 5em;
-    height: auto;
-    border: 1px solid rgb(133, 133, 133);
-  }
-  
-  .header-container {
-    display: flex;
-    justify-content: space-between; /* Space out logo and nav */
-    align-items: center; /* Center vertically */
-    padding: 0 60px;
-    max-width: 100%;
-    text-align: center;
-  }
-  
-  /* Navigation Styles */
-  nav ul.nav-list {
-    list-style-type: none;
-    display: flex; /* Flex container for items */
-    justify-content: center; /* Align items in the center */
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav ul.nav-list li {
-    margin: 0 15px; /* Space between nav items */
-  }
-  
-  nav ul.nav-list li a {
-    color: #E6B33C; /* Gold color for text */
-    font-size: 16px; /* Font size for links */
-    font-weight: bold; /* Bold font weight */
-    text-decoration: none; /* Remove underline from links */
-    display: flex; /* Align icon and text inline */
-    align-items: center;
-    gap: 8px; /* Space between icon and text */
-    padding: 12px; /* Padding for each link */
-    transition: color 0.3s ease; /* Smooth color transition on hover */
-  }
-  
-  /* Icon styling inside nav */
-  nav ul.nav-list li a i {
-    font-size: 18px; /* Adjust icon size */
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  /* User Info and Wallet Button Styling */
+body {
+  font-family: 'Press Start 2P', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-.username {
-    font-size: 18px;
-    font-family: 'Press Start 2P', sans-serif;
-    font-weight: bold;
-    color: #E6B33C; /* Gold color */
-    text-align: center;
-  }
-  
-  /* Recruitment Module */
-  .invite-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 0 15px;
-    padding-top: 0%;
-  }
-  
-  .invite-card {
-    background: #000;
-    border: 2px solid #E6B33C;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin: 10px 0;
-    box-shadow: 0 0 10px rgba(230, 179, 60, 0.2);
-  }
-  
-  .invite-header {
-    text-align: center;
-    margin-bottom: 1.3rem;
-    padding: 10px;
-    border-bottom: 2px solid #E6B33C;
-  }
-  
-  .invite-header h2 {
-    color: #E6B33C;
-    font-size: 20px;
-    margin-bottom: 0.5rem;
-  }
-  
-  .invite-header p {
-    color: #E6B33C;
-    font-size: 10px;
-  }
-  
-  .share-link-box {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin: 1.5rem 0;
-  }
-  
-  .bot-link {
-    color: #E6B33C;
-    font-size: 10px;
-    word-break: break-all;
-    padding: 10px;
-    border: 1px solid #E6B33C;
-    text-align: center;
-  }
-  
-  .copy-button {
-    font-family: 'Press Start 2P', sans-serif;
-    font-size: 12px;
-    color: #E6B33C;
-    border: 2px solid #E6B33C;
-    padding: 12px;
-    background: #000;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin: 0 auto;
-  }
-  
-  .copy-button:hover {
-    background: #E6B33C;
-    color: #000;
-  }
-  
-  .share-buttons {
-    margin: 2rem 0;
-  }
-  
-  .share-buttons {
-    margin: 2rem 0;
-    text-align: center;
-  }
-  
-  .cta-button {
-    font-family: 'Press Start 2P', sans-serif;
-    font-size: 12px;
-    color: #E6B33C;
-    border: 2px solid #E6B33C;
-    padding: 12px 20px;
-    background: #000;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .cta-button:hover {
-    background: #E6B33C;
-    color: #000;
-    transform: translateY(-2px);
-  }
-  
-  .telegram-button {
-    background: #000;
-    color: #E6B33C;
-    border-color: #E6B33C;
-  }
-  
-  .telegram-button:hover {
-    background: #E6B33C;
-    color: #000;
-  }
-  
-  .tg-icon {
-    font-size: 14px;
-    color: inherit;
-  }
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
 
-  /* Mobile Responsiveness */
+/* Header Styles */
+header {
+  background-color: var(--background-color);
+  padding: 20px 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+  width: 5em;
+  height: auto;
+  border: 1px solid var(--border-color);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  max-width: 100%;
+  text-align: center;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--text-color);
+  margin-left: 20px;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: var(--text-color);
+  margin: 4px 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+/* Navigation Styles */
+.nav-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-list {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list li {
+  margin: 0 15px;
+}
+
+.nav-list li a {
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  transition: color 0.3s ease;
+}
+
+.nav-list li a.active {
+  background-color: var(--accent-color);
+  color: var(--background-color);
+  padding: 12px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-list li a i {
+  font-size: 18px;
+  color: var(--icon-color);
+}
+
+/* Mobile Navigation */
 @media (max-width: 768px) {
-    .invite-container {
+  .hamburger {
+      display: flex;
+  }
+
+  .nav-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      height: 100vh;
+      background-color: var(--background-color);
+      border-left: 2px solid var(--border-color);
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: 0px;
+      transition: right 0.4s ease-in-out;
+      z-index: 1000;
+  }
+
+  .logotxt {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 20px;
+  }
+
+  .nav-menu.active {
+      right: 0;
+  }
+
+  .nav-list {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0 20px;
+  }
+
+  .nav-list li {
+      margin: 10px 0;
+  }
+
+  .nav-list li a {
+      justify-content: flex-start;
+      width: 100%;
+  }
+}
+
+.hamburger.active span {
+  opacity: 0; /* Hide all bars */
+  transition: opacity 0.3s ease;
+}
+
+/* User Info and Wallet Button Styling */
+.username {
+  font-size: 18px;
+  font-family: 'Press Start 2P', sans-serif;
+  font-weight: bold;
+  color: var(--text-color);
+  text-align: center;
+}
+
+/* Recruitment Module */
+.invite-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 15px;
+  padding-top: 0%;
+}
+
+.invite-card {
+  background: var(--background-color);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 10px 0;
+  box-shadow: 0 0 10px rgba(230, 179, 60, 0.2);
+}
+
+.invite-header {
+  text-align: center;
+  margin-bottom: 1.3rem;
+  padding: 10px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.invite-header h2 {
+  color: var(--text-color);
+  font-size: 20px;
+  margin-bottom: 0.5rem;
+}
+
+.invite-header p {
+  color: var(--text-color);
+  font-size: 10px;
+}
+
+.share-link-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 1.5rem 0;
+}
+
+.bot-link {
+  color: var(--text-color);
+  font-size: 10px;
+  word-break: break-all;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.copy-button {
+  font-family: 'Press Start 2P', sans-serif;
+  font-size: 12px;
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  padding: 12px;
+  background: var(--background-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0 auto;
+}
+
+.copy-button:hover {
+  background: var(--accent-color);
+  color: var(--background-color);
+}
+
+.share-buttons {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.cta-button {
+  font-family: 'Press Start 2P', sans-serif;
+  font-size: 12px;
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  padding: 12px 20px;
+  background: var(--background-color);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  background: var(--accent-color);
+  color: var(--background-color);
+  transform: translateY(-2px);
+}
+
+.telegram-button {
+  background: var(--background-color);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.telegram-button:hover {
+  background: var(--accent-color);
+  color: var(--background-color);
+}
+
+.tg-icon {
+  font-size: 14px;
+  color: inherit;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .invite-container {
       padding-top: 30%;
-    }
-  
-    .invite-header h2 {
-      font-size: 18px;
-    }
-  
-    .copy-button,
-    .social-button {
+  }
+
+  .invite-header h2 {
+      font-size: 15px;
+  }
+
+  .copy-button,
+  .social-button {
       font-size: 10px;
       padding: 10px;
-    }
-  
-    .stat-number {
+  }
+
+  .stat-number {
       font-size: 14px;
-    }
   }
+}
 
-  .connect-wallet {
-    font-size: 14px;
-    font-family: 'Press Start 2P', sans-serif;
-    font-weight: bold;
-    color: #E6B33C; /* Gold color */
-    border: 1px solid #E6B33C;
-    padding: 12px 15px;
-    text-align: center;
-    width: 100%;
-    margin-top: 30px;
-  }
-  
-  .connect-wallet {
-    background-color: transparent;
-    cursor: pointer;
-  }
+.connect-wallet {
+  font-size: 14px;
+  font-family: 'Press Start 2P', sans-serif;
+  font-weight: bold;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 12px 15px;
+  text-align: center;
+  width: 100%;
+  margin-top: 30px;
+}
 
-  /* Main Content Styling */
+.connect-wallet {
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* Main Content Styling */
 main {
-    padding-top: 80%; /* Space for fixed header */
-    padding-bottom: 20%;
-    padding-left: 15px;
-    padding-right: 15px;
+  padding-top: 35%;
+  padding-bottom: 20%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Responsive Adjustments for Mobile */
+@media (max-width: 768px) {
+  .stat-card {
+      width: 100%;
+      margin: 10px 0;
   }
 
-  /* Responsive Adjustments for Mobile */
-@media (max-width: 768px) {
-    .stat-card {
-      width: 100%; /* Ensure cards take full width on smaller screens */
-      margin: 10px 0;
-    }
-  
-    nav ul.nav-list {
+  nav ul.nav-list {
       flex-direction: column;
-    }
-  
-    nav ul.nav-list li a {
+  }
+
+  nav ul.nav-list li a {
       font-size: 14px;
       padding: 10px 0;
-    }
   }
-  
-  @media (max-width: 480px) {
-    body {
-      font-size: 12px; /* Further decrease font size for very small screens */
-    }
-  
-    .stat-card h3 {
+}
+
+@media (max-width: 480px) {
+  body {
+      font-size: 12px;
+  }
+
+  .stat-card h3 {
       font-size: 14px;
-    }
-  
-    .stat-card p {
-      font-size: 16px;
-    }
   }
-  
+
+  .stat-card p {
+      font-size: 16px;
+  }
+}

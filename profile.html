@@ -3,19 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
-  <!-- Telegram WebApp SDK -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  
+
   <title>PipCore</title>
-  
+
+  <!-- Styles & Fonts -->
   <link href="profile.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
 
-  <!-- TON Connect -->
-  <script src="https://unpkg.com/@tonconnect/ui@2.0.3-beta.0/dist/tonconnect-ui.min.js"></script>
+  <!-- Telegram Analytics SDK -->
+  <script 
+      async 
+      src="https://tganalytics.xyz/index.js" 
+      onload="initAnalytics()" 
+      type="text/javascript"
+  ></script>
+  <script>
+      function initAnalytics() {
+        window.telegramAnalytics.init({
+          token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=', // <-- put your token from @DataChief_bot
+          appName: 'PipCore',
+        });
+      }
+  </script>
 
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
@@ -23,25 +36,32 @@
   <header>
     <div class="header-container">
       <img src="logo.PNG" alt="PipCore logo" class="logo">
-      <nav>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav class="nav-menu" id="nav-menu">
+        <h1 class="logotxt">PipCore</h1>
         <ul class="nav-list">
-          <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>          
+          <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
           <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
           <li><a href="journal.html"><i class="fas fa-book"></i> Journal</a></li>
           <li><a href="calendar.html"><i class="fas fa-calendar-alt"></i> Calendar</a></li>
           <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
         </ul>
       </nav>
+      <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i> <!-- Default to dark mode icon -->
+      </button>
     </div>
   </header>
 
   <main>
-    <!-- User Info Section -->
     <div class="user-info">
       <p id="username" class="username">@username</p>
     </div>
 
-    <!-- Invite Friends Section -->
     <div class="invite-container">
       <div class="invite-card">
         <div class="invite-header"><h2>Invite Traders</h2></div>
@@ -60,18 +80,8 @@
     </div>
   </main>
 
-  <!-- TON Connect -->
-  <script>
-      const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-          manifestUrl: 'https://t.me/pipcorebot?profile/tonconnect-manifest.json',
-          buttonRootId: 'PipCore'
-      });
-  </script>
-
-  <!-- Telegram WebApp & Username -->
   <script>
       let tg = window.Telegram.WebApp;
-      
       if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
           let username = tg.initDataUnsafe.user.username || "Unknown";
           document.getElementById("username").textContent = "@" + username;
@@ -80,7 +90,6 @@
       }
   </script>
 
-  <!-- Copy to Clipboard -->
   <script>
     function copyToClipboard() {
         const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot";
@@ -90,17 +99,64 @@
     }
   </script>
 
-  <!-- Telegram Mini Apps Analytics SDK -->
-  <script type="module">
-      import { init, event } from 'https://unpkg.com/@tma.js/core@latest/dist/index.js';
+<script>
+  // Hamburger menu functionality
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('nav-menu');
 
-      init().then(() => {
-          console.log('Telegram Mini Apps SDK initialized');
-          event('app_opened'); // Track when the app starts
-      }).catch((error) => {
-          console.error('Failed to initialize SDK', error);
-      });
-  </script>
+  hamburger.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+  });
+
+  // Add active class to the clicked navigation item
+  const navLinks = document.querySelectorAll('.nav-list li a');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', function (e) {
+      // Remove active class from all links
+      navLinks.forEach(link => link.classList.remove('active'));
+      // Add active class to the clicked link
+      this.classList.add('active');
+    });
+  });
+
+  // Set active class based on current page
+  const currentPage = window.location.pathname.split('/').pop() || 'profile.html'; // Default to profile.html
+  navLinks.forEach(link => {
+    if (link.getAttribute('href') === currentPage) {
+      link.classList.add('active');
+    }
+  });
+</script>
+
+<script>
+  // Theme Toggle Functionality
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Check for saved theme in localStorage
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+body.setAttribute('data-theme', savedTheme);
+updateToggleIcon(savedTheme);
+} else {
+body.setAttribute('data-theme', 'dark'); // Default to dark mode
+}
+
+themeToggle.addEventListener('click', () => {
+const currentTheme = body.getAttribute('data-theme');
+const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+body.setAttribute('data-theme', newTheme);
+localStorage.setItem('theme', newTheme);
+updateToggleIcon(newTheme);
+});
+
+function updateToggleIcon(theme) {
+const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
+themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
+}
+</script>
 
 </body>
 </html>
