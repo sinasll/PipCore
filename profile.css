@@ -1,22 +1,25 @@
-/* General Reset and Setup */
+/* ===============================
+   Root Variables
+================================ */
 :root {
-  /* Dark Mode Colors */
   --background-color: #000;
-  --text-color: #E6B33C; /* Gold text in dark mode */
-  --accent-color: #E6B33C; /* Gold accents in dark mode */
-  --border-color: #E6B33C; /* Gold borders in dark mode */
-  --icon-color: #E6B33C; /* Gold icons in dark mode */
+  --text-color: #E6B33C;
+  --accent-color: #E6B33C;
+  --border-color: #E6B33C;
+  --icon-color: #E6B33C;
 }
 
 [data-theme="light"] {
-  /* Light Mode Colors (Opposite of Dark Mode) */
-  --background-color: #E6B33C; /* Gold background in light mode */
-  --text-color: #000; /* Black text in light mode */
-  --accent-color: #000; /* Black accents in light mode */
-  --border-color: #000; /* Black borders in light mode */
-  --icon-color: #000; /* Black icons in light mode */
+  --background-color: #E6B33C;
+  --text-color: #000;
+  --accent-color: #000;
+  --border-color: #000;
+  --icon-color: #000;
 }
 
+/* ===============================
+   Base Reset
+================================ */
 * {
   margin: 0;
   padding: 0;
@@ -37,7 +40,9 @@ a {
   color: var(--text-color);
 }
 
-/* Header Styles */
+/* ===============================
+   Header
+================================ */
 header {
   background-color: var(--background-color);
   padding: 20px 0;
@@ -46,12 +51,6 @@ header {
   top: 0;
   z-index: 1000;
   border-bottom: 1px solid var(--border-color);
-}
-
-.logo {
-  width: 5em;
-  height: auto;
-  border: 1px solid var(--border-color);
 }
 
 .header-container {
@@ -63,7 +62,15 @@ header {
   text-align: center;
 }
 
-/* Theme Toggle Button */
+.logo {
+  width: 5em;
+  height: auto;
+  border: 1px solid var(--border-color);
+}
+
+/* ===============================
+   Theme Toggle
+================================ */
 .theme-toggle {
   background: none;
   border: none;
@@ -73,7 +80,9 @@ header {
   margin-left: 20px;
 }
 
-/* Hamburger Menu */
+/* ===============================
+   Hamburger Menu
+================================ */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -89,7 +98,14 @@ header {
   transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-/* Navigation Styles */
+.hamburger.active span {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* ===============================
+   Navigation
+================================ */
 .nav-menu {
   display: flex;
   justify-content: center;
@@ -134,25 +150,27 @@ header {
   color: var(--icon-color);
 }
 
-/* Mobile Navigation */
+/* ===============================
+   Mobile Navigation
+================================ */
 @media (max-width: 768px) {
   .hamburger {
-      display: flex;
+    display: flex;
   }
 
   .nav-menu {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 70%;
-      height: 100vh;
-      background-color: var(--background-color);
-      border-left: 2px solid var(--border-color);
-      flex-direction: column;
-      justify-content: flex-start;
-      padding-top: 0px;
-      transition: right 0.4s ease-in-out;
-      z-index: 1000;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    background-color: var(--background-color);
+    border-left: 2px solid var(--border-color);
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 0px;
+    transition: right 0.4s ease-in-out;
+    z-index: 1000;
   }
 
   .logotxt {
@@ -162,31 +180,28 @@ header {
   }
 
   .nav-menu.active {
-      right: 0;
+    right: 0;
   }
 
   .nav-list {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 0 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 20px;
   }
 
   .nav-list li {
-      margin: 10px 0;
+    margin: 10px 0;
   }
 
   .nav-list li a {
-      justify-content: flex-start;
-      width: 100%;
+    justify-content: flex-start;
+    width: 100%;
   }
 }
 
-.hamburger.active span {
-  opacity: 0; /* Hide all bars */
-  transition: opacity 0.3s ease;
-}
-
-/* User Info and Wallet Button Styling */
+/* ===============================
+   User Info
+================================ */
 .username {
   font-size: 18px;
   font-family: 'Press Start 2P', sans-serif;
@@ -195,7 +210,98 @@ header {
   text-align: center;
 }
 
-/* Recruitment Module */
+/* ===============================
+   Tasks Module
+================================ */
+.task-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 15px;
+  padding-top: 0%;
+}
+
+.task-card {
+  background: var(--background-color);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 10px 0;
+  box-shadow: 0 0 10px rgba(230, 179, 60, 0.2);
+}
+
+.task-header {
+  text-align: center;
+  margin-bottom: 1.3rem;
+  padding: 10px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.task-header h2 {
+  color: var(--text-color);
+  font-size: 20px;
+  margin-bottom: 0.5rem;
+}
+
+.task-header p {
+  color: var(--text-color);
+  font-size: 10px;
+}
+
+.task-buttons {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.task-button {
+  font-family: 'Press Start 2P', sans-serif;
+  font-size: 12px;
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  padding: 12px 20px;
+  background: var(--background-color);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 15px;
+  width: 80%;
+}
+
+.task-button:hover {
+  background: var(--accent-color);
+  color: var(--background-color);
+  transform: translateY(-2px);
+}
+
+.telegram-task {
+  background: var(--background-color);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.telegram-task:hover {
+  background: var(--accent-color);
+  color: var(--background-color);
+}
+
+.twitter-task {
+  background: var(--background-color);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.twitter-task:hover {
+  background: var(--accent-color);
+  color: var(--background-color);
+}
+
+
+/* ===============================
+   Invite / Recruitment Module
+================================ */
 .invite-container {
   max-width: 600px;
   margin: 2rem auto;
@@ -251,11 +357,13 @@ header {
   font-size: 12px;
   color: var(--text-color);
   border: 2px solid var(--border-color);
-  padding: 12px;
+  padding: 12px 20px;
   background: var(--background-color);
   cursor: pointer;
   transition: all 0.3s ease;
   margin: 0 auto;
+  width: 80%;
+  justify-content: center;
 }
 
 .copy-button:hover {
@@ -281,6 +389,8 @@ header {
   gap: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 80%;
+  justify-content: center;
 }
 
 .cta-button:hover {
@@ -293,6 +403,8 @@ header {
   background: var(--background-color);
   color: var(--text-color);
   border-color: var(--border-color);
+  width: 80%;
+  justify-content: center;
 }
 
 .telegram-button:hover {
@@ -305,27 +417,9 @@ header {
   color: inherit;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .invite-container {
-      padding-top: 30%;
-  }
-
-  .invite-header h2 {
-      font-size: 15px;
-  }
-
-  .copy-button,
-  .social-button {
-      font-size: 10px;
-      padding: 10px;
-  }
-
-  .stat-number {
-      font-size: 14px;
-  }
-}
-
+/* ===============================
+   Wallet Button
+================================ */
 .connect-wallet {
   font-size: 14px;
   font-family: 'Press Start 2P', sans-serif;
@@ -336,14 +430,13 @@ header {
   text-align: center;
   width: 100%;
   margin-top: 30px;
-}
-
-.connect-wallet {
   background-color: transparent;
   cursor: pointer;
 }
 
-/* Main Content Styling */
+/* ===============================
+   Main Content
+================================ */
 main {
   padding-top: 35%;
   padding-bottom: 20%;
@@ -351,33 +444,53 @@ main {
   padding-right: 15px;
 }
 
-/* Responsive Adjustments for Mobile */
+/* ===============================
+   Responsive Adjustments
+================================ */
 @media (max-width: 768px) {
+  .invite-container {
+    padding-top: 5%;
+  }
+
+  .invite-header h2 {
+    font-size: 15px;
+  }
+
+  .copy-button,
+  .social-button {
+    font-size: 10px;
+    padding: 10px;
+  }
+
+  .stat-number {
+    font-size: 14px;
+  }
+
   .stat-card {
-      width: 100%;
-      margin: 10px 0;
+    width: 100%;
+    margin: 10px 0;
   }
 
   nav ul.nav-list {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   nav ul.nav-list li a {
-      font-size: 14px;
-      padding: 10px 0;
+    font-size: 14px;
+    padding: 10px 0;
   }
 }
 
 @media (max-width: 480px) {
   body {
-      font-size: 12px;
+    font-size: 12px;
   }
 
   .stat-card h3 {
-      font-size: 14px;
+    font-size: 14px;
   }
 
   .stat-card p {
-      font-size: 16px;
+    font-size: 16px;
   }
 }
