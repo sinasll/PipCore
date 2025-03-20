@@ -2,12 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="viewport" 
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PipCore</title>
+  
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
+  <!-- Telegram Analytics SDK -->
+  <script async 
+          src="https://tganalytics.xyz/index.js" 
+          type="text/javascript" 
+          onload="initAnalytics()"></script>
+  <script>
+    // Initialize Telegram Analytics once the analytics script loads.
+    function initAnalytics() {
+      window.telegramAnalytics.init({
+        token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=',
+        appName: 'PipCore'
+      });
+    }
+  </script>
+
+  <!-- Your CSS & Fonts -->
   <link href="style.css" rel="stylesheet" type="text/css" />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" 
+        rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+        rel="stylesheet"/>
+  
+  <!-- Inline CSS for Loading Screen -->
   <style>
     /* Loading Page Styles */
     .loading-container {
@@ -24,7 +48,6 @@
       z-index: 1000;
       backdrop-filter: blur(10px);
     }
-
     .spinner {
       width: 64px;
       height: 64px;
@@ -35,13 +58,9 @@
       animation: spin 1.2s linear infinite;
       margin-bottom: 60px;
     }
-
     .logo {
       width: 120px;
-      position: center;
-      top: 20%;
     }
-
     .loading-text {
       color: #E6B33C;
       font-family: 'Press Start 2P', cursive;
@@ -50,35 +69,26 @@
       margin-top: 24px;
       text-align: center;
     }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes pulse {
-      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-      50% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
-      100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-    }
-
-    /* Hide scrollbar during loading */
-    body {
-      overflow: hidden;
-      margin: 0;
-      background: #000;
-    }
-
-    /* Progress percentage */
     .progress {
       color: #E6B33C;
       font-family: 'Press Start 2P', cursive;
       font-size: 10px;
       margin-top: 30px;
     }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    /* Prevent scrollbar during loading */
+    body {
+      overflow: hidden;
+      margin: 0;
+      background: #000;
+    }
   </style>
 </head>
 <body>
+  <!-- Loading Screen -->
   <div class="loading-container">
     <div class="spinner"></div>
     <img src="logo.PNG" alt="PipCore logo" class="logo">
@@ -86,49 +96,49 @@
     <div class="loading-text">LOADING YOUR STATS</div>
     <div class="progress">0%</div>
   </div>
-
-  <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Telegram SDK initialization
-  Telegram.WebApp.ready(); 
-  Telegram.WebApp.expand(); 
-
-  let progress = 0;
-  const progressElement = document.querySelector('.progress');
-  const loader = document.querySelector('.loading-container');
-  let interval;
-
-  const completeLoading = () => {
-    // Fade out loader
-    loader.style.opacity = '0';
-    // Wait for fade animation to complete before redirect
-    setTimeout(() => {
-      window.location.href = 'profile.html';
-    }, 500);
-  };
-
-  const updateProgress = () => {
-    progress += Math.random() * 3;
-    if(progress >= 100) {
-      progress = 100;
-      clearInterval(interval);
-      progressElement.textContent = '100%';
-      completeLoading();
-    } else {
-      progressElement.textContent = Math.min(progress, 100).toFixed(0) + '%';
-    }
-  };
-
-  // Start progress simulation
-  interval = setInterval(updateProgress, 100);
   
-  // Safety timeout - redirect even if progress doesn't complete
-  setTimeout(() => {
-    clearInterval(interval);
-    completeLoading();
-  }, 4000);
-});
+  <!-- Main Script: Wait for DOM to be ready and then signal readiness -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Signal that the Telegram WebApp is ready.
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
 
+      let progress = 0;
+      const progressElement = document.querySelector('.progress');
+      const loader = document.querySelector('.loading-container');
+      let interval;
+
+      const completeLoading = () => {
+        // Fade out loader
+        loader.style.opacity = '0';
+        // Redirect after fade-out
+        setTimeout(() => {
+          window.location.href = 'profile.html';
+        }, 500);
+      };
+
+      const updateProgress = () => {
+        progress += Math.random() * 3;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          progressElement.textContent = '100%';
+          completeLoading();
+        } else {
+          progressElement.textContent = Math.min(progress, 100).toFixed(0) + '%';
+        }
+      };
+
+      // Simulate loading progress
+      interval = setInterval(updateProgress, 100);
+      
+      // Fallback: Redirect even if progress simulation doesn't finish
+      setTimeout(() => {
+        clearInterval(interval);
+        completeLoading();
+      }, 4000);
+    });
   </script>
 </body>
 </html>

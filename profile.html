@@ -1,10 +1,5 @@
 <!DOCTYPE html>
-<html 
-  lang="en" 
-  data-telegram-analytics
-  data-token="eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs="
-  data-app-name="PipCore"
->
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -15,19 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
 
-  <!-- Telegram Analytics SDK -->
-<script 
-  async 
-  src="https://tganalytics.xyz/index.js" 
-  type="text/javascript"
-></script>
-
-  <!-- Telegram WebApp SDK -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
-  <!-- Rest of your body remains exactly the same -->
   <header>
     <div class="header-container">
       <img src="logo.PNG" alt="PipCore logo" class="logo">
@@ -60,28 +47,23 @@
     <div class="task-container">
       <div class="task-card">
         <div class="task-buttons">
-    
           <!-- 1 -->
           <a href="https://t.me/pipcore" target="_blank" class="task-button telegram-task">
             JOIN PipCore
           </a>
 
-    
           <!-- 2 -->
-          <a href="https://t.me/boost/pipcore" 
-             target="_blank" class="task-button telegram-task">
+          <a href="https://t.me/boost/pipcore" target="_blank" class="task-button telegram-task">
             BOOST PipCore
           </a>
-    
+
           <!-- 3 -->
           <a href="https://x.com/pipcoretg" target="_blank" class="task-button twitter-task">
             FOLLOW PipCore
           </a>
-    
         </div>
       </div>
     </div>
-    
 
     <div class="invite-container">
       <div class="invite-card">
@@ -103,21 +85,16 @@
 
   <!-- Scripts -->
   <script>
-// Telegram WebApp initialization
-let tg = window.Telegram.WebApp;
+    // Telegram WebApp initialization
+    let tg = window.Telegram.WebApp;
 
-// Initialize Analytics (THIS IS THE CRITICAL PART)
-if (typeof window.telegramAnalytics !== 'undefined') {
-  window.telegramAnalytics.init();
-}
-
-// Rest of your existing code
-if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-  let username = tg.initDataUnsafe.user.username || "Unknown";
-  document.getElementById("username").textContent = "@" + username;
-} else {
-  document.getElementById("username").textContent = "@guest";
-}
+    // Rest of your existing code
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      let username = tg.initDataUnsafe.user.username || "Unknown";
+      document.getElementById("username").textContent = "@" + username;
+    } else {
+      document.getElementById("username").textContent = "@guest";
+    }
 
     // Clipboard function
     function copyToClipboard() {
