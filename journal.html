@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>PipCore</title>
   <link href="journal.css" rel="stylesheet" type="text/css" />
   <script src="journal.js" defer></script>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  rel="stylesheet"
-/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-
 </head>
 
 <body>
   <header>
     <div class="header-container">
-      <img src="logo.PNG" alt="PipCore logo" class="logo">
+      <img src="logo.PNG" alt="PipCore logo" class="logo" />
       <div class="hamburger" id="hamburger">
         <span></span>
         <span></span>
@@ -37,22 +32,26 @@
           <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
         </ul>
       </nav>
-      <button class="theme-toggle" id="theme-toggle">
-        <i class="fas fa-moon"></i> <!-- Default to dark mode icon -->
-      </button>
-    </div>
+ <!-- Updated Settings button: only an icon -->
+ <button id="openSettings" class="theme-toggle">
+  <i class="fas fa-cog"></i>
+</button>
+<button class="theme-toggle" id="theme-toggle">
+  <i class="fas fa-moon"></i>
+</button>
+</div>
   </header>
 
-  
   <main>
     <section class="journal">
       <h1 class="journalh1">TRACK TRADES</h1>
       <form id="tradeForm">
+        <!-- Form fields for trade details -->
         <label for="date">Date</label>
-        <input type="date" id="date" required class="date-time">
+        <input type="date" id="date" required class="date-time" />
 
         <label for="time">Time</label>
-        <input type="time" id="time" required class="date-time">
+        <input type="time" id="time" required class="date-time" />
 
         <label for="session">Session</label>
         <select id="session">
@@ -77,20 +76,10 @@
         </select>
 
         <label for="setup">Setup</label>
-        <select id="setup" required>
-          <option value="setup1">setup 1</option>
-          <option value="setup2">setup 2</option>
-          <option value="setup3">setup 3</option>
-        </select>
+        <select id="setup" required></select>
 
         <label for="entry">Entry</label>
-        <select id="entry" required>
-          <option value="entry1">entry 1</option>
-          <option value="entry2">entry 2</option>
-          <option value="entry3">entry 3</option>
-          <option value="entry4">entry 4</option>
-          <option value="entry5">entry 5</option>
-        </select>
+        <select id="entry" required></select>
 
         <label for="timeframe">Timeframe</label>
         <select id="timeframe" required>
@@ -108,7 +97,7 @@
         </select>
 
         <label for="pips">Pips</label>
-        <input type="number" id="pips" required>
+        <input type="number" id="pips" required />
 
         <label for="outcome">Outcome</label>
         <select id="outcome">
@@ -122,7 +111,6 @@
 
       <div id="tradeEntries">
         <h2 class="history">HISTORY</h2>
-
         <div id="filterContainer">
           <label for="filter"></label>
           <select id="filter">
@@ -133,77 +121,282 @@
             <option value="lastMonth">Last Month</option>
             <option value="custom">Custom Date</option>
           </select>
-        
           <div id="customDateContainer" style="display: none;">
             <label for="customDate">Select Date:</label>
             <input type="date" id="customDate" />
           </div>
-          <button id="clearFilter">Clear Filter</button>
+          <button id="clearFilter">Clear</button>
         </div>
 
         <div id="tradesList">
           <!-- Trade cards will appear here -->
         </div>
-      </div>  
-      
-      <script>
-        // Hamburger menu functionality
-        const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('nav-menu');
-    
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        });
-    
-        // Add active class to the clicked navigation item
-        const navLinks = document.querySelectorAll('.nav-list li a');
-    
-        navLinks.forEach(link => {
-          link.addEventListener('click', function (e) {
-            // Remove active class from all links
-            navLinks.forEach(link => link.classList.remove('active'));
-            // Add active class to the clicked link
-            this.classList.add('active');
-          });
-        });
-    
-        // Set active class based on current page
-        const currentPage = window.location.pathname.split('/').pop() || 'profile.html'; // Default to profile.html
-        navLinks.forEach(link => {
-          if (link.getAttribute('href') === currentPage) {
-            link.classList.add('active');
-          }
-        });
-      </script>
+      </div>
+    </section>
+  </main>
 
-<script>
-  // Theme Toggle Functionality
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeSettings">&times;</span>
+    <h2>Settings</h2>
+    <label for="settingsType">Select</label>
+    <select id="settingsType">
+      <option value="setup">Setup</option>
+      <option value="entry">Entry</option>
+      <option value="timeframe">Timeframe</option>
+      <option value="pair">Pair</option>
+    </select>
+    <div id="modalActions">
+      <select id="modalOptions" size="5" style="width:100%;"></select>
+      <br /><br />
+      <input type="text" id="modalNewName" placeholder="Rename" style="width:100%;" />
+      <br /><br />
+      <button id="modalRenameBtn">Rename Selected</button>
+      <button id="modalRemoveBtn">Remove Selected</button>
+      <br /><br />
+      <input type="text" id="modalAddName" placeholder="Add" style="width:100%;" />
+      <br /><br />
+      <button id="modalAddBtn">Add</button>
+    </div>
+  </div>
+</div>
 
-// Check for saved theme in localStorage
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-body.setAttribute('data-theme', savedTheme);
-updateToggleIcon(savedTheme);
-} else {
-body.setAttribute('data-theme', 'dark'); // Default to dark mode
-}
+  <script>
+  // Initialize options from localStorage or defaults
+const initializeOptions = () => {
+  const savedSetups = JSON.parse(localStorage.getItem('setups')) || ['setup 1', 'setup 2', 'setup 3'];
+  const savedEntries = JSON.parse(localStorage.getItem('entries')) || ['entry 1', 'entry 2', 'entry 3', 'entry 4', 'entry 5'];
+  const savedTimeframes = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
+  const savedPairs = JSON.parse(localStorage.getItem('pairs')) || ['EURUSD', 'GBPUSD', 'USDJPY', 'GBPJPY', 'XAUUSD', 'XAGUSD', 'US30', 'NAS100', 'SPX500'];
 
-themeToggle.addEventListener('click', () => {
-const currentTheme = body.getAttribute('data-theme');
-const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-body.setAttribute('data-theme', newTheme);
-localStorage.setItem('theme', newTheme);
-updateToggleIcon(newTheme);
+  localStorage.setItem('setups', JSON.stringify(savedSetups));
+  localStorage.setItem('entries', JSON.stringify(savedEntries));
+  localStorage.setItem('timeframes', JSON.stringify(savedTimeframes));
+  localStorage.setItem('pairs', JSON.stringify(savedPairs));
+
+  populateSelect('setup', savedSetups);
+  populateSelect('entry', savedEntries);
+  populateSelect('timeframe', savedTimeframes);
+  populateSelect('pair', savedPairs);
+};
+
+// Populate a select element with options
+const populateSelect = (id, options) => {
+  const select = document.getElementById(id);
+  if (select) {
+    select.innerHTML = options.map(option => `<option value="${option}">${option}</option>`).join('');
+  }
+};
+
+// Save options to localStorage
+const saveOptions = (type, options) => {
+  let key;
+  switch (type) {
+    case 'setup':
+      key = 'setups';
+      break;
+    case 'entry':
+      key = 'entries';
+      break;
+    case 'timeframe':
+      key = 'timeframes';
+      break;
+    case 'pair':
+      key = 'pairs';
+      break;
+    default:
+      return;
+  }
+  localStorage.setItem(key, JSON.stringify(options));
+};
+
+// Get options from localStorage
+const getOptions = (type) => {
+  let key;
+  switch (type) {
+    case 'setup':
+      key = 'setups';
+      break;
+    case 'entry':
+      key = 'entries';
+      break;
+    case 'timeframe':
+      key = 'timeframes';
+      break;
+    case 'pair':
+      key = 'pairs';
+      break;
+    default:
+      return [];
+  }
+  return JSON.parse(localStorage.getItem(key)) || [];
+};
+
+// Update both form select and modal select
+const updateOptions = (type) => {
+  const options = getOptions(type);
+  if (type === 'setup' || type === 'entry' || type === 'timeframe' || type === 'pair') {
+    populateSelect(type, options);
+  }
+  if (document.getElementById('modalOptions')) {
+    populateModalOptions(options);
+  }
+};
+
+// Populate the modal's options list
+const populateModalOptions = (options) => {
+  const modalSelect = document.getElementById('modalOptions');
+  if (modalSelect) {
+    modalSelect.innerHTML = options.map(option => `<option value="${option}">${option}</option>`).join('');
+  }
+};
+
+// Modal related variables
+const settingsModal = document.getElementById('settingsModal');
+const openSettingsBtn = document.getElementById('openSettings');
+const closeSettingsBtn = document.getElementById('closeSettings');
+const settingsTypeSelect = document.getElementById('settingsType');
+const modalOptions = document.getElementById('modalOptions');
+
+// Open modal when settings button is clicked
+openSettingsBtn.addEventListener('click', () => {
+  settingsModal.style.display = 'block';
+  loadModalOptions();
 });
 
-function updateToggleIcon(theme) {
-const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
-themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
-}
-</script>
+// Close modal when 'x' is clicked
+closeSettingsBtn.addEventListener('click', () => {
+  settingsModal.style.display = 'none';
+});
 
+// Close modal when clicking outside the modal content
+window.addEventListener('click', (event) => {
+  if (event.target === settingsModal) {
+    settingsModal.style.display = 'none';
+  }
+});
+
+// Load options in the modal based on selected type
+const loadModalOptions = () => {
+  const type = settingsTypeSelect.value;
+  const options = getOptions(type);
+  populateModalOptions(options);
+};
+
+// Update modal when type selection changes
+settingsTypeSelect.addEventListener('change', loadModalOptions);
+
+// Modal Add Option
+document.getElementById('modalAddBtn').addEventListener('click', () => {
+  const type = settingsTypeSelect.value;
+  const addInput = document.getElementById('modalAddName');
+  const newOption = addInput.value.trim();
+  if (newOption) {
+    const options = getOptions(type);
+    options.push(newOption);
+    saveOptions(type, options);
+    updateOptions(type);
+    addInput.value = '';
+    loadModalOptions();
+  }
+});
+
+// Modal Rename Option
+document.getElementById('modalRenameBtn').addEventListener('click', () => {
+  const type = settingsTypeSelect.value;
+  const renameInput = document.getElementById('modalNewName');
+  const newName = renameInput.value.trim();
+  const selectedIndex = modalOptions.selectedIndex;
+  if (newName && selectedIndex !== -1) {
+    const options = getOptions(type);
+    options[selectedIndex] = newName;
+    saveOptions(type, options);
+    updateOptions(type);
+    renameInput.value = '';
+    loadModalOptions();
+  }
+});
+
+// Modal Remove Option
+document.getElementById('modalRemoveBtn').addEventListener('click', () => {
+  const type = settingsTypeSelect.value;
+  const selectedIndex = modalOptions.selectedIndex;
+  if (selectedIndex !== -1) {
+    const options = getOptions(type);
+    options.splice(selectedIndex, 1);
+    saveOptions(type, options);
+    updateOptions(type);
+    loadModalOptions();
+  }
+});
+
+// Initialize on page load
+window.onload = () => {
+  initializeOptions();
+};
+
+    /* Hamburger menu and theme toggle scripts remain unchanged */
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    hamburger.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    });
+    const navLinks = document.querySelectorAll('.nav-list li a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', function () {
+        navLinks.forEach(link => link.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+    const currentPage = window.location.pathname.split('/').pop() || 'profile.html';
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
+    });
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      body.setAttribute('data-theme', savedTheme);
+      updateToggleIcon(savedTheme);
+    } else {
+      body.setAttribute('data-theme', 'dark');
+    }
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateToggleIcon(newTheme);
+    });
+    function updateToggleIcon(theme) {
+      const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
+      themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
+    }
+  </script>
+  
+  <script>
+    // To open the modal
+  document.getElementById('openSettings').addEventListener('click', () => {
+    document.getElementById('settingsModal').classList.add('show');
+  });
+  
+  // To close the modal (e.g., when clicking the close button)
+  document.getElementById('closeSettings').addEventListener('click', () => {
+    document.getElementById('settingsModal').classList.remove('show');
+  });
+  
+  // Optionally, close modal when clicking outside of the modal-content
+  window.addEventListener('click', (e) => {
+    const modal = document.getElementById('settingsModal');
+    if (e.target === modal) {
+      modal.classList.remove('show');
+    }
+  });
+  
+    </script>
 </body>
 </html>

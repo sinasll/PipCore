@@ -49,7 +49,7 @@ function generateStats() {
 
 // Grouping by stats section (Win Rate, Total Trades, etc.)
 const statGroups = [
-  { title: 'Month Stats', stats: stats },
+  { title: 'MONTH STATS', stats: stats },
   { title: 'Setups', stats: getSetupsStats(currentMonthTrades) },
   { title: 'Entries', stats: getEntriesStats(currentMonthTrades) },
   { title: 'Timeframes', stats: getTimeframesStats(currentMonthTrades) }, // Moved above Sessions
@@ -138,12 +138,14 @@ function getSessionsStats(trades) {
   });
 }
 
-// Function to calculate timeframe stats
+// Function to calculate timeframe stats for the calendar
 function getTimeframesStats(trades) {
-  const timeframes = ['5min', '15min', '30min', '1hr', '4hr'];
+  // Fetch timeframes from localStorage
+  const timeframes = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
+
   return timeframes.map(timeframe => {
     const tradesForTimeframe = trades.filter(trade => trade.timeframe === timeframe);
-    const timeframeWinRate = tradesForTimeframe.length > 0 ? 
+    const timeframeWinRate = tradesForTimeframe.length > 0 ?
       ((tradesForTimeframe.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForTimeframe.length) * 100).toFixed(2)
       : 0;
 

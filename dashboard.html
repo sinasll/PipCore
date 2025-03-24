@@ -2,24 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
- <script src="https://telegram.org/js/telegram-web-app.js"></script>
-   <title>PipCore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <title>PipCore</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  rel="stylesheet"
-/>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://unpkg.com/@tonconnect/ui@2.0.3-beta.0/dist/tonconnect-ui.min.js"></script>
-<script>
-    console.log(window.telegramAnalytics);
-    window.telegramAnalytics.init({
-        token: '',
-        appName: '',
-    })
-</script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
@@ -54,146 +43,9 @@
 
     <section class="dashboard">
       <div class="stats-container">
-        <div class="stat-card">
-          <h3>Win Rate</h3>
-          <p id="win-rate">0%</p>
+        <div id="stats" class="stats">
+          <!-- Stats will be dynamically generated here -->
         </div>
-
-        <div class="stat-card">
-          <h3>Total Trades</h3>
-          <p id="total-trades">0</p>
-        </div>
-
-        <div class="stat-card">
-            <h3>Total Pips</h3>
-            <p id="total-pips">0</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>Average Pips</h3>
-            <p id="average-pips">0</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>Wins</h3>
-            <p id="wins">0</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>Losses</h3>
-            <p id="losses">0</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>Win Streak</h3>
-            <p id="win-streak">0</p>
-          </div>
-
-          <div>
-            <h1 class="stats">SETUPS</h1>
-          </div>
-
-          <div class="stat-card">
-            <h3>setup 1</h3>
-            <p id="setup1-win-rate">0%</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>setup 2</h3>
-            <p id="setup2-win-rate">0%</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>setup 3</h3>
-            <p id="setup3-win-rate">0%</p>
-          </div>
-
-          <div>
-            <h1 class="stats">ENTRIES</h1>
-          </div>
-
-          <div class="stat-card">
-            <h3>Entry 1</h3>
-            <p id="entry1-win-rate">0%</p>
-          </div>
-          
-          <div class="stat-card">
-            <h3>entry 2</h3>
-            <p id="entry2-win-rate">0%</p>
-          </div>
-          
-          <div class="stat-card">
-            <h3>entry 3</h3>
-            <p id="entry3-win-rate">0%</p>
-          </div>
-          
-          <div class="stat-card">
-            <h3>entry 4</h3>
-            <p id="entry4-win-rate">0%</p>
-          </div>
-          
-          <div class="stat-card">
-            <h3>entry 5</h3>
-            <p id="entry5-win-rate">0%</p>
-          </div>
-
-          <div>
-            <h1 class="stats">TIMEFRAMES</h1>
-          </div>
-
-          <div class="stat-card">
-            <h3>5min</h3>
-            <p id="t5min">0%</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>15min</h3>
-            <p id="t15min">0%</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>30min</h3>
-            <p id="t30min">0%</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>1hr</h3>
-            <p id="t1hr">0%</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>4hr</h3>
-            <p id="t4hr">0%</p>
-          </div>
-
-          <div>
-            <h1 class="stats">SESSIONS</h1>
-          </div>
-
-          <div class="stat-card">
-            <h3>Asia</h3>
-            <p id="Asia">0%</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>Pre London</h3>
-            <p id="PreLondon">0%</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>London</h3>
-            <p id="London">0%</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>Pre New York</h3>
-            <p id="PreNewYork">0%</p>
-          </div>
-
-          <div class="stat-card">
-            <h3>New York</h3>
-            <p id="NewYork">0%</p>
-          </div>
       </div>
     </section>
   </main>
@@ -204,8 +56,8 @@
     const navMenu = document.getElementById('nav-menu');
 
     hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
     });
 
     // Add active class to the clicked navigation item
@@ -229,34 +81,163 @@
     });
   </script>
 
-<script>
-  // Theme Toggle Functionality
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
+  <script>
+    // Theme Toggle Functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
 
-// Check for saved theme in localStorage
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-body.setAttribute('data-theme', savedTheme);
-updateToggleIcon(savedTheme);
-} else {
-body.setAttribute('data-theme', 'dark'); // Default to dark mode
+    // Check for saved theme in localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      body.setAttribute('data-theme', savedTheme);
+      updateToggleIcon(savedTheme);
+    } else {
+      body.setAttribute('data-theme', 'dark'); // Default to dark mode
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateToggleIcon(newTheme);
+    });
+
+    function updateToggleIcon(theme) {
+      const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
+      themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
+    }
+  </script>
+
+  <script>
+// Function to generate overall stats
+function generateOverallStats() {
+  const statsContainer = document.getElementById('stats');
+  statsContainer.innerHTML = ''; // Clear previous stats
+
+  const tradeEntries = JSON.parse(localStorage.getItem('tradeEntries')) || [];
+
+  const totalTrades = tradeEntries.length;
+  const totalPips = tradeEntries.reduce((total, trade) => total + parseFloat(trade.pips), 0);
+
+  // Counting win and lose trades
+  const winTrades = tradeEntries.filter(trade => trade.outcome.toLowerCase() === 'win').length;
+  const loseTrades = tradeEntries.filter(trade => trade.outcome.toLowerCase() === 'lose').length;
+
+  // Calculating win rate and average pips
+  const winRate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : 0;
+  const averagePips = totalTrades > 0 ? (totalPips / totalTrades).toFixed(2) : 0;
+
+  const stats = [
+    { title: 'Win Rate', value: `${winRate}%` },
+    { title: 'Total Trades', value: totalTrades.toString() },
+    { title: 'Total Pips', value: totalPips.toFixed(2) },
+    { title: 'Average Pips', value: averagePips },
+    { title: 'Wins', value: winTrades.toString() },
+    { title: 'Losses', value: loseTrades.toString() }
+  ];
+
+  // Grouping by stats section (Overall Stats, Setups, Entries, Timeframes, Sessions)
+  const statGroups = [
+    { title: '', stats: stats },
+    { title: 'Setups', stats: getSetupsStats(tradeEntries) },
+    { title: 'Entries', stats: getEntriesStats(tradeEntries) },
+    { title: 'Timeframes', stats: getTimeframesStats(tradeEntries) },
+    { title: 'Sessions', stats: getSessionsStats(tradeEntries) }
+  ];
+
+  // Generate stat cards for each group
+  statGroups.forEach(group => {
+    // Create group title and apply styles
+    const groupTitle = document.createElement('h1');
+    groupTitle.textContent = group.title;
+    groupTitle.style.color = 'var(--accent-color)';
+    groupTitle.style.fontSize = '20px';
+    groupTitle.style.textAlign = 'center';
+    groupTitle.style.marginBottom = '10px';
+    statsContainer.appendChild(groupTitle);
+
+    group.stats.forEach(stat => {
+      const statCard = document.createElement('div');
+      statCard.classList.add('stat-card');
+
+      const statTitle = document.createElement('h3');
+      statTitle.textContent = stat.title;
+
+      const statValue = document.createElement('p');
+      statValue.textContent = stat.value;
+
+      statCard.appendChild(statTitle);
+      statCard.appendChild(statValue);
+      statsContainer.appendChild(statCard);
+    });
+  });
 }
 
-themeToggle.addEventListener('click', () => {
-const currentTheme = body.getAttribute('data-theme');
-const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-body.setAttribute('data-theme', newTheme);
-localStorage.setItem('theme', newTheme);
-updateToggleIcon(newTheme);
+// Function to calculate setup stats
+function getSetupsStats(trades) {
+  const setups = [...new Set(trades.map(trade => trade.setup))]; // Unique setups
+  return setups.map(setup => {
+    const tradesForSetup = trades.filter(trade => trade.setup === setup);
+    const setupWinRate = tradesForSetup.length > 0 ?
+      ((tradesForSetup.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForSetup.length) * 100).toFixed(2)
+      : 0;
+
+    return { title: `${setup}`, value: `${setupWinRate}%` };
+  });
+}
+
+// Function to calculate entry stats
+function getEntriesStats(trades) {
+  const entries = [...new Set(trades.map(trade => trade.entry))]; // Unique entries
+  return entries.map(entry => {
+    const tradesForEntry = trades.filter(trade => trade.entry === entry);
+    const entryWinRate = tradesForEntry.length > 0 ?
+      ((tradesForEntry.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForEntry.length) * 100).toFixed(2)
+      : 0;
+
+    return { title: `${entry}`, value: `${entryWinRate}%` };
+  });
+}
+
+// Function to calculate timeframe stats
+function getTimeframesStats(trades) {
+  // Fetch timeframes from localStorage
+  const timeframes = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
+
+  return timeframes.map(timeframe => {
+    const tradesForTimeframe = trades.filter(trade => trade.timeframe === timeframe);
+    const timeframeWinRate = tradesForTimeframe.length > 0 ?
+      ((tradesForTimeframe.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForTimeframe.length) * 100).toFixed(2)
+      : 0;
+
+    return { title: `${timeframe}`, value: `${timeframeWinRate}%` };
+  });
+}
+
+// Function to calculate session stats
+function getSessionsStats(trades) {
+  const sessions = ['Asia', 'Pre London', 'London', 'Pre New York', 'New York'];
+  return sessions.map(session => {
+    const tradesForSession = trades.filter(trade => trade.session === session);
+    const sessionWinRate = tradesForSession.length > 0 ?
+      ((tradesForSession.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForSession.length) * 100).toFixed(2)
+      : 0;
+
+    return { title: `${session}`, value: `${sessionWinRate}%` };
+  });
+}
+
+// Call the function to generate overall stats when the page loads
+document.addEventListener('DOMContentLoaded', generateOverallStats);
+
+// Listen for changes in localStorage and update stats
+window.addEventListener('storage', (event) => {
+  if (event.key === 'tradeEntries' || event.key === 'setups' || event.key === 'entries') {
+    generateOverallStats();
+  }
 });
-
-function updateToggleIcon(theme) {
-const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
-themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
-}
-</script>
-
-  <script src="app.js"></script>
+  </script>
+  
 </body>
 </html>
