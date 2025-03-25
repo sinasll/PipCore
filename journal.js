@@ -397,6 +397,75 @@ function shareTradeAsPDF(trade) {
   }
 }
 
+// Filter trades by date
+function filterTrades(filterType, customDate = null) {
+  const tradeEntries = JSON.parse(localStorage.getItem('tradeEntries')) || [];
+  const filteredTrades = tradeEntries.filter(trade => {
+    const tradeDate = new Date(`${trade.date}T${trade.time}`);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    // Calculate the start of the last 7 days (past week)
+    const lastWeek = new Date(today);
+    lastWeek.setDate(lastWeek.getDate() - 7);
+
+    // Calculate the start of the last 30 days (past month)
+    const lastMonth = new Date(today);
+    lastMonth.setDate(lastMonth.getDate() - 30);
+
+    switch (filterType) {
+      case 'today':
+        return tradeDate.toDateString() === today.toDateString();
+      case 'yesterday':
+        return tradeDate.toDateString() === yesterday.toDateString();
+      case 'lastWeek':
+        return tradeDate >= lastWeek && tradeDate <= today; // Past 7 days
+      case 'lastMonth':
+        return tradeDate >= lastMonth && tradeDate <= today; // Past 30 days
+      case 'custom':
+        return tradeDate.toDateString() === new Date(customDate).toDateString();
+      default:
+        return true; // Show all trades
+    }
+  });
+
+  // Clear the current trade list
+  document.getElementById('tradesList').innerHTML = '';
+
+  // Display filtered trades
+  filteredTrades.forEach((trade, index) => {
+    addTradeToCards(trade, index);
+  });
+}
+
+// Add event listener for filter changes
+document.getElementById('filter').addEventListener('change', function () {
+  const filterValue = this.value;
+  const customDateContainer = document.getElementById('customDateContainer');
+  const customDateInput = document.getElementById('customDate');
+
+  // Show/hide custom date input
+  if (filterValue === 'custom') {
+    customDateContainer.style.display = 'block';
+  } else {
+    customDateContainer.style.display = 'none';
+    filterTrades(filterValue);
+  }
+});
+
+// Add event listener for custom date changes
+document.getElementById('customDate').addEventListener('change', function () {
+  filterTrades('custom', this.value);
+});
+
+// Add event listener for clear filter button
+document.getElementById('clearFilter').addEventListener('click', function () {
+  document.getElementById('filter').value = 'all';
+  document.getElementById('customDateContainer').style.display = 'none';
+  filterTrades('all');
+});
+
 // Load trades when the page is loaded
 document.addEventListener('DOMContentLoaded', function () {
   loadTrades();
