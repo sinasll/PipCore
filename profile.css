@@ -1,6 +1,3 @@
-/* ===============================
-   Root Variables
-================================ */
 :root {
   --background-color: #000;
   --text-color: #E6B33C;
@@ -17,9 +14,6 @@
   --icon-color: #000;
 }
 
-/* ===============================
-   Base Reset
-================================ */
 * {
   margin: 0;
   padding: 0;
@@ -40,9 +34,6 @@ a {
   color: var(--text-color);
 }
 
-/* ===============================
-   Header
-================================ */
 header {
   background-color: var(--background-color);
   padding: 20px 0;
@@ -68,9 +59,6 @@ header {
   border: 1px solid var(--border-color);
 }
 
-/* ===============================
-   Theme Toggle
-================================ */
 .theme-toggle {
   background: none;
   border: none;
@@ -80,9 +68,6 @@ header {
   margin-left: 20px;
 }
 
-/* ===============================
-   Hamburger Menu
-================================ */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -103,9 +88,6 @@ header {
   transition: opacity 0.3s ease;
 }
 
-/* ===============================
-   Navigation
-================================ */
 .nav-menu {
   display: flex;
   justify-content: center;
@@ -150,58 +132,6 @@ header {
   color: var(--icon-color);
 }
 
-/* ===============================
-   Mobile Navigation
-================================ */
-@media (max-width: 768px) {
-  .hamburger {
-    display: flex;
-  }
-
-  .nav-menu {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 70%;
-    height: 100vh;
-    background-color: var(--background-color);
-    border-left: 2px solid var(--border-color);
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-top: 0px;
-    transition: right 0.4s ease-in-out;
-    z-index: 1000;
-  }
-
-  .logotxt {
-    margin-top: 40px;
-    margin-bottom: 40px;
-    font-size: 20px;
-  }
-
-  .nav-menu.active {
-    right: 0;
-  }
-
-  .nav-list {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0 20px;
-  }
-
-  .nav-list li {
-    margin: 10px 0;
-  }
-
-  .nav-list li a {
-    justify-content: flex-start;
-    width: 100%;
-  }
-}
-
-/* ===============================
-   User Info
-================================ */
 .username {
   font-size: 18px;
   font-family: 'Press Start 2P', sans-serif;
@@ -210,9 +140,6 @@ header {
   text-align: center;
 }
 
-/* ===============================
-   Tasks Module
-================================ */
 .task-container {
   max-width: 600px;
   margin: 2rem auto;
@@ -276,32 +203,17 @@ header {
   transform: translateY(-2px);
 }
 
-.telegram-task {
+.telegram-task, .twitter-task {
   background: var(--background-color);
   color: var(--text-color);
   border-color: var(--border-color);
 }
 
-.telegram-task:hover {
+.telegram-task:hover, .twitter-task:hover {
   background: var(--accent-color);
   color: var(--background-color);
 }
 
-.twitter-task {
-  background: var(--background-color);
-  color: var(--text-color);
-  border-color: var(--border-color);
-}
-
-.twitter-task:hover {
-  background: var(--accent-color);
-  color: var(--background-color);
-}
-
-
-/* ===============================
-   Invite / Recruitment Module
-================================ */
 .invite-container {
   max-width: 600px;
   margin: 2rem auto;
@@ -417,9 +329,6 @@ header {
   color: inherit;
 }
 
-/* ===============================
-   Wallet Button
-================================ */
 .connect-wallet {
   font-size: 14px;
   font-family: 'Press Start 2P', sans-serif;
@@ -434,9 +343,6 @@ header {
   cursor: pointer;
 }
 
-/* ===============================
-   Main Content
-================================ */
 main {
   padding-top: 35%;
   padding-bottom: 20%;
@@ -444,10 +350,51 @@ main {
   padding-right: 15px;
 }
 
-/* ===============================
-   Responsive Adjustments
-================================ */
 @media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    background-color: var(--background-color);
+    border-left: 2px solid var(--border-color);
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 0px;
+    transition: right 0.4s ease-in-out;
+    z-index: 1000;
+  }
+
+  .logotxt {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 20px;
+  }
+
+  .nav-menu.active {
+    right: 0;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 20px;
+  }
+
+  .nav-list li {
+    margin: 10px 0;
+  }
+
+  .nav-list li a {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
   .invite-container {
     padding-top: 5%;
   }

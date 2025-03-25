@@ -33,26 +33,43 @@
           <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
         </ul>
       </nav>
- <!-- Updated Settings button: only an icon -->
- <button id="openSettings" class="theme-toggle">
-  <i class="fas fa-cog"></i>
-</button>
-<button class="theme-toggle" id="theme-toggle">
-  <i class="fas fa-moon"></i>
-</button>
-</div>
+      <button id="openSettings" class="theme-toggle">
+        <i class="fas fa-cog"></i>
+      </button>
+      <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
   </header>
 
   <main>
     <section class="journal">
       <h1 class="journalh1">TRACK TRADES</h1>
       <form id="tradeForm">
-        <!-- Form fields for trade details -->
+        <!-- Trade details form fields -->
         <label for="date">Date</label>
         <input type="date" id="date" required class="date-time" />
-
+        
         <label for="time">Time</label>
         <input type="time" id="time" required class="date-time" />
+        
+        <script>
+          // Set default date and time when page loads
+          document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            
+            // Format date as YYYY-MM-DD
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            document.getElementById('date').value = `${year}-${month}-${day}`;
+            
+            // Format time as HH:MM
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').value = `${hours}:${minutes}`;
+          });
+        </script>
 
         <label for="session">Session</label>
         <select id="session">
@@ -98,7 +115,24 @@
         </select>
 
         <label for="pips">Pips</label>
-        <input type="number" id="pips" required />
+        <input type="number" 
+               id="pips" 
+               required 
+               value="0" 
+               min="0"
+               inputmode="numeric"
+               pattern="[0-9]*" 
+               onfocus="if(this.value==='0')this.value=''" 
+               onblur="if(this.value==='')this.value='0'" />
+        
+        <script>
+          document.getElementById('pips').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              this.blur();
+            }
+          });
+        </script>
 
         <label for="outcome">Outcome</label>
         <select id="outcome">
@@ -136,214 +170,216 @@
     </section>
   </main>
 
-<!-- Settings Modal -->
-<div id="settingsModal" class="modal">
-  <div class="modal-content">
-    <span class="close" id="closeSettings">&times;</span>
-    <h2>Settings</h2>
-    <label for="settingsType">Select</label>
-    <select id="settingsType">
-      <option value="setup">Setup</option>
-      <option value="entry">Entry</option>
-      <option value="timeframe">Timeframe</option>
-      <option value="pair">Pair</option>
-    </select>
-    <div id="modalActions">
-      <select id="modalOptions" size="5" style="width:100%;"></select>
-      <br /><br />
-      <input type="text" id="modalNewName" placeholder="Rename" style="width:100%;" />
-      <br /><br />
-      <button id="modalRenameBtn">Rename Selected</button>
-      <button id="modalRemoveBtn">Remove Selected</button>
-      <br /><br />
-      <input type="text" id="modalAddName" placeholder="Add" style="width:100%;" />
-      <br /><br />
-      <button id="modalAddBtn">Add</button>
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeSettings">&times;</span>
+      <h2>Settings</h2>
+      <label for="settingsType">Select</label>
+      <select id="settingsType">
+        <option value="setup">Setup</option>
+        <option value="entry">Entry</option>
+        <option value="timeframe">Timeframe</option>
+        <option value="pair">Pair</option>
+      </select>
+      <div id="modalActions">
+        <select id="modalOptions" size="5" style="width:100%;"></select>
+        <br /><br />
+        <input type="text" id="modalNewName" placeholder="Rename" style="width:100%;" />
+        <br /><br />
+        <button id="modalRenameBtn">Rename Selected</button>
+        <button id="modalRemoveBtn">Remove Selected</button>
+        <br /><br />
+        <input type="text" id="modalAddName" placeholder="Add" style="width:100%;" />
+        <br /><br />
+        <button id="modalAddBtn">Add</button>
+      </div>
     </div>
   </div>
-</div>
 
   <script>
-  // Initialize options from localStorage or defaults
-const initializeOptions = () => {
-  const savedSetups = JSON.parse(localStorage.getItem('setups')) || ['setup 1', 'setup 2', 'setup 3'];
-  const savedEntries = JSON.parse(localStorage.getItem('entries')) || ['entry 1', 'entry 2', 'entry 3', 'entry 4', 'entry 5'];
-  const savedTimeframes = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
-  const savedPairs = JSON.parse(localStorage.getItem('pairs')) || ['EURUSD', 'GBPUSD', 'USDJPY', 'GBPJPY', 'XAUUSD', 'XAGUSD', 'US30', 'NAS100', 'SPX500'];
+    // Initialize options from localStorage or defaults
+    const initializeOptions = () => {
+      const savedSetups = JSON.parse(localStorage.getItem('setups')) || ['setup 1', 'setup 2', 'setup 3'];
+      const savedEntries = JSON.parse(localStorage.getItem('entries')) || ['entry 1', 'entry 2', 'entry 3', 'entry 4', 'entry 5'];
+      const savedTimeframes = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
+      const savedPairs = JSON.parse(localStorage.getItem('pairs')) || ['EURUSD', 'GBPUSD', 'USDJPY', 'GBPJPY', 'XAUUSD', 'XAGUSD', 'US30', 'NAS100', 'SPX500'];
 
-  localStorage.setItem('setups', JSON.stringify(savedSetups));
-  localStorage.setItem('entries', JSON.stringify(savedEntries));
-  localStorage.setItem('timeframes', JSON.stringify(savedTimeframes));
-  localStorage.setItem('pairs', JSON.stringify(savedPairs));
+      localStorage.setItem('setups', JSON.stringify(savedSetups));
+      localStorage.setItem('entries', JSON.stringify(savedEntries));
+      localStorage.setItem('timeframes', JSON.stringify(savedTimeframes));
+      localStorage.setItem('pairs', JSON.stringify(savedPairs));
 
-  populateSelect('setup', savedSetups);
-  populateSelect('entry', savedEntries);
-  populateSelect('timeframe', savedTimeframes);
-  populateSelect('pair', savedPairs);
-};
+      populateSelect('setup', savedSetups);
+      populateSelect('entry', savedEntries);
+      populateSelect('timeframe', savedTimeframes);
+      populateSelect('pair', savedPairs);
+    };
 
-// Populate a select element with options
-const populateSelect = (id, options) => {
-  const select = document.getElementById(id);
-  if (select) {
-    select.innerHTML = options.map(option => `<option value="${option}">${option}</option>`).join('');
-  }
-};
+    // Populate a select element with options
+    const populateSelect = (id, options) => {
+      const select = document.getElementById(id);
+      if (select) {
+        select.innerHTML = options.map(option => `<option value="${option}">${option}</option>`).join('');
+      }
+    };
 
-// Save options to localStorage
-const saveOptions = (type, options) => {
-  let key;
-  switch (type) {
-    case 'setup':
-      key = 'setups';
-      break;
-    case 'entry':
-      key = 'entries';
-      break;
-    case 'timeframe':
-      key = 'timeframes';
-      break;
-    case 'pair':
-      key = 'pairs';
-      break;
-    default:
-      return;
-  }
-  localStorage.setItem(key, JSON.stringify(options));
-};
+    // Save options to localStorage
+    const saveOptions = (type, options) => {
+      let key;
+      switch (type) {
+        case 'setup':
+          key = 'setups';
+          break;
+        case 'entry':
+          key = 'entries';
+          break;
+        case 'timeframe':
+          key = 'timeframes';
+          break;
+        case 'pair':
+          key = 'pairs';
+          break;
+        default:
+          return;
+      }
+      localStorage.setItem(key, JSON.stringify(options));
+    };
 
-// Get options from localStorage
-const getOptions = (type) => {
-  let key;
-  switch (type) {
-    case 'setup':
-      key = 'setups';
-      break;
-    case 'entry':
-      key = 'entries';
-      break;
-    case 'timeframe':
-      key = 'timeframes';
-      break;
-    case 'pair':
-      key = 'pairs';
-      break;
-    default:
-      return [];
-  }
-  return JSON.parse(localStorage.getItem(key)) || [];
-};
+    // Get options from localStorage
+    const getOptions = (type) => {
+      let key;
+      switch (type) {
+        case 'setup':
+          key = 'setups';
+          break;
+        case 'entry':
+          key = 'entries';
+          break;
+        case 'timeframe':
+          key = 'timeframes';
+          break;
+        case 'pair':
+          key = 'pairs';
+          break;
+        default:
+          return [];
+      }
+      return JSON.parse(localStorage.getItem(key)) || [];
+    };
 
-// Update both form select and modal select
-const updateOptions = (type) => {
-  const options = getOptions(type);
-  if (type === 'setup' || type === 'entry' || type === 'timeframe' || type === 'pair') {
-    populateSelect(type, options);
-  }
-  if (document.getElementById('modalOptions')) {
-    populateModalOptions(options);
-  }
-};
+    // Update both form select and modal select
+    const updateOptions = (type) => {
+      const options = getOptions(type);
+      if (type === 'setup' || type === 'entry' || type === 'timeframe' || type === 'pair') {
+        populateSelect(type, options);
+      }
+      if (document.getElementById('modalOptions')) {
+        populateModalOptions(options);
+      }
+    };
 
-// Populate the modal's options list
-const populateModalOptions = (options) => {
-  const modalSelect = document.getElementById('modalOptions');
-  if (modalSelect) {
-    modalSelect.innerHTML = options.map(option => `<option value="${option}">${option}</option>`).join('');
-  }
-};
+    // Populate the modal's options list
+    const populateModalOptions = (options) => {
+      const modalSelect = document.getElementById('modalOptions');
+      if (modalSelect) {
+        modalSelect.innerHTML = options.map(option => `<option value="${option}">${option}</option>`).join('');
+      }
+    };
 
-// Modal related variables
-const settingsModal = document.getElementById('settingsModal');
-const openSettingsBtn = document.getElementById('openSettings');
-const closeSettingsBtn = document.getElementById('closeSettings');
-const settingsTypeSelect = document.getElementById('settingsType');
-const modalOptions = document.getElementById('modalOptions');
+    // Modal related variables
+    const settingsModal = document.getElementById('settingsModal');
+    const openSettingsBtn = document.getElementById('openSettings');
+    const closeSettingsBtn = document.getElementById('closeSettings');
+    const settingsTypeSelect = document.getElementById('settingsType');
+    const modalOptions = document.getElementById('modalOptions');
 
-// Open modal when settings button is clicked
-openSettingsBtn.addEventListener('click', () => {
-  settingsModal.style.display = 'block';
-  loadModalOptions();
-});
+    // Open modal when settings button is clicked
+    openSettingsBtn.addEventListener('click', () => {
+      settingsModal.style.display = 'block';
+      loadModalOptions();
+    });
 
-// Close modal when 'x' is clicked
-closeSettingsBtn.addEventListener('click', () => {
-  settingsModal.style.display = 'none';
-});
+    // Close modal when 'x' is clicked
+    closeSettingsBtn.addEventListener('click', () => {
+      settingsModal.style.display = 'none';
+    });
 
-// Close modal when clicking outside the modal content
-window.addEventListener('click', (event) => {
-  if (event.target === settingsModal) {
-    settingsModal.style.display = 'none';
-  }
-});
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', (event) => {
+      if (event.target === settingsModal) {
+        settingsModal.style.display = 'none';
+      }
+    });
 
-// Load options in the modal based on selected type
-const loadModalOptions = () => {
-  const type = settingsTypeSelect.value;
-  const options = getOptions(type);
-  populateModalOptions(options);
-};
+    // Load options in the modal based on selected type
+    const loadModalOptions = () => {
+      const type = settingsTypeSelect.value;
+      const options = getOptions(type);
+      populateModalOptions(options);
+    };
 
-// Update modal when type selection changes
-settingsTypeSelect.addEventListener('change', loadModalOptions);
+    // Update modal when type selection changes
+    settingsTypeSelect.addEventListener('change', loadModalOptions);
 
-// Modal Add Option
-document.getElementById('modalAddBtn').addEventListener('click', () => {
-  const type = settingsTypeSelect.value;
-  const addInput = document.getElementById('modalAddName');
-  const newOption = addInput.value.trim();
-  if (newOption) {
-    const options = getOptions(type);
-    options.push(newOption);
-    saveOptions(type, options);
-    updateOptions(type);
-    addInput.value = '';
-    loadModalOptions();
-  }
-});
+    // Modal Add Option
+    document.getElementById('modalAddBtn').addEventListener('click', () => {
+      const type = settingsTypeSelect.value;
+      const addInput = document.getElementById('modalAddName');
+      const newOption = addInput.value.trim();
+      if (newOption) {
+        const options = getOptions(type);
+        options.push(newOption);
+        saveOptions(type, options);
+        updateOptions(type);
+        addInput.value = '';
+        loadModalOptions();
+      }
+    });
 
-// Modal Rename Option
-document.getElementById('modalRenameBtn').addEventListener('click', () => {
-  const type = settingsTypeSelect.value;
-  const renameInput = document.getElementById('modalNewName');
-  const newName = renameInput.value.trim();
-  const selectedIndex = modalOptions.selectedIndex;
-  if (newName && selectedIndex !== -1) {
-    const options = getOptions(type);
-    options[selectedIndex] = newName;
-    saveOptions(type, options);
-    updateOptions(type);
-    renameInput.value = '';
-    loadModalOptions();
-  }
-});
+    // Modal Rename Option
+    document.getElementById('modalRenameBtn').addEventListener('click', () => {
+      const type = settingsTypeSelect.value;
+      const renameInput = document.getElementById('modalNewName');
+      const newName = renameInput.value.trim();
+      const selectedIndex = modalOptions.selectedIndex;
+      if (newName && selectedIndex !== -1) {
+        const options = getOptions(type);
+        options[selectedIndex] = newName;
+        saveOptions(type, options);
+        updateOptions(type);
+        renameInput.value = '';
+        loadModalOptions();
+      }
+    });
 
-// Modal Remove Option
-document.getElementById('modalRemoveBtn').addEventListener('click', () => {
-  const type = settingsTypeSelect.value;
-  const selectedIndex = modalOptions.selectedIndex;
-  if (selectedIndex !== -1) {
-    const options = getOptions(type);
-    options.splice(selectedIndex, 1);
-    saveOptions(type, options);
-    updateOptions(type);
-    loadModalOptions();
-  }
-});
+    // Modal Remove Option
+    document.getElementById('modalRemoveBtn').addEventListener('click', () => {
+      const type = settingsTypeSelect.value;
+      const selectedIndex = modalOptions.selectedIndex;
+      if (selectedIndex !== -1) {
+        const options = getOptions(type);
+        options.splice(selectedIndex, 1);
+        saveOptions(type, options);
+        updateOptions(type);
+        loadModalOptions();
+      }
+    });
 
-// Initialize on page load
-window.onload = () => {
-  initializeOptions();
-};
+    // Initialize on page load
+    window.onload = () => {
+      initializeOptions();
+    };
 
-    /* Hamburger menu and theme toggle scripts remain unchanged */
+    // Hamburger menu functionality
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
     hamburger.addEventListener('click', () => {
       navMenu.classList.toggle('active');
       hamburger.classList.toggle('active');
     });
+
+    // Active link highlighting
     const navLinks = document.querySelectorAll('.nav-list li a');
     navLinks.forEach(link => {
       link.addEventListener('click', function () {
@@ -351,12 +387,16 @@ window.onload = () => {
         this.classList.add('active');
       });
     });
+
+    // Set active link based on current page
     const currentPage = window.location.pathname.split('/').pop() || 'profile.html';
     navLinks.forEach(link => {
       if (link.getAttribute('href') === currentPage) {
         link.classList.add('active');
       }
     });
+
+    // Theme toggle functionality
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
     const savedTheme = localStorage.getItem('theme');
@@ -366,6 +406,7 @@ window.onload = () => {
     } else {
       body.setAttribute('data-theme', 'dark');
     }
+
     themeToggle.addEventListener('click', () => {
       const currentTheme = body.getAttribute('data-theme');
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -373,6 +414,7 @@ window.onload = () => {
       localStorage.setItem('theme', newTheme);
       updateToggleIcon(newTheme);
     });
+
     function updateToggleIcon(theme) {
       const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
       themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
@@ -380,57 +422,49 @@ window.onload = () => {
   </script>
   
   <script>
-    // To open the modal
-  document.getElementById('openSettings').addEventListener('click', () => {
-    document.getElementById('settingsModal').classList.add('show');
-  });
-  
-  // To close the modal (e.g., when clicking the close button)
-  document.getElementById('closeSettings').addEventListener('click', () => {
-    document.getElementById('settingsModal').classList.remove('show');
-  });
-  
-  // Optionally, close modal when clicking outside of the modal-content
-  window.addEventListener('click', (e) => {
-    const modal = document.getElementById('settingsModal');
-    if (e.target === modal) {
-      modal.classList.remove('show');
-    }
-  });
-  
-</script>
-
-<script>
-  // Haptic feedback function for Telegram Web App
-  function triggerHaptic() {
-    if (window.Telegram?.WebApp?.HapticFeedback) {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
-    }
-  }
-
-  // Add haptic feedback to all interactive elements
-  document.addEventListener('DOMContentLoaded', function() {
-    // All buttons, toggles, and interactive elements
-    const interactiveElements = document.querySelectorAll(
-      'button, .hamburger, .theme-toggle, #openSettings, #theme-toggle, #clearFilter, #modalAddBtn, #modalRenameBtn, #modalRemoveBtn'
-    );
-
-    // Add click listeners for haptic feedback
-    interactiveElements.forEach(element => {
-      element.addEventListener('click', triggerHaptic);
+    // Modal open/close functionality
+    document.getElementById('openSettings').addEventListener('click', () => {
+      document.getElementById('settingsModal').classList.add('show');
     });
-
-    // Add haptic to form submission
-    document.getElementById('tradeForm')?.addEventListener('submit', triggerHaptic);
     
-    // Add haptic to navigation links
-    document.querySelectorAll('.nav-list a').forEach(link => {
-      link.addEventListener('click', triggerHaptic);
+    document.getElementById('closeSettings').addEventListener('click', () => {
+      document.getElementById('settingsModal').classList.remove('show');
     });
+    
+    window.addEventListener('click', (e) => {
+      const modal = document.getElementById('settingsModal');
+      if (e.target === modal) {
+        modal.classList.remove('show');
+      }
+    });
+  </script>
 
-    // Add haptic to menu toggle
-    document.getElementById('hamburger')?.addEventListener('click', triggerHaptic);
-  });
-</script>
+  <script>
+    // Haptic feedback for Telegram Web App
+    function triggerHaptic() {
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+      }
+    }
+
+    // Add haptic feedback to interactive elements
+    document.addEventListener('DOMContentLoaded', function() {
+      const interactiveElements = document.querySelectorAll(
+        'button, .hamburger, .theme-toggle, #openSettings, #theme-toggle, #clearFilter, #modalAddBtn, #modalRenameBtn, #modalRemoveBtn'
+      );
+
+      interactiveElements.forEach(element => {
+        element.addEventListener('click', triggerHaptic);
+      });
+
+      document.getElementById('tradeForm')?.addEventListener('submit', triggerHaptic);
+      
+      document.querySelectorAll('.nav-list a').forEach(link => {
+        link.addEventListener('click', triggerHaptic);
+      });
+
+      document.getElementById('hamburger')?.addEventListener('click', triggerHaptic);
+    });
+  </script>
 </body>
 </html>

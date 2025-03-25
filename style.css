@@ -1,20 +1,17 @@
-/* General Reset and Setup */
 :root {
-  /* Dark Mode Colors */
   --background-color: #000;
-  --text-color: #E6B33C; /* Gold text in dark mode */
-  --accent-color: #E6B33C; /* Gold accents in dark mode */
-  --border-color: #E6B33C; /* Gold borders in dark mode */
-  --icon-color: #E6B33C; /* Gold icons in dark mode */
+  --text-color: #E6B33C;
+  --accent-color: #E6B33C;
+  --border-color: #E6B33C;
+  --icon-color: #E6B33C;
 }
 
 [data-theme="light"] {
-  /* Light Mode Colors (Opposite of Dark Mode) */
-  --background-color: #E6B33C; /* Gold background in light mode */
-  --text-color: #000; /* Black text in light mode */
-  --accent-color: #000; /* Black accents in light mode */
-  --border-color: #000; /* Black borders in light mode */
-  --icon-color: #000; /* Black icons in light mode */
+  --background-color: #E6B33C;
+  --text-color: #000;
+  --accent-color: #000;
+  --border-color: #000;
+  --icon-color: #000;
 }
 
 * {
@@ -37,7 +34,6 @@ a {
   color: var(--text-color);
 }
 
-/* Header Styles */
 header {
   background-color: var(--background-color);
   padding: 20px 0;
@@ -63,7 +59,6 @@ header {
   text-align: center;
 }
 
-/* Theme Toggle Button */
 .theme-toggle {
   background: none;
   border: none;
@@ -73,7 +68,6 @@ header {
   margin-left: 20px;
 }
 
-/* Hamburger Menu */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -89,7 +83,6 @@ header {
   transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-/* Navigation Styles */
 .nav-menu {
   display: flex;
   justify-content: center;
@@ -134,25 +127,24 @@ header {
   color: var(--icon-color);
 }
 
-/* Mobile Navigation */
 @media (max-width: 768px) {
   .hamburger {
-      display: flex;
+    display: flex;
   }
 
   .nav-menu {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 70%;
-      height: 100vh;
-      background-color: var(--background-color);
-      border-left: 2px solid var(--border-color);
-      flex-direction: column;
-      justify-content: flex-start;
-      padding-top: 0px;
-      transition: right 0.4s ease-in-out;
-      z-index: 1000;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    background-color: var(--background-color);
+    border-left: 2px solid var(--border-color);
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 0px;
+    transition: right 0.4s ease-in-out;
+    z-index: 1000;
   }
 
   .logotxt {
@@ -162,31 +154,30 @@ header {
   }
 
   .nav-menu.active {
-      right: 0;
+    right: 0;
   }
 
   .nav-list {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 0 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 20px;
   }
 
   .nav-list li {
-      margin: 10px 0;
+    margin: 10px 0;
   }
 
   .nav-list li a {
-      justify-content: flex-start;
-      width: 100%;
+    justify-content: flex-start;
+    width: 100%;
   }
 }
 
 .hamburger.active span {
-  opacity: 0; /* Hide all bars */
+  opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-/* h1 style */
 .stats {
   color: var(--accent-color);
   font-size: 20px;
@@ -194,7 +185,6 @@ header {
   margin-bottom: 10px;
 }
 
-/* User Info and Wallet Button Styling */
 .soon {
   font-size: 10px;
   font-family: 'Press Start 2P', sans-serif;
@@ -227,7 +217,6 @@ header {
   cursor: pointer;
 }
 
-/* Main Content Styling */
 main {
   padding-top: 35%;
   padding-bottom: 20%;
@@ -237,7 +226,7 @@ main {
 
 .dashboard {
   display: flex;
-  flex-direction: column; /* Stack all cards vertically */
+  flex-direction: column;
   align-items: center;
 }
 
@@ -247,8 +236,8 @@ main {
   padding: 30px;
   margin: 10px;
   text-align: center;
-  width: 100%; /* Make cards full width */
-  max-width: 350px; /* Limit max width for larger screens */
+  width: 100%;
+  max-width: 350px;
 }
 
 .stat-card h3 {
@@ -317,7 +306,6 @@ main {
   text-align: center;
 }
 
-/* Socials Section */
 .socials-container {
   text-align: center;
   margin-top: 30px;
@@ -365,7 +353,6 @@ ul.socials li a:hover {
   color: var(--background-color);
 }
 
-/* Footer Styles */
 footer {
   background-color: var(--background-color);
   padding: 16px 0;
@@ -382,10 +369,9 @@ footer p {
   font-weight: bold;
 }
 
-/* Responsive Adjustments for Mobile */
 @media (max-width: 768px) {
   .stat-card {
-    width: 100%; /* Ensure cards take full width on smaller screens */
+    width: 100%;
     margin: 10px 0;
   }
 
@@ -401,7 +387,7 @@ footer p {
 
 @media (max-width: 480px) {
   body {
-    font-size: 12px; /* Further decrease font size for very small screens */
+    font-size: 12px;
   }
 
   .stat-card h3 {

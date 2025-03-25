@@ -47,25 +47,24 @@ function generateStats() {
     { title: 'Losses', value: loseTrades.toString() }
   ];
 
-// Grouping by stats section (Win Rate, Total Trades, etc.)
-const statGroups = [
-  { title: 'MONTH STATS', stats: stats },
-  { title: 'Setups', stats: getSetupsStats(currentMonthTrades) },
-  { title: 'Entries', stats: getEntriesStats(currentMonthTrades) },
-  { title: 'Timeframes', stats: getTimeframesStats(currentMonthTrades) }, // Moved above Sessions
-  { title: 'Sessions', stats: getSessionsStats(currentMonthTrades) } // Moved below Timeframes
-];
-
+  // Grouping by stats section
+  const statGroups = [
+    { title: 'MONTH STATS', stats: stats },
+    { title: 'Setups', stats: getSetupsStats(currentMonthTrades) },
+    { title: 'Entries', stats: getEntriesStats(currentMonthTrades) },
+    { title: 'Timeframes', stats: getTimeframesStats(currentMonthTrades) },
+    { title: 'Sessions', stats: getSessionsStats(currentMonthTrades) }
+  ];
 
   // Generate stat cards for each group
   statGroups.forEach(group => {
-    // Create group title and apply styles
+    // Create group title
     const groupTitle = document.createElement('h1');
     groupTitle.textContent = group.title;
     groupTitle.style.color = 'var(--accent-color)';
-    groupTitle.style.fontSize = '20px'; 
-    groupTitle.style.textAlign = 'center'; 
-    groupTitle.style.marginBottom = '10px'; 
+    groupTitle.style.fontSize = '20px';
+    groupTitle.style.textAlign = 'center';
+    groupTitle.style.marginBottom = '10px';
     statsContainer.appendChild(groupTitle);
 
     group.stats.forEach(stat => {
@@ -87,43 +86,39 @@ const statGroups = [
 
 // Function to calculate setup stats
 function getSetupsStats(trades) {
-  const setups = [...new Set(trades.map(trade => trade.setup))]; // Unique setups
+  const setups = [...new Set(trades.map(trade => trade.setup))];
   return setups.map(setup => {
     const tradesForSetup = trades.filter(trade => trade.setup === setup);
     const setupWinRate = tradesForSetup.length > 0 ? 
       ((tradesForSetup.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForSetup.length) * 100).toFixed(2)
       : 0;
-
     return { title: `${setup}`, value: `${setupWinRate}%` };
   });
 }
 
 // Function to calculate entry stats
 function getEntriesStats(trades) {
-  const entries = [...new Set(trades.map(trade => trade.entry))]; // Unique entries
+  const entries = [...new Set(trades.map(trade => trade.entry))];
   return entries.map(entry => {
     const tradesForEntry = trades.filter(trade => trade.entry === entry);
     const entryWinRate = tradesForEntry.length > 0 ? 
       ((tradesForEntry.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForEntry.length) * 100).toFixed(2)
       : 0;
-
     return { title: `${entry}`, value: `${entryWinRate}%` };
   });
 }
 
 // Function to calculate timeframe stats
 function getTimeframesStats(trades) {
-  const timeframes = ['5min', '15min', '30min', '1hr', '4hr'];
+  const timeframes = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
   return timeframes.map(timeframe => {
     const tradesForTimeframe = trades.filter(trade => trade.timeframe === timeframe);
-    const timeframeWinRate = tradesForTimeframe.length > 0 ? 
+    const timeframeWinRate = tradesForTimeframe.length > 0 ?
       ((tradesForTimeframe.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForTimeframe.length) * 100).toFixed(2)
       : 0;
-
-    return { title: `${timeframe} Timeframe`, value: `${timeframeWinRate}%` };
+    return { title: `${timeframe}`, value: `${timeframeWinRate}%` };
   });
 }
-
 
 // Function to calculate session stats
 function getSessionsStats(trades) {
@@ -133,23 +128,7 @@ function getSessionsStats(trades) {
     const sessionWinRate = tradesForSession.length > 0 ? 
       ((tradesForSession.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForSession.length) * 100).toFixed(2)
       : 0;
-
     return { title: `${session}`, value: `${sessionWinRate}%` };
-  });
-}
-
-// Function to calculate timeframe stats for the calendar
-function getTimeframesStats(trades) {
-  // Fetch timeframes from localStorage
-  const timeframes = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
-
-  return timeframes.map(timeframe => {
-    const tradesForTimeframe = trades.filter(trade => trade.timeframe === timeframe);
-    const timeframeWinRate = tradesForTimeframe.length > 0 ?
-      ((tradesForTimeframe.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForTimeframe.length) * 100).toFixed(2)
-      : 0;
-
-    return { title: `${timeframe}`, value: `${timeframeWinRate}%` };
   });
 }
 

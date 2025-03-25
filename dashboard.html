@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <title>PipCore</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="style.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
@@ -31,7 +30,7 @@
         </ul>
       </nav>
       <button class="theme-toggle" id="theme-toggle">
-        <i class="fas fa-moon"></i> <!-- Default to dark mode icon -->
+        <i class="fas fa-moon"></i>
       </button>
     </div>
   </header>
@@ -51,16 +50,15 @@
   </main>
 
   <script>
-    // Haptic feedback function for Telegram Web App
+    // Haptic feedback for Telegram Web App
     function triggerHaptic() {
       if (window.Telegram?.WebApp?.HapticFeedback) {
         window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
       }
     }
 
-    // Initialize haptic feedback for all interactive elements
+    // Initialize haptic feedback for interactive elements
     function initHapticFeedback() {
-      // All buttons, links, and interactive elements
       const interactiveElements = document.querySelectorAll(
         'button, a, .hamburger, .theme-toggle, .nav-list li a'
       );
@@ -69,38 +67,32 @@
         element.addEventListener('click', triggerHaptic);
       });
 
-      // Add haptic to menu toggle
       document.getElementById('hamburger')?.addEventListener('click', triggerHaptic);
     }
 
-    // Initialize haptic feedback when DOM is loaded
     document.addEventListener('DOMContentLoaded', initHapticFeedback);
   </script>
 
   <script>
-    // Hamburger menu functionality
+    // Navigation menu functionality
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
+    const navLinks = document.querySelectorAll('.nav-list li a');
 
     hamburger.addEventListener('click', () => {
       navMenu.classList.toggle('active');
       hamburger.classList.toggle('active');
     });
 
-    // Add active class to the clicked navigation item
-    const navLinks = document.querySelectorAll('.nav-list li a');
-
     navLinks.forEach(link => {
-      link.addEventListener('click', function (e) {
-        // Remove active class from all links
+      link.addEventListener('click', function() {
         navLinks.forEach(link => link.classList.remove('active'));
-        // Add active class to the clicked link
         this.classList.add('active');
       });
     });
 
-    // Set active class based on current page
-    const currentPage = window.location.pathname.split('/').pop() || 'profile.html'; // Default to profile.html
+    // Set active link based on current page
+    const currentPage = window.location.pathname.split('/').pop() || 'profile.html';
     navLinks.forEach(link => {
       if (link.getAttribute('href') === currentPage) {
         link.classList.add('active');
@@ -109,17 +101,17 @@
   </script>
 
   <script>
-    // Theme Toggle Functionality
+    // Theme toggle functionality
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
 
-    // Check for saved theme in localStorage
+    // Load saved theme or default to dark
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       body.setAttribute('data-theme', savedTheme);
       updateToggleIcon(savedTheme);
     } else {
-      body.setAttribute('data-theme', 'dark'); // Default to dark mode
+      body.setAttribute('data-theme', 'dark');
     }
 
     themeToggle.addEventListener('click', () => {
@@ -137,134 +129,118 @@
   </script>
 
   <script>
-// Function to generate overall stats
-function generateOverallStats() {
-  const statsContainer = document.getElementById('stats');
-  statsContainer.innerHTML = ''; // Clear previous stats
+    // Stats generation functions
+    function generateOverallStats() {
+      const statsContainer = document.getElementById('stats');
+      statsContainer.innerHTML = '';
+      const tradeEntries = JSON.parse(localStorage.getItem('tradeEntries')) || [];
 
-  const tradeEntries = JSON.parse(localStorage.getItem('tradeEntries')) || [];
+      // Calculate basic stats
+      const totalTrades = tradeEntries.length;
+      const totalPips = tradeEntries.reduce((total, trade) => total + parseFloat(trade.pips), 0);
+      const winTrades = tradeEntries.filter(trade => trade.outcome.toLowerCase() === 'win').length;
+      const loseTrades = tradeEntries.filter(trade => trade.outcome.toLowerCase() === 'lose').length;
+      const winRate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : 0;
+      const averagePips = totalTrades > 0 ? (totalPips / totalTrades).toFixed(2) : 0;
 
-  const totalTrades = tradeEntries.length;
-  const totalPips = tradeEntries.reduce((total, trade) => total + parseFloat(trade.pips), 0);
+      // Create stat groups
+      const statGroups = [
+        { 
+          title: '', 
+          stats: [
+            { title: 'Win Rate', value: `${winRate}%` },
+            { title: 'Total Trades', value: totalTrades.toString() },
+            { title: 'Total Pips', value: totalPips.toFixed(2) },
+            { title: 'Average Pips', value: averagePips },
+            { title: 'Wins', value: winTrades.toString() },
+            { title: 'Losses', value: loseTrades.toString() }
+          ] 
+        },
+        { title: 'Setups', stats: getSetupsStats(tradeEntries) },
+        { title: 'Entries', stats: getEntriesStats(tradeEntries) },
+        { title: 'Timeframes', stats: getTimeframesStats(tradeEntries) },
+        { title: 'Sessions', stats: getSessionsStats(tradeEntries) }
+      ];
 
-  // Counting win and lose trades
-  const winTrades = tradeEntries.filter(trade => trade.outcome.toLowerCase() === 'win').length;
-  const loseTrades = tradeEntries.filter(trade => trade.outcome.toLowerCase() === 'lose').length;
+      // Render each stat group
+      statGroups.forEach(group => {
+        const groupTitle = document.createElement('h1');
+        groupTitle.textContent = group.title;
+        groupTitle.style.color = 'var(--accent-color)';
+        groupTitle.style.fontSize = '20px';
+        groupTitle.style.textAlign = 'center';
+        groupTitle.style.marginBottom = '10px';
+        statsContainer.appendChild(groupTitle);
 
-  // Calculating win rate and average pips
-  const winRate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : 0;
-  const averagePips = totalTrades > 0 ? (totalPips / totalTrades).toFixed(2) : 0;
+        group.stats.forEach(stat => {
+          const statCard = document.createElement('div');
+          statCard.classList.add('stat-card');
 
-  const stats = [
-    { title: 'Win Rate', value: `${winRate}%` },
-    { title: 'Total Trades', value: totalTrades.toString() },
-    { title: 'Total Pips', value: totalPips.toFixed(2) },
-    { title: 'Average Pips', value: averagePips },
-    { title: 'Wins', value: winTrades.toString() },
-    { title: 'Losses', value: loseTrades.toString() }
-  ];
+          const statTitle = document.createElement('h3');
+          statTitle.textContent = stat.title;
 
-  // Grouping by stats section (Overall Stats, Setups, Entries, Timeframes, Sessions)
-  const statGroups = [
-    { title: '', stats: stats },
-    { title: 'Setups', stats: getSetupsStats(tradeEntries) },
-    { title: 'Entries', stats: getEntriesStats(tradeEntries) },
-    { title: 'Timeframes', stats: getTimeframesStats(tradeEntries) },
-    { title: 'Sessions', stats: getSessionsStats(tradeEntries) }
-  ];
+          const statValue = document.createElement('p');
+          statValue.textContent = stat.value;
 
-  // Generate stat cards for each group
-  statGroups.forEach(group => {
-    // Create group title and apply styles
-    const groupTitle = document.createElement('h1');
-    groupTitle.textContent = group.title;
-    groupTitle.style.color = 'var(--accent-color)';
-    groupTitle.style.fontSize = '20px';
-    groupTitle.style.textAlign = 'center';
-    groupTitle.style.marginBottom = '10px';
-    statsContainer.appendChild(groupTitle);
+          statCard.appendChild(statTitle);
+          statCard.appendChild(statValue);
+          statsContainer.appendChild(statCard);
+        });
+      });
+    }
 
-    group.stats.forEach(stat => {
-      const statCard = document.createElement('div');
-      statCard.classList.add('stat-card');
+    // Helper functions for specific stat categories
+    function getSetupsStats(trades) {
+      const setups = [...new Set(trades.map(trade => trade.setup))];
+      return setups.map(setup => {
+        const tradesForSetup = trades.filter(trade => trade.setup === setup);
+        const setupWinRate = tradesForSetup.length > 0 ?
+          ((tradesForSetup.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForSetup.length) * 100).toFixed(2)
+          : 0;
+        return { title: `${setup}`, value: `${setupWinRate}%` };
+      });
+    }
 
-      const statTitle = document.createElement('h3');
-      statTitle.textContent = stat.title;
+    function getEntriesStats(trades) {
+      const entries = [...new Set(trades.map(trade => trade.entry))];
+      return entries.map(entry => {
+        const tradesForEntry = trades.filter(trade => trade.entry === entry);
+        const entryWinRate = tradesForEntry.length > 0 ?
+          ((tradesForEntry.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForEntry.length) * 100).toFixed(2)
+          : 0;
+        return { title: `${entry}`, value: `${entryWinRate}%` };
+      });
+    }
 
-      const statValue = document.createElement('p');
-      statValue.textContent = stat.value;
+    function getTimeframesStats(trades) {
+      const timeframes = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
+      return timeframes.map(timeframe => {
+        const tradesForTimeframe = trades.filter(trade => trade.timeframe === timeframe);
+        const timeframeWinRate = tradesForTimeframe.length > 0 ?
+          ((tradesForTimeframe.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForTimeframe.length) * 100).toFixed(2)
+          : 0;
+        return { title: `${timeframe}`, value: `${timeframeWinRate}%` };
+      });
+    }
 
-      statCard.appendChild(statTitle);
-      statCard.appendChild(statValue);
-      statsContainer.appendChild(statCard);
+    function getSessionsStats(trades) {
+      const sessions = ['Asia', 'Pre London', 'London', 'Pre New York', 'New York'];
+      return sessions.map(session => {
+        const tradesForSession = trades.filter(trade => trade.session === session);
+        const sessionWinRate = tradesForSession.length > 0 ?
+          ((tradesForSession.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForSession.length) * 100).toFixed(2)
+          : 0;
+        return { title: `${session}`, value: `${sessionWinRate}%` };
+      });
+    }
+
+    // Initialize stats and set up storage listener
+    document.addEventListener('DOMContentLoaded', generateOverallStats);
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'tradeEntries' || event.key === 'setups' || event.key === 'entries') {
+        generateOverallStats();
+      }
     });
-  });
-}
-
-// Function to calculate setup stats
-function getSetupsStats(trades) {
-  const setups = [...new Set(trades.map(trade => trade.setup))]; // Unique setups
-  return setups.map(setup => {
-    const tradesForSetup = trades.filter(trade => trade.setup === setup);
-    const setupWinRate = tradesForSetup.length > 0 ?
-      ((tradesForSetup.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForSetup.length) * 100).toFixed(2)
-      : 0;
-
-    return { title: `${setup}`, value: `${setupWinRate}%` };
-  });
-}
-
-// Function to calculate entry stats
-function getEntriesStats(trades) {
-  const entries = [...new Set(trades.map(trade => trade.entry))]; // Unique entries
-  return entries.map(entry => {
-    const tradesForEntry = trades.filter(trade => trade.entry === entry);
-    const entryWinRate = tradesForEntry.length > 0 ?
-      ((tradesForEntry.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForEntry.length) * 100).toFixed(2)
-      : 0;
-
-    return { title: `${entry}`, value: `${entryWinRate}%` };
-  });
-}
-
-// Function to calculate timeframe stats
-function getTimeframesStats(trades) {
-  // Fetch timeframes from localStorage
-  const timeframes = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
-
-  return timeframes.map(timeframe => {
-    const tradesForTimeframe = trades.filter(trade => trade.timeframe === timeframe);
-    const timeframeWinRate = tradesForTimeframe.length > 0 ?
-      ((tradesForTimeframe.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForTimeframe.length) * 100).toFixed(2)
-      : 0;
-
-    return { title: `${timeframe}`, value: `${timeframeWinRate}%` };
-  });
-}
-
-// Function to calculate session stats
-function getSessionsStats(trades) {
-  const sessions = ['Asia', 'Pre London', 'London', 'Pre New York', 'New York'];
-  return sessions.map(session => {
-    const tradesForSession = trades.filter(trade => trade.session === session);
-    const sessionWinRate = tradesForSession.length > 0 ?
-      ((tradesForSession.filter(trade => trade.outcome.toLowerCase() === 'win').length / tradesForSession.length) * 100).toFixed(2)
-      : 0;
-
-    return { title: `${session}`, value: `${sessionWinRate}%` };
-  });
-}
-
-// Call the function to generate overall stats when the page loads
-document.addEventListener('DOMContentLoaded', generateOverallStats);
-
-// Listen for changes in localStorage and update stats
-window.addEventListener('storage', (event) => {
-  if (event.key === 'tradeEntries' || event.key === 'setups' || event.key === 'entries') {
-    generateOverallStats();
-  }
-});
   </script>
-  
 </body>
 </html>

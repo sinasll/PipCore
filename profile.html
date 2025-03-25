@@ -6,12 +6,12 @@
   <title>PipCore</title>
 
   <!-- Styles & Fonts -->
-  <link href="profile.css" rel="stylesheet" type="text/css" />
+  <link href="profile.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
-    <!-- Telegram WebApp SDK -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
@@ -47,17 +47,14 @@
     <div class="task-container">
       <div class="task-card">
         <div class="task-buttons">
-          <!-- 1 -->
           <a href="https://t.me/pipcore" target="_blank" class="task-button telegram-task">
             JOIN
           </a>
 
-          <!-- 2 -->
           <a href="https://t.me/boost/pipcore" target="_blank" class="task-button telegram-task">
             BOOST
           </a>
 
-          <!-- 3 -->
           <a href="https://x.com/pipcoretg" target="_blank" class="task-button twitter-task">
             FOLLOW
           </a>
@@ -72,7 +69,7 @@
           <div class="share-buttons">
             <a href="https://t.me/share/url?url=https://t.me/pipcorebot&text=Join%20PipCore%20and%20track%20your%20trading%20journey!%20PipCore%20is%20all%20you%20need." 
                class="cta-button telegram-button">
-                Share PipCore
+              Share PipCore
             </a>
           </div>
           <div class="share-link-box">
@@ -83,10 +80,26 @@
     </div>
   </main>
 
-  <!-- Scripts -->
   <script>
     // Telegram WebApp initialization
-    let tg = window.Telegram.WebApp;
+    const tg = window.Telegram?.WebApp;
+    
+    // Set username from Telegram or default to guest
+    const usernameElement = document.getElementById('username');
+    if (tg?.initDataUnsafe?.user?.username) {
+      usernameElement.textContent = `@${tg.initDataUnsafe.user.username}`;
+    } else {
+      usernameElement.textContent = "@guest";
+    }
+
+    // Clipboard function
+    function copyToClipboard() {
+      const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot";
+      navigator.clipboard.writeText(message).catch(err => {
+        console.error('Failed to copy:', err);
+      });
+      triggerHaptic();
+    }
 
     // Haptic feedback function
     function triggerHaptic() {
@@ -95,9 +108,8 @@
       }
     }
 
-    // Initialize haptic feedback for all interactive elements
+    // Initialize haptic feedback
     function initHapticFeedback() {
-      // All buttons, links, and interactive elements
       const interactiveElements = document.querySelectorAll(
         'button, a, .hamburger, .theme-toggle, .task-button, .cta-button, .copy-button'
       );
@@ -107,62 +119,50 @@
       });
     }
 
-    // Rest of your existing code
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      let username = tg.initDataUnsafe.user.username || "Unknown";
-      document.getElementById("username").textContent = "@" + username;
-    } else {
-      document.getElementById("username").textContent = "@guest";
-    }
-
-    // Clipboard function
-    function copyToClipboard() {
-      const message = "Join PipCore and track your trading journey! PipCore is all you need.\n\nhttps://t.me/pipcorebot";
-      navigator.clipboard.writeText(message).catch(err => {
-        console.error('Failed to copy:', err);
-      });
-      triggerHaptic(); // Additional haptic feedback for copy action
-    }
-
-    // Hamburger menu
+    // Hamburger menu toggle
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
     hamburger.addEventListener('click', () => {
       navMenu.classList.toggle('active');
       hamburger.classList.toggle('active');
+      triggerHaptic();
     });
 
     // Navigation active state
     const navLinks = document.querySelectorAll('.nav-list li a');
     const currentPage = window.location.pathname.split('/').pop() || 'profile.html';
+    
     navLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
+      link.addEventListener('click', function() {
         navLinks.forEach(link => link.classList.remove('active'));
         this.classList.add('active');
       });
+      
       if (link.getAttribute('href') === currentPage) {
         link.classList.add('active');
       }
     });
 
-    // Theme toggle
+    // Theme toggle functionality
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
     const savedTheme = localStorage.getItem('theme') || 'dark';
+    
     body.setAttribute('data-theme', savedTheme);
     themeToggle.innerHTML = `<i class="fas ${savedTheme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>`;
 
     themeToggle.addEventListener('click', () => {
       const currentTheme = body.getAttribute('data-theme');
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
       body.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       themeToggle.innerHTML = `<i class="fas ${newTheme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>`;
+      triggerHaptic();
     });
 
-    // Initialize haptic feedback when DOM is loaded
+    // Initialize when DOM is loaded
     document.addEventListener('DOMContentLoaded', initHapticFeedback);
   </script>
-
 </body>
 </html>

@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PipCore</title>
-  <link href="calendar.css" rel="stylesheet" type="text/css" />
+  
+  <!-- Styles & Scripts -->
+  <link href="calendar.css" rel="stylesheet" type="text/css">
   <script src="calendar.js" defer></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -31,7 +35,7 @@
         </ul>
       </nav>
       <button class="theme-toggle" id="theme-toggle">
-        <i class="fas fa-moon"></i> <!-- Default to dark mode icon -->
+        <i class="fas fa-moon"></i>
       </button>
     </div>
   </header>
@@ -55,21 +59,19 @@
       <div id="stats" class="stats">
         <!-- Stats will be dynamically generated here -->
       </div>
-      
     </div>
   </main>
 
   <script>
-    // Haptic feedback function for Telegram Web App
+    // Haptic feedback for Telegram Web App
     function triggerHaptic() {
       if (window.Telegram?.WebApp?.HapticFeedback) {
         window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
       }
     }
 
-    // Initialize haptic feedback for all interactive elements
+    // Initialize haptic feedback
     function initHapticFeedback() {
-      // All buttons, links, and interactive elements
       const interactiveElements = document.querySelectorAll(
         'button, a, .hamburger, .theme-toggle, .nav-btn, .nav-list li a'
       );
@@ -78,72 +80,51 @@
         element.addEventListener('click', triggerHaptic);
       });
 
-      // Add haptic to menu toggle
       document.getElementById('hamburger')?.addEventListener('click', triggerHaptic);
     }
 
-    // Initialize haptic feedback when DOM is loaded
-    document.addEventListener('DOMContentLoaded', initHapticFeedback);
-  </script>
-
-  <script>
-    // Hamburger menu functionality
+    // Navigation menu functionality
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
-
-    hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        hamburger.classList.toggle('active');
-    });
-
-    // Add active class to the clicked navigation item
     const navLinks = document.querySelectorAll('.nav-list li a');
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', function (e) {
-        // Remove active class from all links
-        navLinks.forEach(link => link.classList.remove('active'));
-        // Add active class to the clicked link
-        this.classList.add('active');
-      });
+    hamburger.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      hamburger.classList.toggle('active');
     });
 
-    // Set active class based on current page
-    const currentPage = window.location.pathname.split('/').pop() || 'profile.html'; // Default to profile.html
+    // Set active navigation link
+    const currentPage = window.location.pathname.split('/').pop() || 'profile.html';
     navLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        navLinks.forEach(link => link.classList.remove('active'));
+        this.classList.add('active');
+      });
+      
       if (link.getAttribute('href') === currentPage) {
         link.classList.add('active');
       }
     });
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    
+    body.setAttribute('data-theme', savedTheme);
+    themeToggle.innerHTML = `<i class="fas ${savedTheme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>`;
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.innerHTML = `<i class="fas ${newTheme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>`;
+    });
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', initHapticFeedback);
   </script>
-
-<script>
-  // Theme Toggle Functionality
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
-
-// Check for saved theme in localStorage
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-body.setAttribute('data-theme', savedTheme);
-updateToggleIcon(savedTheme);
-} else {
-body.setAttribute('data-theme', 'dark'); // Default to dark mode
-}
-
-themeToggle.addEventListener('click', () => {
-const currentTheme = body.getAttribute('data-theme');
-const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-body.setAttribute('data-theme', newTheme);
-localStorage.setItem('theme', newTheme);
-updateToggleIcon(newTheme);
-});
-
-function updateToggleIcon(theme) {
-const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
-themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
-}
-</script>
-  
 </body>
 </html>

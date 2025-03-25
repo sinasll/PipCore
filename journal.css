@@ -1,20 +1,17 @@
-/* General Reset and Setup */
 :root {
-  /* Dark Mode Colors */
   --background-color: #000;
-  --text-color: #E6B33C; /* Gold text in dark mode */
-  --accent-color: #E6B33C; /* Gold accents in dark mode */
-  --border-color: #E6B33C; /* Gold borders in dark mode */
-  --icon-color: #E6B33C; /* Gold icons in dark mode */
+  --text-color: #E6B33C;
+  --accent-color: #E6B33C;
+  --border-color: #E6B33C;
+  --icon-color: #E6B33C;
 }
 
 [data-theme="light"] {
-  /* Light Mode Colors (Opposite of Dark Mode) */
-  --background-color: #E6B33C; /* Gold background in light mode */
-  --text-color: #000; /* Black text in light mode */
-  --accent-color: #000; /* Black accents in light mode */
-  --border-color: #000; /* Black borders in light mode */
-  --icon-color: #000; /* Black icons in light mode */
+  --background-color: #E6B33C;
+  --text-color: #000;
+  --accent-color: #000;
+  --border-color: #000;
+  --icon-color: #000;
 }
 
 * {
@@ -37,7 +34,6 @@ a {
   color: var(--text-color);
 }
 
-/* Header Styles */
 header {
   background-color: var(--background-color);
   padding: 20px 0;
@@ -63,7 +59,6 @@ header {
   text-align: center;
 }
 
-/* Theme Toggle Button */
 .theme-toggle {
   background: none;
   border: none;
@@ -73,7 +68,6 @@ header {
   margin-left: 20px;
 }
 
-/* Hamburger Menu */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -89,7 +83,6 @@ header {
   transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-/* Navigation Styles */
 .nav-menu {
   display: flex;
   justify-content: center;
@@ -134,25 +127,24 @@ header {
   color: var(--icon-color);
 }
 
-/* Mobile Navigation */
 @media (max-width: 768px) {
   .hamburger {
-      display: flex;
+    display: flex;
   }
 
   .nav-menu {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 70%;
-      height: 100vh;
-      background-color: var(--background-color);
-      border-left: 2px solid var(--border-color);
-      flex-direction: column;
-      justify-content: flex-start;
-      padding-top: 0px;
-      transition: right 0.4s ease-in-out;
-      z-index: 1000;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100vh;
+    background-color: var(--background-color);
+    border-left: 2px solid var(--border-color);
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 0px;
+    transition: right 0.4s ease-in-out;
+    z-index: 1000;
   }
 
   .logotxt {
@@ -162,31 +154,30 @@ header {
   }
 
   .nav-menu.active {
-      right: 0;
+    right: 0;
   }
 
   .nav-list {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 0 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 20px;
   }
 
   .nav-list li {
-      margin: 10px 0;
+    margin: 10px 0;
   }
 
   .nav-list li a {
-      justify-content: flex-start;
-      width: 100%;
+    justify-content: flex-start;
+    width: 100%;
   }
 }
 
 .hamburger.active span {
-  opacity: 0; /* Hide all bars */
+  opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-/* Main Content Styling */
 main {
   padding-top: 35%;
   padding-bottom: 20%;
@@ -238,7 +229,6 @@ form button {
   cursor: pointer;
 }
 
-/* Filter Container Styling */
 #filterContainer {
   margin-bottom: 20px;
   text-align: center;
@@ -291,7 +281,6 @@ form button {
   margin-top: 10px;
 }
 
-/* History Section Styling */
 .history {
   color: var(--text-color);
   font-size: 20px;
@@ -303,7 +292,6 @@ form button {
   margin-top: 40px;
 }
 
-/* Trade Card Styling */
 .trade-card {
   background-color: var(--background-color);
   border: 1px solid var(--border-color);
@@ -325,7 +313,7 @@ form button {
 }
 
 .trade-card .view-btn,
-.delete-btn, .print-btn, .share-btn  {
+.delete-btn, .print-btn, .share-btn {
   font-family: 'Press Start 2P', sans-serif;
   padding: 8px 16px;
   background-color: var(--accent-color);
@@ -339,8 +327,6 @@ form button {
   text-align: center;
 }
 
-
-/* Footer Styles */
 footer {
   background-color: var(--background-color);
   padding: 12px 0;
@@ -351,27 +337,26 @@ footer {
   z-index: 1000;
 }
 
-/* Modal Styles */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1001; /* Sit on top */
+  display: none;
+  position: fixed;
+  z-index: 1001;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
-  backdrop-filter: blur(5px); /* Blur effect */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
 }
 
 .modal-content {
   background-color: var(--background-color);
-  margin: 10% auto; /* 10% from the top and centered */
+  margin: 10% auto;
   padding: 20px;
   border: 1px solid var(--border-color);
-  width: 80%; /* Could be more or less, depending on screen size */
-  max-width: 500px; /* Maximum width */
+  width: 80%;
+  max-width: 500px;
   border-radius: 10px;
   color: var(--text-color);
   font-family: 'Press Start 2P', sans-serif;
@@ -435,13 +420,11 @@ footer {
   text-decoration: none;
 }
 
-/* Placeholder Styling */
 ::placeholder {
   color: var(--text-color);
-  opacity: 0.7; /* Slightly transparent for better readability */
+  opacity: 0.7;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
   .modal-content {
     width: 90%;
@@ -465,16 +448,7 @@ footer {
     font-size: 14px;
     padding: 10px 20px;
   }
-}
 
-footer p {
-  color: var(--text-color); /* Golden Yellow */
-  font-size: 10px;
-  font-weight: bold;
-}
-
-/* Responsive Adjustments for Mobile */
-@media (max-width: 768px) {
   form {
     width: 90%;
   }
@@ -491,7 +465,7 @@ footer p {
 
 @media (max-width: 480px) {
   body {
-    font-size: 12px; /* Further decrease font size for very small screens */
+    font-size: 12px;
   }
 
   form label {
@@ -506,4 +480,10 @@ footer p {
     font-size: 14px;
     padding: 10px 20px;
   }
+}
+
+footer p {
+  color: var(--text-color);
+  font-size: 10px;
+  font-weight: bold;
 }
