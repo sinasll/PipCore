@@ -88,6 +88,25 @@
     // Telegram WebApp initialization
     let tg = window.Telegram.WebApp;
 
+    // Haptic feedback function
+    function triggerHaptic() {
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+      }
+    }
+
+    // Initialize haptic feedback for all interactive elements
+    function initHapticFeedback() {
+      // All buttons, links, and interactive elements
+      const interactiveElements = document.querySelectorAll(
+        'button, a, .hamburger, .theme-toggle, .task-button, .cta-button, .copy-button'
+      );
+      
+      interactiveElements.forEach(element => {
+        element.addEventListener('click', triggerHaptic);
+      });
+    }
+
     // Rest of your existing code
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
       let username = tg.initDataUnsafe.user.username || "Unknown";
@@ -102,6 +121,7 @@
       navigator.clipboard.writeText(message).catch(err => {
         console.error('Failed to copy:', err);
       });
+      triggerHaptic(); // Additional haptic feedback for copy action
     }
 
     // Hamburger menu
@@ -139,6 +159,10 @@
       localStorage.setItem('theme', newTheme);
       themeToggle.innerHTML = `<i class="fas ${newTheme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>`;
     });
+
+    // Initialize haptic feedback when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initHapticFeedback);
   </script>
+
 </body>
 </html>

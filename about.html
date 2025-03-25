@@ -58,7 +58,7 @@
 
       <div>
         
-      </<div class="socials-container">
+    <div class="socials-container">
     <h2 class="community">Join Our Community</h2>
     <ul class="socials">
         <li><a href="https://t.me/pipcore" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a></li>
@@ -72,6 +72,33 @@
   <footer>
     <p>&copy; 2025 PipCore. All rights reserved.</p>
   </footer>
+
+  <script>
+    // Haptic feedback function for Telegram Web App
+    function triggerHaptic() {
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+      }
+    }
+
+    // Initialize haptic feedback for all interactive elements
+    function initHapticFeedback() {
+      // All buttons, links, and interactive elements
+      const interactiveElements = document.querySelectorAll(
+        'button, a, .hamburger, .theme-toggle, .nav-list li a, .socials a'
+      );
+      
+      interactiveElements.forEach(element => {
+        element.addEventListener('click', triggerHaptic);
+      });
+
+      // Add haptic to menu toggle
+      document.getElementById('hamburger')?.addEventListener('click', triggerHaptic);
+    }
+
+    // Initialize haptic feedback when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initHapticFeedback);
+  </script>
 
   <script>
     // Hamburger menu functionality

@@ -11,6 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
@@ -397,6 +398,39 @@ window.onload = () => {
     }
   });
   
-    </script>
+</script>
+
+<script>
+  // Haptic feedback function for Telegram Web App
+  function triggerHaptic() {
+    if (window.Telegram?.WebApp?.HapticFeedback) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+    }
+  }
+
+  // Add haptic feedback to all interactive elements
+  document.addEventListener('DOMContentLoaded', function() {
+    // All buttons, toggles, and interactive elements
+    const interactiveElements = document.querySelectorAll(
+      'button, .hamburger, .theme-toggle, #openSettings, #theme-toggle, #clearFilter, #modalAddBtn, #modalRenameBtn, #modalRemoveBtn'
+    );
+
+    // Add click listeners for haptic feedback
+    interactiveElements.forEach(element => {
+      element.addEventListener('click', triggerHaptic);
+    });
+
+    // Add haptic to form submission
+    document.getElementById('tradeForm')?.addEventListener('submit', triggerHaptic);
+    
+    // Add haptic to navigation links
+    document.querySelectorAll('.nav-list a').forEach(link => {
+      link.addEventListener('click', triggerHaptic);
+    });
+
+    // Add haptic to menu toggle
+    document.getElementById('hamburger')?.addEventListener('click', triggerHaptic);
+  });
+</script>
 </body>
 </html>
