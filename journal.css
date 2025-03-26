@@ -313,7 +313,7 @@ form button {
 }
 
 .trade-card .view-btn,
-.delete-btn, .print-btn, .share-btn {
+.delete-btn, .edit-btn, .share-btn {
   font-family: 'Press Start 2P', sans-serif;
   padding: 8px 16px;
   background-color: var(--accent-color);
