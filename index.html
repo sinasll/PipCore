@@ -2,37 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" 
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PipCore</title>
   
-  <!-- 1. Telegram SDKs (SYNCHRONOUS LOAD) -->
+  <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://tganalytics.xyz/index.js"></script>
-
-  <!-- 2. Immediate Analytics Initialization -->
+  
+  <!-- Telegram Analytics SDK -->
+  <script async 
+          src="https://tganalytics.xyz/index.js" 
+          type="text/javascript" 
+          onload="initAnalytics()"></script>
   <script>
-    // Initialize analytics FIRST
-    window.telegramAnalytics.init({
-      token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=',
-      appName: 'PipCore'
-    });
-
-    // Mandatory start event
-    window.telegramAnalytics.track('start');
-
-    // Initialize WebApp
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.enableClosingConfirmation();
-    tg.ready();
+    // Initialize Telegram Analytics once the analytics script loads.
+    function initAnalytics() {
+      window.telegramAnalytics.init({
+        token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=',
+        appName: 'PipCore'
+      });
+    }
   </script>
 
-  <!-- Styling -->
+  <!-- Your CSS & Fonts -->
   <link href="style.css" rel="stylesheet" type="text/css" />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
-
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" 
+        rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+        rel="stylesheet"/>
+  
+  <!-- Inline CSS for Loading Screen -->
   <style>
+    /* Loading Page Styles */
     .loading-container {
       position: fixed;
       top: 0;
@@ -57,7 +58,9 @@
       animation: spin 1.2s linear infinite;
       margin-bottom: 60px;
     }
-    .logo { width: 120px; }
+    .logo {
+      width: 120px;
+    }
     .loading-text {
       color: #E6B33C;
       font-family: 'Press Start 2P', cursive;
@@ -76,6 +79,7 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+    /* Prevent scrollbar during loading */
     body {
       overflow: hidden;
       margin: 0;
@@ -92,29 +96,26 @@
     <div class="loading-text">LOADING YOUR STATS</div>
     <div class="progress">0%</div>
   </div>
-
+  
+  <!-- Main Script: Wait for DOM to be ready and then signal readiness -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const startTime = Date.now();
+      // Signal that the Telegram WebApp is ready.
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+
       let progress = 0;
       const progressElement = document.querySelector('.progress');
       const loader = document.querySelector('.loading-container');
       let interval;
 
       const completeLoading = () => {
-        // Track loading completion
-        window.telegramAnalytics.track('loading_complete', {
-          load_duration: Date.now() - startTime,
-          progress: 100
-        });
-
-        // Delay redirect for event transmission
+        // Fade out loader
+        loader.style.opacity = '0';
+        // Redirect after fade-out
         setTimeout(() => {
-          loader.style.opacity = '0';
-          setTimeout(() => {
-            window.location.href = 'profile.html';
-          }, 500);
-        }, 300);
+          window.location.href = 'profile.html';
+        }, 500);
       };
 
       const updateProgress = () => {
@@ -129,9 +130,10 @@
         }
       };
 
+      // Simulate loading progress
       interval = setInterval(updateProgress, 100);
       
-      // Fallback completion
+      // Fallback: Redirect even if progress simulation doesn't finish
       setTimeout(() => {
         clearInterval(interval);
         completeLoading();
