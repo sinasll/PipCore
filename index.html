@@ -5,27 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PipCore</title>
 
-  <!-- 1. Synchronous Core SDKs -->
+  <!-- 1. Load Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="%VITE_TG_ANALYTICS_URL%"></script> <!-- Removed async -->
+  
+  <!-- 2. Load Telegram Analytics SDK via CDN with async and onload handler -->
+  <script async src="https://tganalytics.xyz/index.js" onload="initAnalytics()" type="text/javascript"></script>
 
-  <!-- 2. Robust Analytics Initialization -->
+  <!-- 3. Analytics Initialization -->
   <script>
     let analyticsInitialized = false;
-    
-    try {
-      window.telegramAnalytics.init({
-        token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=',
-        appName: 'PipCore'
-      });
-      window.telegramAnalytics.track('start');
-      analyticsInitialized = true;
-    } catch (error) {
-      console.error('Analytics init failed:', error);
-      analyticsInitialized = false;
+
+    function initAnalytics() {
+      try {
+        window.telegramAnalytics.init({
+          token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=', // Replace with your actual token
+          appName: 'PipCore' // Replace with your actual analytics identifier if different
+        });
+        // Optional: Track a "start" event immediately after initialization
+        window.telegramAnalytics.track('start');
+        analyticsInitialized = true;
+      } catch (error) {
+        console.error('Analytics init failed:', error);
+        analyticsInitialized = false;
+      }
     }
 
-    // Initialize WebApp
+    // Initialize Telegram WebApp
     const tg = window.Telegram.WebApp;
     tg.expand();
     tg.ready();
@@ -44,22 +49,17 @@
       const startTime = Date.now();
       const loader = document.querySelector('.loading-container');
       
-      // Simulated loading progress
+      // Function to complete loading
       const loadComplete = () => {
-        // Track completion if analytics loaded
-        if(analyticsInitialized) {
+        if (analyticsInitialized) {
           window.telegramAnalytics.track('loading_complete', {
             duration: Date.now() - startTime
           });
         }
-
-        // Visual fade-out
         loader.style.opacity = '0';
-        
-        // Delay redirect for event transmission
         setTimeout(() => {
           window.location.href = 'profile.html';
-        }, analyticsInitialized ? 300 : 0); // Only delay if analytics works
+        }, analyticsInitialized ? 300 : 0);
       };
 
       // Simulate loading progress
@@ -67,8 +67,7 @@
       const interval = setInterval(() => {
         progress = Math.min(progress + Math.random() * 3, 100);
         document.querySelector('.progress').textContent = `${Math.floor(progress)}%`;
-        
-        if(progress >= 100) {
+        if (progress >= 100) {
           clearInterval(interval);
           loadComplete();
         }
