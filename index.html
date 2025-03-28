@@ -8,28 +8,21 @@
   
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  
-  <!-- Add Telegram Analytics script to HTML head -->
   <script 
-      async 
-      src="https://tganalytics.xyz/index.js" 
-      onload="initAnalytics()" 
-      type="text/javascript"
-  ></script>
-  <script>
+    async 
+    src="https://tganalytics.xyz/index.js" 
+    onload="initAnalytics()" 
+    type="text/javascript"
+></script>
+
+<script>
     function initAnalytics() {
-      console.log('initAnalytics: Attempting to initialize analytics.');
-      try {
-        window.telegramAnalytics.init({
-          token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=',
-          appName: 'PipCore',
-        });
-        console.log('initAnalytics: Analytics initialized successfully.');
-      } catch (error) {
-        console.error('initAnalytics: Error initializing analytics:', error);
-      }
+      window.telegramAnalytics.init({
+        token: 'eyJhcHBfbmFtZSI6IlBpcENvcmUiLCJhcHBfdXJsIjoiaHR0cHM6Ly90Lm1lL3BpcGNvcmVib3Q/cHJvZmlsZSIsImFwcF9kb21haW4iOiJodHRwczovL3NpbmFzbGwuZ2l0aHViLmlvL1BpcENvcmUvIn0=!4SggM7v6aszOEalTectRvX5S+cTTBpCO2d/vQk+ouYs=, // SDK Auth token received via @DataChief_bot
+        appName: 'PipCore', // The analytics identifier you entered in @DataChief_bot
+      });
     }
-  </script>
+</script>
 
   <!-- Your CSS & Fonts -->
   <link href="style.css" rel="stylesheet" type="text/css" />
