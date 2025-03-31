@@ -63,7 +63,7 @@ function initAnalytics() {
       <p id="username" class="username">@username</p>
     </div>
 
-    <div id="ton-connect"></div>
+    <div id="ton-connect" class="connectToWallet"></div>
 
 
     <div class="task-container">
@@ -111,7 +111,7 @@ function initAnalytics() {
   </main>
 
   <script>
- // Telegram WebApp initialization
+// Telegram WebApp initialization
 const tg = window.Telegram?.WebApp;
 
 // Expand the Mini App to full height
@@ -119,39 +119,118 @@ if (tg) {
   tg.expand();
   tg.enableClosingConfirmation();
 }
-    // Set username from Telegram or default to guest
-    const usernameElement = document.getElementById('username');
-    if (tg?.initDataUnsafe?.user?.username) {
-      usernameElement.textContent = `@${tg.initDataUnsafe.user.username}`;
-    } else {
-      usernameElement.textContent = "@guest";
-    }
 
-   // TON Connect Initialization
+// Set username from Telegram or default to guest
+const usernameElement = document.getElementById('username');
+if (tg?.initDataUnsafe?.user?.username) {
+  usernameElement.textContent = `@${tg.initDataUnsafe.user.username}`;
+} else {
+  usernameElement.textContent = "@guest";
+}
+
+// TON Connect Initialization with minimal styling
 document.addEventListener('DOMContentLoaded', function() {
-    // Get body element reference
-    const body = document.body;
-    
-    // Initialize TON Connect
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-        manifestUrl: 'https://sinasll.github.io/PipCore/tonconnect-manifest.json',
-        buttonRootId: 'ton-connect',
-        language: 'en',
-        uiPreferences: {
-            theme: body.getAttribute('data-theme') === 'dark' ? 'DARK' : 'LIGHT'
-        }
-    });
-
-    // Theme toggle synchronization
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            tonConnectUI.uiPreferences = {
-                theme: currentTheme === 'dark' ? 'DARK' : 'LIGHT'
-            };
+  const body = document.body;
+  
+  // Initialize TON Connect with minimal effects
+  const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+    manifestUrl: 'https://sinasll.github.io/PipCore/tonconnect-manifest.json',
+    buttonRootId: 'ton-connect',
+    language: 'en',
+    uiPreferences: {
+      theme: body.getAttribute('data-theme') === 'dark' ? 'DARK' : 'LIGHT'
+    },
+    actionsConfiguration: {
+      modifyConnectButton: (button) => {
+        button.children[0].textContent = 'Connect TON Wallet';
+        // Apply minimal inline styles
+        Object.assign(button.style, {
+          all: 'unset',
+          width: '80%',
+          margin: '0 auto 15px auto',
+          padding: '12px 20px',
+          border: '2px solid var(--border-color)',
+          background: 'var(--background-color)',
+          color: 'var(--text-color)',
+          fontFamily: '"Press Start 2P", sans-serif',
+          fontSize: '12px',
+          textAlign: 'center',
+          cursor: 'pointer',
+          display: 'block'
         });
+        return button;
+      }
     }
+  });
+
+  // Add this inside your TON Connect initialization
+tonConnectUI.onStatusChange((wallet) => {
+  const tonButton = document.querySelector('#ton-connect button');
+  if (tonButton) {
+    // Update text based on connection status
+    tonButton.children[0].textContent = wallet ? 'Wallet Connected' : 'Connect TON Wallet';
+    
+    // Force reapply all styles
+    Object.assign(tonButton.style, {
+      all: 'unset',
+      width: '80%',
+      margin: '20px auto 15px auto',
+      padding: '12px 20px',
+      border: '2px solid var(--border-color)',
+      background: 'var(--background-color)',
+      color: 'var(--text-color)',
+      fontFamily: '"Press Start 2P", sans-serif',
+      fontSize: '12px',
+      textAlign: 'center',
+      cursor: 'pointer',
+      display: 'block'
+    });
+    
+    // Additional visual indicator (optional)
+    if (wallet) {
+      tonButton.style.borderColor = 'var(--accent-color)'; // Gold border when connected
+    } else {
+      tonButton.style.borderColor = 'var(--border-color)'; // Default border
+    }
+  }
+});
+
+  // Theme synchronization
+  const themeToggle = document.getElementById('theme-toggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      tonConnectUI.uiPreferences = {
+        theme: newTheme === 'dark' ? 'DARK' : 'LIGHT'
+      };
+    });
+  }
+
+  // Simple observer for button changes
+  const observer = new MutationObserver(() => {
+    const tonButton = document.querySelector('#ton-connect button');
+    if (tonButton) {
+      Object.assign(tonButton.style, {
+        all: 'unset',
+        width: '80%',
+        margin: '0 auto 15px auto',
+        padding: '12px 20px',
+        borderRadius: '8px',
+        border: '2px solid var(--border-color)',
+        background: 'var(--background-color)',
+        color: 'var(--text-color)',
+        fontFamily: '"Press Start 2P", sans-serif',
+        fontSize: '12px',
+        textAlign: 'center',
+        cursor: 'pointer',
+        display: 'block'
+      });
+    }
+  });
+  observer.observe(document.body, { subtree: true, childList: true });
 });
 
     // Clipboard function
