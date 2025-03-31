@@ -26,7 +26,7 @@
       <nav class="nav-menu" id="nav-menu">
         <ul class="nav-list">
           <h1 class="logotxt">PipCore</h1>
-          <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+          <li><a href="index.html"><i class="fas fa-user"></i> Profile</a></li>
           <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
           <li><a href="journal.html"><i class="fas fa-book"></i> Journal</a></li>
           <li><a href="calendar.html"><i class="fas fa-calendar-alt"></i> Calendar</a></li>
@@ -104,7 +104,7 @@
     });
 
     // Set active navigation link
-    const currentPage = window.location.pathname.split('/').pop() || 'profile.html';
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     navLinks.forEach(link => {
       link.addEventListener('click', function() {
         navLinks.forEach(link => link.classList.remove('active'));
