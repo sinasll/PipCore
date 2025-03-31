@@ -111,9 +111,14 @@ function initAnalytics() {
   </main>
 
   <script>
-    // Telegram WebApp initialization
-    const tg = window.Telegram?.WebApp;
-    
+ // Telegram WebApp initialization
+const tg = window.Telegram?.WebApp;
+
+// Expand the Mini App to full height
+if (tg) {
+  tg.expand();
+  tg.enableClosingConfirmation();
+}
     // Set username from Telegram or default to guest
     const usernameElement = document.getElementById('username');
     if (tg?.initDataUnsafe?.user?.username) {
