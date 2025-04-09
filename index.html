@@ -54,34 +54,35 @@ function initAnalytics() {
 
     // Telegram User Tracking Function
     async function trackTelegramUser() {
-  try {
-    const tg = window.Telegram?.WebApp;
-    if (!tg) return;
+      try {
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
 
-    const userData = tg.initDataUnsafe?.user;
-    if (!userData) return;
+        const userData = tg.initDataUnsafe?.user;
+        if (!userData) return;
 
-    const userId = String(userData.id);
-    const userRef = doc(db, "users", userId);
+        const userId = String(userData.id);
+        const userRef = doc(db, "users", userId);
 
-    // Only include updatable fields
-    const userUpdateData = {
-      username: userData.username || userData.first_name,
-      firstName: userData.first_name || "Anonymous",
-      lastName: userData.last_name || null,
-      languageCode: userData.language_code || "en",
-      photoUrl: userData.photo_url || null,
-      lastActive: serverTimestamp(), // Always update lastActive
-      userAgent: navigator.userAgent,
-      platform: navigator.platform
-    };
+        await setDoc(userRef, {
+          telegramId: userId,
+          username: userData.username || userData.first_name,
+          firstName: userData.first_name || "Anonymous",
+          lastName: userData.last_name || null,
+          languageCode: userData.language_code || "en",
+          chatId: tg.initDataUnsafe.chat?.id || "personal",
+          photoUrl: userData.photo_url || null,
+          joinedAt: serverTimestamp(),
+          lastActive: serverTimestamp(),
+          userAgent: navigator.userAgent,
+          platform: navigator.platform
+        }, { merge: true });
 
-    await setDoc(userRef, userUpdateData, { merge: true });
-    console.log("User tracking successful");
-  } catch (error) {
-    console.error("User tracking failed:", error);
-  }
-}
+        console.log("User tracking successful");
+      } catch (error) {
+        console.error("User tracking failed:", error);
+      }
+    }
 
     // Initialize when page loads
     document.addEventListener("DOMContentLoaded", async () => {
