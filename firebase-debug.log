@@ -1,0 +1,21 @@
+[debug] [2025-04-09T11:48:31.383Z] ----------------------------------------------------------------------
+[debug] [2025-04-09T11:48:31.388Z] Command:       C:\Program Files\nodejs\node.exe C:\ProgramData\npm\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-04-09T11:48:31.389Z] CLI Version:   14.1.0
+[debug] [2025-04-09T11:48:31.389Z] Platform:      win32
+[debug] [2025-04-09T11:48:31.389Z] Node Version:  v22.12.0
+[debug] [2025-04-09T11:48:31.389Z] Time:          Wed Apr 09 2025 14:48:31 GMT+0300 (Arabian Standard Time)
+[debug] [2025-04-09T11:48:31.390Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-04-09T11:48:31.402Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-04-09T11:48:31.403Z] > authorizing via signed-in user (sinasalah6@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  D:\PipCore wallet
+
