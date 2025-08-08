@@ -169,7 +169,7 @@
       </div>
     </section>
     
-    <div id="exportContainer" style="margin-top: 20px;">
+ <div id="exportContainer" style="margin:20px 0; display:flex; align-items:center; gap:8px;">
   <label for="exportFormat">Export as:</label>
   <select id="exportFormat">
     <option value="pdf">PDF</option>
@@ -181,46 +181,59 @@
 
 <script>
   document.getElementById('exportAllBtn').addEventListener('click', () => {
-    const trades = document.querySelectorAll('#tradesList .trade-card');
-    if (trades.length === 0) {
-      alert('No trades available to export.');
-      return;
+    // 1️⃣ Grab all trade cards
+    const cards = document.querySelectorAll('#tradesList .trade-card');
+    if (!cards.length) {
+      return alert('No trades to export.');
     }
 
+    // 2️⃣ Build a 2D array [ [header,...], [row1...], [row2...], ... ]
+    const headers = Array.from(cards[0].querySelectorAll('[data-field]'))
+                         .map(el => el.getAttribute('data-field'));
+    const rows = Array.from(cards).map(card =>
+      headers.map(h => {
+        const el = card.querySelector(`[data-field="${h}"]`);
+        return el ? el.textContent.trim() : '';
+      })
+    );
+
+    // 3️⃣ Choose format
     const format = document.getElementById('exportFormat').value;
 
-    let content = '';
-    const rows = [['Date', 'Time', 'Session', 'Pair', 'Setup', 'Entry', 'Timeframe', 'Buy/Sell', 'Pips', 'Outcome']];
-
-    trades.forEach(card => {
-      const fields = Array.from(card.querySelectorAll('.trade-detail')).map(el => el.textContent.trim());
-      content += fields.join('\n') + '\n\n';
-      rows.push(fields);
-    });
-
+    // 4️⃣ Export!
     if (format === 'txt') {
-      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      // Plain text: each card separated by ----- 
+      const txt = rows.map(r => 
+        headers.map((h,i) => `${h}: ${r[i]}`).join('\n')
+      ).join('\n\n-----\n\n');
+      const blob = new Blob([txt], {type:'text/plain'});
       saveAs(blob, 'pipcore_trades.txt');
+
     } else if (format === 'csv') {
-      const csvContent = rows.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+      // CSV: header row + comma-escaped rows
+      const line = arr => arr.map(cell => `"${cell.replace(/"/g,'""')}"`).join(',');
+      const csv = [line(headers), ...rows.map(line)].join('\n');
+      const blob = new Blob([csv], {type:'text/csv'});
       saveAs(blob, 'pipcore_trades.csv');
+
     } else if (format === 'pdf') {
+      // PDF via jsPDF
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      let y = 10;
-      doc.setFontSize(10);
-
-      rows.forEach((row, index) => {
+      const doc = new jsPDF({ unit:'pt', format:'a4' });
+      let y = 40;
+      doc.setFontSize(12);
+      // header
+      doc.text(headers.join(' | '), 40, y); 
+      y += 20;
+      rows.forEach(row => {
         const line = row.join(' | ');
-        if (y > 270) {
+        if (y > 800) {
           doc.addPage();
-          y = 10;
+          y = 40;
         }
-        doc.text(line, 10, y);
-        y += 8;
+        doc.text(line, 40, y);
+        y += 16;
       });
-
       doc.save('pipcore_trades.pdf');
     }
   });
