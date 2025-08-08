@@ -168,6 +168,64 @@
         </div>
       </div>
     </section>
+    
+    <div id="exportContainer" style="margin-top: 20px;">
+  <label for="exportFormat">Export as:</label>
+  <select id="exportFormat">
+    <option value="pdf">PDF</option>
+    <option value="txt">Text</option>
+    <option value="csv">CSV</option>
+  </select>
+  <button id="exportAllBtn">Export All Trades</button>
+</div>
+
+<script>
+  document.getElementById('exportAllBtn').addEventListener('click', () => {
+    const trades = document.querySelectorAll('#tradesList .trade-card');
+    if (trades.length === 0) {
+      alert('No trades available to export.');
+      return;
+    }
+
+    const format = document.getElementById('exportFormat').value;
+
+    let content = '';
+    const rows = [['Date', 'Time', 'Session', 'Pair', 'Setup', 'Entry', 'Timeframe', 'Buy/Sell', 'Pips', 'Outcome']];
+
+    trades.forEach(card => {
+      const fields = Array.from(card.querySelectorAll('.trade-detail')).map(el => el.textContent.trim());
+      content += fields.join('\n') + '\n\n';
+      rows.push(fields);
+    });
+
+    if (format === 'txt') {
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      saveAs(blob, 'pipcore_trades.txt');
+    } else if (format === 'csv') {
+      const csvContent = rows.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+      saveAs(blob, 'pipcore_trades.csv');
+    } else if (format === 'pdf') {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      let y = 10;
+      doc.setFontSize(10);
+
+      rows.forEach((row, index) => {
+        const line = row.join(' | ');
+        if (y > 270) {
+          doc.addPage();
+          y = 10;
+        }
+        doc.text(line, 10, y);
+        y += 8;
+      });
+
+      doc.save('pipcore_trades.pdf');
+    }
+  });
+</script>
+    
   </main>
 
   <!-- Settings Modal -->
