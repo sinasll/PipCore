@@ -180,16 +180,15 @@
 </div>
 
 <script>
-  document.getElementById('exportAllBtn').addEventListener('click', () => {
-    // 1️⃣ Grab all trade cards
+  document.getElementById('exportAllBtn').addEventListener('click', async () => {
     const cards = document.querySelectorAll('#tradesList .trade-card');
-    if (!cards.length) {
-      return alert('No trades to export.');
-    }
+    if (!cards.length) return alert('No trades to export.');
 
-    // 2️⃣ Build a 2D array [ [header,...], [row1...], [row2...], ... ]
+    const format = document.getElementById('exportFormat').value;
+
     const headers = Array.from(cards[0].querySelectorAll('[data-field]'))
                          .map(el => el.getAttribute('data-field'));
+
     const rows = Array.from(cards).map(card =>
       headers.map(h => {
         const el = card.querySelector(`[data-field="${h}"]`);
@@ -197,44 +196,60 @@
       })
     );
 
-    // 3️⃣ Choose format
-    const format = document.getElementById('exportFormat').value;
+    let blob, filename, mime;
 
-    // 4️⃣ Export!
     if (format === 'txt') {
-      // Plain text: each card separated by ----- 
       const txt = rows.map(r => 
         headers.map((h,i) => `${h}: ${r[i]}`).join('\n')
       ).join('\n\n-----\n\n');
-      const blob = new Blob([txt], {type:'text/plain'});
-      saveAs(blob, 'pipcore_trades.txt');
+      blob = new Blob([txt], { type: 'text/plain' });
+      filename = 'pipcore_trades.txt';
+      mime = 'text/plain';
 
     } else if (format === 'csv') {
-      // CSV: header row + comma-escaped rows
       const line = arr => arr.map(cell => `"${cell.replace(/"/g,'""')}"`).join(',');
       const csv = [line(headers), ...rows.map(line)].join('\n');
-      const blob = new Blob([csv], {type:'text/csv'});
-      saveAs(blob, 'pipcore_trades.csv');
+      blob = new Blob([csv], { type: 'text/csv' });
+      filename = 'pipcore_trades.csv';
+      mime = 'text/csv';
 
     } else if (format === 'pdf') {
-      // PDF via jsPDF
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ unit:'pt', format:'a4' });
       let y = 40;
       doc.setFontSize(12);
-      // header
-      doc.text(headers.join(' | '), 40, y); 
+      doc.text(headers.join(' | '), 40, y);
       y += 20;
       rows.forEach(row => {
-        const line = row.join(' | ');
         if (y > 800) {
           doc.addPage();
           y = 40;
         }
-        doc.text(line, 40, y);
+        doc.text(row.join(' | '), 40, y);
         y += 16;
       });
-      doc.save('pipcore_trades.pdf');
+      blob = doc.output('blob');
+      filename = 'pipcore_trades.pdf';
+      mime = 'application/pdf';
+    }
+
+    const file = new File([blob], filename, { type: mime });
+
+    // Try to use native share
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          title: 'PipCore Trades Export',
+          text: 'Here is my exported trade history.',
+          files: [file],
+        });
+      } catch (err) {
+        console.warn('Share cancelled or failed:', err);
+        saveAs(blob, filename); // Fallback to download
+      }
+    } else {
+      // Fallback to download if native share unsupported
+      saveAs(blob, filename);
     }
   });
 </script>
