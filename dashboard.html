@@ -128,7 +128,7 @@
     }
   </script>
 
-  <script>
+<script>
   // Stats generation functions (enhanced: includes count + total pips)
   function generateOverallStats() {
     const statsContainer = document.getElementById('stats');
@@ -180,24 +180,35 @@
         statTitle.textContent = stat.title;
 
         const statValue = document.createElement('p');
-        // If stat has winRate-style value show as main value; otherwise show provided value
         statValue.textContent = stat.value || '';
 
-        // Additional info line: trades count and total pips (if provided)
-        const infoLine = document.createElement('small');
+        // Create separate small elements for trades count and pips,
+        // make them smaller and each on its own line
         const tradesCount = stat.count !== undefined ? stat.count : '';
         const pips = stat.pips !== undefined ? Number(stat.pips).toFixed(2) : '';
+
         if (tradesCount !== '') {
-          infoLine.textContent = `Trades: ${tradesCount} ${pips !== '' ? `| Pips: ${pips}` : ''}`;
-        } else if (pips !== '') {
-          infoLine.textContent = `Pips: ${pips}`;
-        } else {
-          infoLine.textContent = '';
+          const infoCount = document.createElement('small');
+          infoCount.textContent = `Trades: ${tradesCount}`;
+          infoCount.style.display = 'block';
+          infoCount.style.fontSize = '12px';
+          infoCount.style.marginTop = '6px';
+          infoCount.style.opacity = '0.9';
+          statCard.appendChild(infoCount);
+        }
+
+        if (pips !== '') {
+          const infoPips = document.createElement('small');
+          infoPips.textContent = `Pips: ${pips}`;
+          infoPips.style.display = 'block';
+          infoPips.style.fontSize = '12px';
+          infoPips.style.marginTop = '2px';
+          infoPips.style.opacity = '0.9';
+          statCard.appendChild(infoPips);
         }
 
         statCard.appendChild(statTitle);
         statCard.appendChild(statValue);
-        if (infoLine.textContent) statCard.appendChild(infoLine);
         statsContainer.appendChild(statCard);
       });
     });
