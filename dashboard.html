@@ -41,19 +41,17 @@
       <h1 class="stats">OVERALL STATS</h1>
     </div>
 
-    <!-- Export Buttons -->
-    <div style="text-align:center; margin-bottom: 20px;">
+    <section class="dashboard">
+      <div class="stats-container">
+        <div id="stats" class="stats"></div>
+      </div>
+    </section>
+
+    <!-- Export buttons -->
+    <section style="text-align:center; margin-top:20px;">
       <button id="export-pdf">Export PDF</button>
       <button id="export-csv">Export CSV</button>
       <button id="export-txt">Export TXT</button>
-    </div>
-
-    <section class="dashboard">
-      <div class="stats-container">
-        <div id="stats" class="stats">
-          <!-- Stats will be dynamically generated here -->
-        </div>
-      </div>
     </section>
   </main>
 
@@ -65,19 +63,16 @@
       }
     }
     function initHapticFeedback() {
-      const interactiveElements = document.querySelectorAll(
-        'button, a, .hamburger, .theme-toggle, .nav-list li a'
-      );
+      const interactiveElements = document.querySelectorAll('button, a, .hamburger, .theme-toggle, .nav-list li a');
       interactiveElements.forEach(element => {
         element.addEventListener('click', triggerHaptic);
       });
-      document.getElementById('hamburger')?.addEventListener('click', triggerHaptic);
     }
     document.addEventListener('DOMContentLoaded', initHapticFeedback);
   </script>
 
   <script>
-    // Navigation menu functionality
+    // Navigation menu
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
     const navLinks = document.querySelectorAll('.nav-list li a');
@@ -124,66 +119,7 @@
   </script>
 
   <script>
-    // Stats generation
-    function generateOverallStats() {
-      const statsContainer = document.getElementById('stats');
-      statsContainer.innerHTML = '';
-      const tradeEntries = JSON.parse(localStorage.getItem('tradeEntries')) || [];
-      const totalTrades = tradeEntries.length;
-      const totalPips = tradeEntries.reduce((total, trade) => total + (parseFloat(trade.pips) || 0), 0);
-      const winTrades = tradeEntries.filter(trade => (trade.outcome || '').toLowerCase() === 'win').length;
-      const loseTrades = tradeEntries.filter(trade => (trade.outcome || '').toLowerCase() === 'lose').length;
-      const winRate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : '0.00';
-      const averagePips = totalTrades > 0 ? (totalPips / totalTrades).toFixed(2) : '0.00';
-      const statGroups = [
-        { 
-          title: '', 
-          stats: [
-            { title: 'Win Rate', value: `${winRate}%` },
-            { title: 'Total Trades', value: `${totalTrades}` },
-            { title: 'Total Pips', value: `${totalPips.toFixed(2)}` },
-            { title: 'Average Pips', value: `${averagePips}` },
-            { title: 'Wins', value: `${winTrades}` },
-            { title: 'Losses', value: `${loseTrades}` }
-          ] 
-        },
-        { title: 'Setups', stats: getSetupsStats(tradeEntries) },
-        { title: 'Entries', stats: getEntriesStats(tradeEntries) },
-        { title: 'Timeframes', stats: getTimeframesStats(tradeEntries) },
-        { title: 'Sessions', stats: getSessionsStats(tradeEntries) }
-      ];
-      statGroups.forEach(group => {
-        const groupTitle = document.createElement('h1');
-        groupTitle.textContent = group.title;
-        groupTitle.style.color = 'var(--accent-color)';
-        groupTitle.style.fontSize = '20px';
-        groupTitle.style.textAlign = 'center';
-        groupTitle.style.marginBottom = '10px';
-        statsContainer.appendChild(groupTitle);
-        group.stats.forEach(stat => {
-          const statCard = document.createElement('div');
-          statCard.classList.add('stat-card');
-          const statTitle = document.createElement('h3');
-          statTitle.textContent = stat.title;
-          const statValue = document.createElement('p');
-          statValue.textContent = stat.value || '';
-          statCard.appendChild(statTitle);
-          statCard.appendChild(statValue);
-          if (stat.count !== undefined) {
-            const infoCount = document.createElement('small');
-            infoCount.textContent = `Trades: ${stat.count}`;
-            statCard.appendChild(infoCount);
-          }
-          if (stat.pips !== undefined) {
-            const infoPips = document.createElement('small');
-            infoPips.textContent = `Pips: ${Number(stat.pips).toFixed(2)}`;
-            statCard.appendChild(infoPips);
-          }
-          statsContainer.appendChild(statCard);
-        });
-      });
-    }
-
+    // Stats calculation
     function safeField(val) {
       return (val === undefined || val === null || String(val).trim() === '') ? 'Unknown' : String(val);
     }
@@ -227,43 +163,105 @@
         return { title: session, value: metrics.winRate, count: metrics.count, pips: metrics.totalPips };
       });
     }
+
+    function generateOverallStats() {
+      const statsContainer = document.getElementById('stats');
+      statsContainer.innerHTML = '';
+      const tradeEntries = JSON.parse(localStorage.getItem('tradeEntries')) || [];
+
+      const totalTrades = tradeEntries.length;
+      const totalPips = tradeEntries.reduce((total, trade) => total + (parseFloat(trade.pips) || 0), 0);
+      const winTrades = tradeEntries.filter(trade => (trade.outcome || '').toLowerCase() === 'win').length;
+      const loseTrades = tradeEntries.filter(trade => (trade.outcome || '').toLowerCase() === 'lose').length;
+      const winRate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : '0.00';
+      const averagePips = totalTrades > 0 ? (totalPips / totalTrades).toFixed(2) : '0.00';
+
+      const statGroups = [
+        { 
+          title: '', 
+          stats: [
+            { title: 'Win Rate', value: `${winRate}%` },
+            { title: 'Total Trades', value: `${totalTrades}` },
+            { title: 'Total Pips', value: `${totalPips.toFixed(2)}` },
+            { title: 'Average Pips', value: `${averagePips}` },
+            { title: 'Wins', value: `${winTrades}` },
+            { title: 'Losses', value: `${loseTrades}` }
+          ] 
+        },
+        { title: 'Setups', stats: getSetupsStats(tradeEntries) },
+        { title: 'Entries', stats: getEntriesStats(tradeEntries) },
+        { title: 'Timeframes', stats: getTimeframesStats(tradeEntries) },
+        { title: 'Sessions', stats: getSessionsStats(tradeEntries) }
+      ];
+
+      statGroups.forEach(group => {
+        const groupTitle = document.createElement('h1');
+        groupTitle.textContent = group.title;
+        groupTitle.style.color = 'var(--accent-color)';
+        groupTitle.style.fontSize = '20px';
+        groupTitle.style.textAlign = 'center';
+        groupTitle.style.marginBottom = '10px';
+        statsContainer.appendChild(groupTitle);
+
+        group.stats.forEach(stat => {
+          const statCard = document.createElement('div');
+          statCard.classList.add('stat-card');
+          const statTitle = document.createElement('h3');
+          statTitle.textContent = stat.title;
+          const statValue = document.createElement('p');
+          statValue.textContent = stat.value || '';
+          statCard.appendChild(statTitle);
+          statCard.appendChild(statValue);
+          statsContainer.appendChild(statCard);
+        });
+      });
+    }
     document.addEventListener('DOMContentLoaded', generateOverallStats);
-    window.addEventListener('storage', (event) => {
-      if (['tradeEntries','timeframes','setups','entries'].includes(event.key)) {
-        generateOverallStats();
-      }
-    });
   </script>
 
   <script>
-    // Export functions
-    function exportStats(format) {
-      const statsText = document.getElementById('stats').innerText;
-      if (format === 'pdf') {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text("PipCore Dashboard Stats", 10, 10);
-        doc.text(statsText, 10, 20);
-        doc.save('PipCore_Stats.pdf');
-      } else if (format === 'csv') {
-        const rows = statsText.split('\n').map(line => [line]);
-        const csv = rows.map(r => r.join(',')).join('\n');
-        const blob = new Blob([csv], { type: 'text/csv' });
+    async function exportAndShare(content, fileName, type) {
+      const blob = new Blob([content], { type });
+      const file = new File([blob], fileName, { type });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            title: 'PipCore Stats',
+            text: 'Here are my trading stats',
+            files: [file]
+          });
+        } catch (err) {
+          console.log('Share cancelled or failed', err);
+        }
+      } else {
+        const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'PipCore_Stats.csv';
+        a.href = url;
+        a.download = fileName;
         a.click();
-      } else if (format === 'txt') {
-        const blob = new Blob([statsText], { type: 'text/plain' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'PipCore_Stats.txt';
-        a.click();
+        URL.revokeObjectURL(url);
       }
     }
-    document.getElementById('export-pdf').addEventListener('click', () => exportStats('pdf'));
-    document.getElementById('export-csv').addEventListener('click', () => exportStats('csv'));
-    document.getElementById('export-txt').addEventListener('click', () => exportStats('txt'));
+
+    document.getElementById('export-csv').addEventListener('click', () => {
+      const statsText = document.getElementById('stats').innerText.replace(/\n/g, ',');
+      exportAndShare(statsText, 'pipcore_stats.csv', 'text/csv');
+    });
+
+    document.getElementById('export-txt').addEventListener('click', () => {
+      const statsText = document.getElementById('stats').innerText;
+      exportAndShare(statsText, 'pipcore_stats.txt', 'text/plain');
+    });
+
+    document.getElementById('export-pdf').addEventListener('click', () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text(document.getElementById('stats').innerText, 10, 10);
+      const pdfBlob = doc.output('blob');
+      exportAndShare(pdfBlob, 'pipcore_stats.pdf', 'application/pdf');
+    });
   </script>
+
 </body>
 </html>
