@@ -15,11 +15,7 @@
   <header>
     <div class="header-container">
       <img src="logo.PNG" alt="PipCore logo" class="logo">
-      <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
       <nav class="nav-menu" id="nav-menu">
         <ul class="nav-list">
           <h1 class="logotxt">PipCore</h1>
@@ -30,22 +26,13 @@
           <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
         </ul>
       </nav>
-      <button class="theme-toggle" id="theme-toggle">
-        <i class="fas fa-moon"></i>
-      </button>
+      <button class="theme-toggle" id="theme-toggle"><i class="fas fa-moon"></i></button>
     </div>
   </header>
 
   <main>
-    <div>
-      <h1 class="stats">OVERALL STATS</h1>
-    </div>
-
-    <section class="dashboard">
-      <div class="stats-container">
-        <div id="stats" class="stats"></div>
-      </div>
-    </section>
+    <div><h1 class="stats">OVERALL STATS</h1></div>
+    <section class="dashboard"><div class="stats-container"><div id="stats" class="stats"></div></div></section>
 
     <!-- Export buttons -->
     <section style="text-align:center; margin-top:20px;">
@@ -63,10 +50,8 @@
       }
     }
     function initHapticFeedback() {
-      const interactiveElements = document.querySelectorAll('button, a, .hamburger, .theme-toggle, .nav-list li a');
-      interactiveElements.forEach(element => {
-        element.addEventListener('click', triggerHaptic);
-      });
+      document.querySelectorAll('button, a, .hamburger, .theme-toggle, .nav-list li a')
+        .forEach(el => el.addEventListener('click', triggerHaptic));
     }
     document.addEventListener('DOMContentLoaded', initHapticFeedback);
   </script>
@@ -80,18 +65,12 @@
       navMenu.classList.toggle('active');
       hamburger.classList.toggle('active');
     });
-    navLinks.forEach(link => {
-      link.addEventListener('click', function() {
-        navLinks.forEach(link => link.classList.remove('active'));
-        this.classList.add('active');
-      });
-    });
+    navLinks.forEach(link => link.addEventListener('click', function() {
+      navLinks.forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+    }));
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    navLinks.forEach(link => {
-      if (link.getAttribute('href') === currentPage) {
-        link.classList.add('active');
-      }
-    });
+    navLinks.forEach(link => { if (link.getAttribute('href') === currentPage) link.classList.add('active'); });
   </script>
 
   <script>
@@ -99,27 +78,21 @@
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      body.setAttribute('data-theme', savedTheme);
-      updateToggleIcon(savedTheme);
-    } else {
-      body.setAttribute('data-theme', 'dark');
-    }
+    if (savedTheme) { body.setAttribute('data-theme', savedTheme); updateToggleIcon(savedTheme); }
+    else { body.setAttribute('data-theme', 'dark'); }
     themeToggle.addEventListener('click', () => {
-      const currentTheme = body.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       body.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       updateToggleIcon(newTheme);
     });
     function updateToggleIcon(theme) {
-      const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
-      themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
+      themeToggle.innerHTML = `<i class="fas ${theme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>`;
     }
   </script>
 
   <script>
-    // Stats calculation
+    // Stats functions
     function safeField(val) {
       return (val === undefined || val === null || String(val).trim() === '') ? 'Unknown' : String(val);
     }
@@ -130,89 +103,60 @@
       const totalPips = trades.reduce((sum, t) => sum + (parseFloat(t.pips) || 0), 0);
       return { count, winRate, totalPips: totalPips.toFixed(2) };
     }
-    function getSetupsStats(trades) {
-      const setups = [...new Set(trades.map(t => safeField(t.setup)))];
-      return setups.map(setup => {
-        const tradesForSetup = trades.filter(t => safeField(t.setup) === setup);
-        const metrics = calcMetrics(tradesForSetup);
-        return { title: setup, value: metrics.winRate, count: metrics.count, pips: metrics.totalPips };
-      });
-    }
-    function getEntriesStats(trades) {
-      const entries = [...new Set(trades.map(t => safeField(t.entry)))];
-      return entries.map(entry => {
-        const tradesForEntry = trades.filter(t => safeField(t.entry) === entry);
-        const metrics = calcMetrics(tradesForEntry);
-        return { title: entry, value: metrics.winRate, count: metrics.count, pips: metrics.totalPips };
-      });
-    }
-    function getTimeframesStats(trades) {
-      const stored = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
-      const timeframes = [...new Set(stored.concat(trades.map(t => safeField(t.timeframe))))];
-      return timeframes.map(tf => {
-        const tradesForTf = trades.filter(t => safeField(t.timeframe) === tf);
-        const metrics = calcMetrics(tradesForTf);
-        return { title: tf, value: metrics.winRate, count: metrics.count, pips: metrics.totalPips };
-      });
-    }
-    function getSessionsStats(trades) {
-      const sessions = ['Asia', 'Pre London', 'London', 'Pre New York', 'New York'];
-      return sessions.map(session => {
-        const tradesForSession = trades.filter(t => safeField(t.session) === session);
-        const metrics = calcMetrics(tradesForSession);
-        return { title: session, value: metrics.winRate, count: metrics.count, pips: metrics.totalPips };
-      });
+    function groupStats(trades, label, field) {
+      const values = [...new Set(trades.map(t => safeField(t[field])))];
+      return { 
+        title: label,
+        stats: values.map(v => {
+          const groupTrades = trades.filter(t => safeField(t[field]) === v);
+          const m = calcMetrics(groupTrades);
+          return { title: v, value: m.winRate, count: m.count, pips: m.totalPips };
+        })
+      };
     }
 
     function generateOverallStats() {
       const statsContainer = document.getElementById('stats');
       statsContainer.innerHTML = '';
-      const tradeEntries = JSON.parse(localStorage.getItem('tradeEntries')) || [];
+      const trades = JSON.parse(localStorage.getItem('tradeEntries')) || [];
 
-      const totalTrades = tradeEntries.length;
-      const totalPips = tradeEntries.reduce((total, trade) => total + (parseFloat(trade.pips) || 0), 0);
-      const winTrades = tradeEntries.filter(trade => (trade.outcome || '').toLowerCase() === 'win').length;
-      const loseTrades = tradeEntries.filter(trade => (trade.outcome || '').toLowerCase() === 'lose').length;
+      const totalTrades = trades.length;
+      const totalPips = trades.reduce((t, tr) => t + (parseFloat(tr.pips) || 0), 0);
+      const winTrades = trades.filter(t => (t.outcome || '').toLowerCase() === 'win').length;
+      const loseTrades = trades.filter(t => (t.outcome || '').toLowerCase() === 'lose').length;
       const winRate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : '0.00';
-      const averagePips = totalTrades > 0 ? (totalPips / totalTrades).toFixed(2) : '0.00';
+      const avgPips = totalTrades > 0 ? (totalPips / totalTrades).toFixed(2) : '0.00';
 
       const statGroups = [
-        { 
-          title: '', 
-          stats: [
-            { title: 'Win Rate', value: `${winRate}%` },
-            { title: 'Total Trades', value: `${totalTrades}` },
-            { title: 'Total Pips', value: `${totalPips.toFixed(2)}` },
-            { title: 'Average Pips', value: `${averagePips}` },
-            { title: 'Wins', value: `${winTrades}` },
-            { title: 'Losses', value: `${loseTrades}` }
-          ] 
-        },
-        { title: 'Setups', stats: getSetupsStats(tradeEntries) },
-        { title: 'Entries', stats: getEntriesStats(tradeEntries) },
-        { title: 'Timeframes', stats: getTimeframesStats(tradeEntries) },
-        { title: 'Sessions', stats: getSessionsStats(tradeEntries) }
+        { title: 'Summary', stats: [
+          { title: 'Win Rate', value: `${winRate}%` },
+          { title: 'Total Trades', value: `${totalTrades}` },
+          { title: 'Total Pips', value: `${totalPips.toFixed(2)}` },
+          { title: 'Average Pips', value: `${avgPips}` },
+          { title: 'Wins', value: `${winTrades}` },
+          { title: 'Losses', value: `${loseTrades}` }
+        ]},
+        groupStats(trades, 'Setups', 'setup'),
+        groupStats(trades, 'Entries', 'entry'),
+        groupStats(trades, 'Timeframes', 'timeframe'),
+        groupStats(trades, 'Sessions', 'session')
       ];
 
-      statGroups.forEach(group => {
-        const groupTitle = document.createElement('h1');
-        groupTitle.textContent = group.title;
-        groupTitle.style.color = 'var(--accent-color)';
-        groupTitle.style.fontSize = '20px';
-        groupTitle.style.textAlign = 'center';
-        groupTitle.style.marginBottom = '10px';
-        statsContainer.appendChild(groupTitle);
+      window.generatedStats = statGroups; // Store for export
 
-        group.stats.forEach(stat => {
-          const statCard = document.createElement('div');
-          statCard.classList.add('stat-card');
-          const statTitle = document.createElement('h3');
-          statTitle.textContent = stat.title;
-          const statValue = document.createElement('p');
-          statValue.textContent = stat.value || '';
-          statCard.appendChild(statTitle);
-          statCard.appendChild(statValue);
-          statsContainer.appendChild(statCard);
+      statGroups.forEach(g => {
+        const h = document.createElement('h1');
+        h.textContent = g.title;
+        h.style.color = 'var(--accent-color)';
+        h.style.fontSize = '20px';
+        h.style.textAlign = 'center';
+        h.style.marginBottom = '10px';
+        statsContainer.appendChild(h);
+        g.stats.forEach(stat => {
+          const card = document.createElement('div');
+          card.classList.add('stat-card');
+          card.innerHTML = `<h3>${stat.title}</h3><p>${stat.value}</p>`;
+          statsContainer.appendChild(card);
         });
       });
     }
@@ -221,19 +165,11 @@
 
   <script>
     async function exportAndShare(content, fileName, type) {
-      const blob = new Blob([content], { type });
+      const blob = content instanceof Blob ? content : new Blob([content], { type });
       const file = new File([blob], fileName, { type });
-
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            title: 'PipCore Stats',
-            text: 'Here are my trading stats',
-            files: [file]
-          });
-        } catch (err) {
-          console.log('Share cancelled or failed', err);
-        }
+        try { await navigator.share({ title: 'PipCore Stats', text: 'Here are my trading stats', files: [file] }); }
+        catch (err) { console.log('Share cancelled or failed', err); }
       } else {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -244,24 +180,47 @@
       }
     }
 
+    function formatCSV(stats) {
+      let rows = [['Section', 'Title', 'Value', 'Count', 'Pips']];
+      stats.forEach(group => group.stats.forEach(s => {
+        rows.push([group.title, s.title, s.value, s.count || '', s.pips || '']);
+      }));
+      return rows.map(r => r.join(',')).join('\n');
+    }
+
+    function formatTXT(stats) {
+      return stats.map(group => {
+        let lines = [`=== ${group.title} ===`];
+        group.stats.forEach(s => lines.push(`${s.title}: ${s.value}${s.count ? ` | Count: ${s.count}` : ''}${s.pips ? ` | Pips: ${s.pips}` : ''}`));
+        return lines.join('\n');
+      }).join('\n\n');
+    }
+
     document.getElementById('export-csv').addEventListener('click', () => {
-      const statsText = document.getElementById('stats').innerText.replace(/\n/g, ',');
-      exportAndShare(statsText, 'pipcore_stats.csv', 'text/csv');
+      exportAndShare(formatCSV(window.generatedStats), 'pipcore_stats.csv', 'text/csv');
     });
-
     document.getElementById('export-txt').addEventListener('click', () => {
-      const statsText = document.getElementById('stats').innerText;
-      exportAndShare(statsText, 'pipcore_stats.txt', 'text/plain');
+      exportAndShare(formatTXT(window.generatedStats), 'pipcore_stats.txt', 'text/plain');
     });
-
     document.getElementById('export-pdf').addEventListener('click', () => {
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.text(document.getElementById('stats').innerText, 10, 10);
-      const pdfBlob = doc.output('blob');
-      exportAndShare(pdfBlob, 'pipcore_stats.pdf', 'application/pdf');
+      const doc = new jsPDF({ format: 'a4', unit: 'mm' });
+      doc.setFontSize(12);
+      let y = 10;
+      window.generatedStats.forEach(group => {
+        doc.setFont(undefined, 'bold');
+        doc.text(group.title, 10, y);
+        y += 6;
+        doc.setFont(undefined, 'normal');
+        group.stats.forEach(s => {
+          let line = `${s.title}: ${s.value}${s.count ? ` | Count: ${s.count}` : ''}${s.pips ? ` | Pips: ${s.pips}` : ''}`;
+          doc.text(line, 14, y);
+          y += 6;
+        });
+        y += 4;
+      });
+      exportAndShare(doc.output('blob'), 'pipcore_stats.pdf', 'application/pdf');
     });
   </script>
-
 </body>
 </html>
