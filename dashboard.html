@@ -9,13 +9,19 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- AutoTable plugin for jsPDF (needed to create well formatted tables) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
   <header>
     <div class="header-container">
       <img src="logo.PNG" alt="PipCore logo" class="logo">
-      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
       <nav class="nav-menu" id="nav-menu">
         <ul class="nav-list">
           <h1 class="logotxt">PipCore</h1>
@@ -26,13 +32,22 @@
           <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
         </ul>
       </nav>
-      <button class="theme-toggle" id="theme-toggle"><i class="fas fa-moon"></i></button>
+      <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+      </button>
     </div>
   </header>
 
   <main>
-    <div><h1 class="stats">OVERALL STATS</h1></div>
-    <section class="dashboard"><div class="stats-container"><div id="stats" class="stats"></div></div></section>
+    <div>
+      <h1 class="stats">OVERALL STATS</h1>
+    </div>
+
+    <section class="dashboard">
+      <div class="stats-container">
+        <div id="stats" class="stats"></div>
+      </div>
+    </section>
 
     <!-- Export buttons -->
     <section style="text-align:center; margin-top:20px;">
@@ -50,8 +65,10 @@
       }
     }
     function initHapticFeedback() {
-      document.querySelectorAll('button, a, .hamburger, .theme-toggle, .nav-list li a')
-        .forEach(el => el.addEventListener('click', triggerHaptic));
+      const interactiveElements = document.querySelectorAll('button, a, .hamburger, .theme-toggle, .nav-list li a');
+      interactiveElements.forEach(element => {
+        element.addEventListener('click', triggerHaptic);
+      });
     }
     document.addEventListener('DOMContentLoaded', initHapticFeedback);
   </script>
@@ -65,12 +82,18 @@
       navMenu.classList.toggle('active');
       hamburger.classList.toggle('active');
     });
-    navLinks.forEach(link => link.addEventListener('click', function() {
-      navLinks.forEach(l => l.classList.remove('active'));
-      this.classList.add('active');
-    }));
+    navLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        navLinks.forEach(link => link.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    navLinks.forEach(link => { if (link.getAttribute('href') === currentPage) link.classList.add('active'); });
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      }
+    });
   </script>
 
   <script>
@@ -78,21 +101,27 @@
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) { body.setAttribute('data-theme', savedTheme); updateToggleIcon(savedTheme); }
-    else { body.setAttribute('data-theme', 'dark'); }
+    if (savedTheme) {
+      body.setAttribute('data-theme', savedTheme);
+      updateToggleIcon(savedTheme);
+    } else {
+      body.setAttribute('data-theme', 'dark');
+    }
     themeToggle.addEventListener('click', () => {
-      const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       body.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       updateToggleIcon(newTheme);
     });
     function updateToggleIcon(theme) {
-      themeToggle.innerHTML = `<i class="fas ${theme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>`;
+      const icon = theme === 'dark' ? 'fa-moon' : 'fa-sun';
+      themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
     }
   </script>
 
   <script>
-    // Stats functions
+    // Stats calculation
     function safeField(val) {
       return (val === undefined || val === null || String(val).trim() === '') ? 'Unknown' : String(val);
     }
@@ -103,124 +132,337 @@
       const totalPips = trades.reduce((sum, t) => sum + (parseFloat(t.pips) || 0), 0);
       return { count, winRate, totalPips: totalPips.toFixed(2) };
     }
-    function groupStats(trades, label, field) {
-      const values = [...new Set(trades.map(t => safeField(t[field])))];
-      return { 
-        title: label,
-        stats: values.map(v => {
-          const groupTrades = trades.filter(t => safeField(t[field]) === v);
-          const m = calcMetrics(groupTrades);
-          return { title: v, value: m.winRate, count: m.count, pips: m.totalPips };
-        })
-      };
+    function getSetupsStats(trades) {
+      const setups = [...new Set(trades.map(t => safeField(t.setup)))];
+      return setups.map(setup => {
+        const tradesForSetup = trades.filter(t => safeField(t.setup) === setup);
+        const metrics = calcMetrics(tradesForSetup);
+        return { title: setup, value: metrics.winRate, count: metrics.count, pips: metrics.totalPips };
+      });
+    }
+    function getEntriesStats(trades) {
+      const entries = [...new Set(trades.map(t => safeField(t.entry)))];
+      return entries.map(entry => {
+        const tradesForEntry = trades.filter(t => safeField(t.entry) === entry);
+        const metrics = calcMetrics(tradesForEntry);
+        return { title: entry, value: metrics.winRate, count: metrics.count, pips: metrics.totalPips };
+      });
+    }
+    function getTimeframesStats(trades) {
+      const stored = JSON.parse(localStorage.getItem('timeframes')) || ['5min', '15min', '30min', '1hr', '4hr'];
+      const timeframes = [...new Set(stored.concat(trades.map(t => safeField(t.timeframe))))];
+      return timeframes.map(tf => {
+        const tradesForTf = trades.filter(t => safeField(t.timeframe) === tf);
+        const metrics = calcMetrics(tradesForTf);
+        return { title: tf, value: metrics.winRate, count: metrics.count, pips: metrics.totalPips };
+      });
+    }
+    function getSessionsStats(trades) {
+      const sessions = ['Asia', 'Pre London', 'London', 'Pre New York', 'New York'];
+      return sessions.map(session => {
+        const tradesForSession = trades.filter(t => safeField(t.session) === session);
+        const metrics = calcMetrics(tradesForSession);
+        return { title: session, value: metrics.winRate, count: metrics.count, pips: metrics.totalPips };
+      });
     }
 
     function generateOverallStats() {
       const statsContainer = document.getElementById('stats');
       statsContainer.innerHTML = '';
-      const trades = JSON.parse(localStorage.getItem('tradeEntries')) || [];
+      const tradeEntries = JSON.parse(localStorage.getItem('tradeEntries')) || [];
 
-      const totalTrades = trades.length;
-      const totalPips = trades.reduce((t, tr) => t + (parseFloat(tr.pips) || 0), 0);
-      const winTrades = trades.filter(t => (t.outcome || '').toLowerCase() === 'win').length;
-      const loseTrades = trades.filter(t => (t.outcome || '').toLowerCase() === 'lose').length;
+      const totalTrades = tradeEntries.length;
+      const totalPips = tradeEntries.reduce((total, trade) => total + (parseFloat(trade.pips) || 0), 0);
+      const winTrades = tradeEntries.filter(trade => (trade.outcome || '').toLowerCase() === 'win').length;
+      const loseTrades = tradeEntries.filter(trade => (trade.outcome || '').toLowerCase() === 'lose').length;
       const winRate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : '0.00';
-      const avgPips = totalTrades > 0 ? (totalPips / totalTrades).toFixed(2) : '0.00';
+      const averagePips = totalTrades > 0 ? (totalPips / totalTrades).toFixed(2) : '0.00';
 
       const statGroups = [
-        { title: 'Summary', stats: [
-          { title: 'Win Rate', value: `${winRate}%` },
-          { title: 'Total Trades', value: `${totalTrades}` },
-          { title: 'Total Pips', value: `${totalPips.toFixed(2)}` },
-          { title: 'Average Pips', value: `${avgPips}` },
-          { title: 'Wins', value: `${winTrades}` },
-          { title: 'Losses', value: `${loseTrades}` }
-        ]},
-        groupStats(trades, 'Setups', 'setup'),
-        groupStats(trades, 'Entries', 'entry'),
-        groupStats(trades, 'Timeframes', 'timeframe'),
-        groupStats(trades, 'Sessions', 'session')
+        { 
+          title: '', 
+          stats: [
+            { title: 'Win Rate', value: `${winRate}%` },
+            { title: 'Total Trades', value: `${totalTrades}` },
+            { title: 'Total Pips', value: `${totalPips.toFixed(2)}` },
+            { title: 'Average Pips', value: `${averagePips}` },
+            { title: 'Wins', value: `${winTrades}` },
+            { title: 'Losses', value: `${loseTrades}` }
+          ] 
+        },
+        { title: 'Setups', stats: getSetupsStats(tradeEntries) },
+        { title: 'Entries', stats: getEntriesStats(tradeEntries) },
+        { title: 'Timeframes', stats: getTimeframesStats(tradeEntries) },
+        { title: 'Sessions', stats: getSessionsStats(tradeEntries) }
       ];
 
-      window.generatedStats = statGroups; // Store for export
+      statGroups.forEach(group => {
+        const groupTitle = document.createElement('h1');
+        groupTitle.textContent = group.title;
+        groupTitle.style.color = 'var(--accent-color)';
+        groupTitle.style.fontSize = '20px';
+        groupTitle.style.textAlign = 'center';
+        groupTitle.style.marginBottom = '10px';
+        statsContainer.appendChild(groupTitle);
 
-      statGroups.forEach(g => {
-        const h = document.createElement('h1');
-        h.textContent = g.title;
-        h.style.color = 'var(--accent-color)';
-        h.style.fontSize = '20px';
-        h.style.textAlign = 'center';
-        h.style.marginBottom = '10px';
-        statsContainer.appendChild(h);
-        g.stats.forEach(stat => {
-          const card = document.createElement('div');
-          card.classList.add('stat-card');
-          card.innerHTML = `<h3>${stat.title}</h3><p>${stat.value}</p>`;
-          statsContainer.appendChild(card);
+        group.stats.forEach(stat => {
+          const statCard = document.createElement('div');
+          statCard.classList.add('stat-card');
+          const statTitle = document.createElement('h3');
+          statTitle.textContent = stat.title;
+          const statValue = document.createElement('p');
+          statValue.textContent = stat.value || '';
+          statCard.appendChild(statTitle);
+          statCard.appendChild(statValue);
+          statsContainer.appendChild(statCard);
         });
       });
     }
     document.addEventListener('DOMContentLoaded', generateOverallStats);
   </script>
 
+  <!-- ===== New export implementation: A4 single-page PDF + clean CSV/TXT + share/download ===== -->
   <script>
-    async function exportAndShare(content, fileName, type) {
-      const blob = content instanceof Blob ? content : new Blob([content], { type });
-      const file = new File([blob], fileName, { type });
+    // exportAndShare (share on mobile if possible, otherwise download)
+    async function exportAndShare(blobOrContent, filename, mimeType) {
+      const blob = blobOrContent instanceof Blob ? blobOrContent : new Blob([blobOrContent], { type: mimeType });
+      const file = new File([blob], filename, { type: mimeType });
+
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try { await navigator.share({ title: 'PipCore Stats', text: 'Here are my trading stats', files: [file] }); }
-        catch (err) { console.log('Share cancelled or failed', err); }
-      } else {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        URL.revokeObjectURL(url);
+        try {
+          await navigator.share({
+            title: 'PipCore Stats',
+            text: 'Here are my trading stats',
+            files: [file]
+          });
+          return;
+        } catch (err) {
+          // share cancelled or failed; fallback to download
+          console.log('share failed', err);
+        }
       }
+      // fallback: download
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
     }
 
-    function formatCSV(stats) {
-      let rows = [['Section', 'Title', 'Value', 'Count', 'Pips']];
-      stats.forEach(group => group.stats.forEach(s => {
-        rows.push([group.title, s.title, s.value, s.count || '', s.pips || '']);
-      }));
-      return rows.map(r => r.join(',')).join('\n');
+    // Gather same stats as generateOverallStats (uses the same helper functions defined earlier)
+    function collectExportStats() {
+      const trades = JSON.parse(localStorage.getItem('tradeEntries')) || [];
+      // Summary
+      const totalTrades = trades.length;
+      const totalPips = trades.reduce((s, t) => s + (parseFloat(t.pips) || 0), 0);
+      const wins = trades.filter(t => (t.outcome || '').toLowerCase() === 'win').length;
+      const losses = trades.filter(t => (t.outcome || '').toLowerCase() === 'lose').length;
+      const winRate = totalTrades > 0 ? ((wins / totalTrades) * 100).toFixed(2) + '%' : '0.00%';
+      const avgPips = totalTrades > 0 ? (totalPips / totalTrades).toFixed(2) : '0.00';
+
+      const groups = [
+        { title: 'Summary', stats: [
+          { title: 'Win Rate', value: winRate, count: '', pips: '' },
+          { title: 'Total Trades', value: totalTrades, count: '', pips: '' },
+          { title: 'Total Pips', value: totalPips.toFixed(2), count: '', pips: '' },
+          { title: 'Average Pips', value: avgPips, count: '', pips: '' },
+          { title: 'Wins', value: wins, count: '', pips: '' },
+          { title: 'Losses', value: losses, count: '', pips: '' }
+        ]},
+        { title: 'Setups', stats: getSetupsStats(trades) },
+        { title: 'Entries', stats: getEntriesStats(trades) },
+        { title: 'Timeframes', stats: getTimeframesStats(trades) },
+        { title: 'Sessions', stats: getSessionsStats(trades) }
+      ];
+
+      return groups;
     }
 
-    function formatTXT(stats) {
-      return stats.map(group => {
-        let lines = [`=== ${group.title} ===`];
-        group.stats.forEach(s => lines.push(`${s.title}: ${s.value}${s.count ? ` | Count: ${s.count}` : ''}${s.pips ? ` | Pips: ${s.pips}` : ''}`));
-        return lines.join('\n');
-      }).join('\n\n');
-    }
-
-    document.getElementById('export-csv').addEventListener('click', () => {
-      exportAndShare(formatCSV(window.generatedStats), 'pipcore_stats.csv', 'text/csv');
-    });
-    document.getElementById('export-txt').addEventListener('click', () => {
-      exportAndShare(formatTXT(window.generatedStats), 'pipcore_stats.txt', 'text/plain');
-    });
-    document.getElementById('export-pdf').addEventListener('click', () => {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ format: 'a4', unit: 'mm' });
-      doc.setFontSize(12);
-      let y = 10;
-      window.generatedStats.forEach(group => {
-        doc.setFont(undefined, 'bold');
-        doc.text(group.title, 10, y);
-        y += 6;
-        doc.setFont(undefined, 'normal');
-        group.stats.forEach(s => {
-          let line = `${s.title}: ${s.value}${s.count ? ` | Count: ${s.count}` : ''}${s.pips ? ` | Pips: ${s.pips}` : ''}`;
-          doc.text(line, 14, y);
-          y += 6;
+    // CSV formatter (clean, with header)
+    function buildCSV(groups) {
+      const rows = [];
+      rows.push(['Section', 'Title', 'Value', 'Count', 'Pips']);
+      groups.forEach(g => {
+        g.stats.forEach(s => {
+          rows.push([g.title, s.title || '', String(s.value || ''), String(s.count || ''), String(s.pips || '')]);
         });
-        y += 4;
+        // blank separator row for readability
+        rows.push(['', '', '', '', '']);
       });
-      exportAndShare(doc.output('blob'), 'pipcore_stats.pdf', 'application/pdf');
+      // escape commas/quotes properly
+      return rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+    }
+
+    // TXT formatter (human readable)
+    function buildTXT(groups) {
+      const lines = [];
+      lines.push('PipCore Trading Stats');
+      lines.push('=====================');
+      groups.forEach(g => {
+        lines.push('');
+        lines.push(`-- ${g.title} --`);
+        g.stats.forEach(s => {
+          let line = `${s.title}: ${s.value}`;
+          if (s.count !== undefined && s.count !== '') line += ` | Count: ${s.count}`;
+          if (s.pips !== undefined && s.pips !== '') line += ` | Pips: ${s.pips}`;
+          lines.push(line);
+        });
+      });
+      return lines.join('\n');
+    }
+
+    // Create A4 single-page PDF with table that attempts to fit all rows on one sheet
+    function buildA4PdfBlob(groups) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const margin = 10;
+      const usableWidth = pageWidth - margin * 2;
+      const usableHeight = pageHeight - margin * 2;
+
+      // build flat rows for the table
+      const tableRows = [];
+      groups.forEach(g => {
+        // push a section header row (we will render as a full-width row)
+        tableRows.push([g.title, '', '', '', '']); // section header
+        g.stats.forEach(s => {
+          tableRows.push(['', s.title || '', s.value || '', s.count || '', s.pips || '']);
+        });
+      });
+
+      // estimate fontSize to fit into usableHeight
+      // approximate row height in mm = fontSize (pt) * 0.3528 * lineHeight (1.2)
+      const totalRows = tableRows.length + 1; // +1 for table header
+      const approxLineFactor = 1.2;
+      // calculate a font size that will fit: fontSize = usableHeight / (totalRows * 0.3528 * approxLineFactor)
+      let fontSize = Math.floor(usableHeight / (totalRows * 0.3528 * approxLineFactor));
+      if (fontSize > 12) fontSize = 12;
+      if (fontSize < 6) fontSize = 6; // keep readable minimum
+
+      // prepare head and body for autotable
+      const head = [['Section', 'Title', 'Value', 'Count', 'Pips']];
+      const body = tableRows.map(r => r);
+
+      // set styles based on calculated fontSize
+      doc.setFontSize(10);
+      // Title
+      doc.setFontSize(fontSize + 2);
+      doc.text('PipCore Trading Stats', pageWidth / 2, margin + (fontSize + 2) / 2, { align: 'center' });
+
+      // startY for table
+      const startY = margin + (fontSize + 2) + 4;
+
+      // use autoTable. We'll set styles with the computed fontSize and small cell padding.
+      doc.autoTable({
+        startY,
+        head,
+        body,
+        theme: 'grid',
+        styles: {
+          fontSize: fontSize,
+          cellPadding: 2,
+          halign: 'left',
+          valign: 'middle',
+        },
+        headStyles: {
+          fillColor: [40, 116, 240],
+          textColor: 255,
+        },
+        alternateRowStyles: { fillColor: [245, 245, 245] },
+        columnStyles: {
+          0: { cellWidth: 30 }, // Section
+          1: { cellWidth: 60 }, // Title
+          2: { cellWidth: 35 }, // Value
+          3: { cellWidth: 25 }, // Count
+          4: { cellWidth: 30 }  // Pips
+        },
+        margin: { left: margin, right: margin },
+        didDrawCell: function (data) {
+          // Make the section header row span visually by filling background and writing text
+          if (data.row.index >= 0) {
+            const row = body[data.row.index];
+            if (row[0] && row[1] === '' && row[2] === '' && row[3] === '' && row[4] === '') {
+              // This is a section header row (first cell has section title, others empty)
+              const cell = data.cell;
+              const x = cell.x;
+              const y = cell.y;
+              const w = data.table.width;
+              const h = cell.height;
+              // draw a light gray rectangle background for section header
+              doc.setFillColor(230, 230, 230);
+              doc.rect(x, y, w, h, 'F');
+              // write the section title
+              doc.setFontSize(fontSize);
+              doc.setTextColor(20);
+              doc.text(String(row[0]), x + 2, y + (h / 2) + (fontSize * 0.35), { baseline: 'middle' });
+              // prevent default cell text by clearing it (autotable will still draw individual cells, but we've drawn the header)
+            }
+          }
+        },
+        // prevent table from adding pages automatically (we try to fit into one)
+        pageBreak: 'avoid',
+      });
+
+      // If table spilled to another page despite scaling, force scale down by re-generating with smaller font.
+      // We can check finalY
+      const finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY : startY;
+      if (finalY > pageHeight - margin) {
+        // reduce font and regenerate once more with smaller font
+        const overflowRows = totalRows;
+        // compute smaller font
+        let reducedFont = Math.floor((usableHeight) / (overflowRows * 0.3528 * approxLineFactor)) - 1;
+        if (reducedFont < 5) reducedFont = 5;
+        // clear and regenerate with reducedFont
+        doc.deletePage();
+        const doc2 = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+        doc2.setFontSize(reducedFont + 2);
+        doc2.text('PipCore Trading Stats', pageWidth / 2, margin + (reducedFont + 2) / 2, { align: 'center' });
+        doc2.autoTable({
+          startY: margin + (reducedFont + 2) + 4,
+          head,
+          body,
+          theme: 'grid',
+          styles: { fontSize: reducedFont, cellPadding: 1.5 },
+          headStyles: { fillColor: [40, 116, 240], textColor: 255 },
+          columnStyles: {
+            0: { cellWidth: 30 },
+            1: { cellWidth: 60 },
+            2: { cellWidth: 35 },
+            3: { cellWidth: 25 },
+            4: { cellWidth: 30 }
+          },
+          margin: { left: margin, right: margin },
+          pageBreak: 'avoid'
+        });
+        return doc2.output('blob');
+      }
+
+      return doc.output('blob');
+    }
+
+    // Hook up export buttons
+    document.getElementById('export-csv').addEventListener('click', async () => {
+      const groups = collectExportStats();
+      const csv = buildCSV(groups);
+      await exportAndShare(csv, `pipcore_stats_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`, 'text/csv');
+    });
+
+    document.getElementById('export-txt').addEventListener('click', async () => {
+      const groups = collectExportStats();
+      const txt = buildTXT(groups);
+      await exportAndShare(txt, `pipcore_stats_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.txt`, 'text/plain');
+    });
+
+    document.getElementById('export-pdf').addEventListener('click', async () => {
+      const groups = collectExportStats();
+      const pdfBlob = buildA4PdfBlob(groups);
+      await exportAndShare(pdfBlob, `pipcore_stats_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.pdf`, 'application/pdf');
     });
   </script>
+
 </body>
 </html>
